@@ -578,7 +578,7 @@ namespace TownOfUs.CustomOption
                 PercentFormat);
             SurvivorOn = new CustomNumberOption(num++, MultiMenu.neutral, "<color=#FFE64DFF>Survivor</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
-            LawyerOn = new CustomNumberOption(num++, MultiMenu.neutral, "<color=#FFE5CCFF>Lawyer</color>", 0f, 0f, 100f, 10f,
+            LawyerOn = new CustomNumberOption(num++, MultiMenu.neutral, "<color=#D2B48CFF>Lawyer</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
 
             NeutralEvilRoles = new CustomHeaderOption(num++, MultiMenu.neutral, "Neutral Evil Roles");
@@ -715,7 +715,7 @@ namespace TownOfUs.CustomOption
                 PercentFormat);
             SurvivorCultistOn = new CustomNumberOption(num++, MultiMenu.main, "<color=#FFE64DFF>Survivor</color> (Cultist Mode)", 100f, 0f, 100f, 10f,
                 PercentFormat);
-            LawyerCultistOn = new CustomNumberOption(num++, MultiMenu.main, "<color=#FFE5CCFF>Lawyer</color> (Cultist Mode)", 100f, 0f, 100f, 10f,
+            LawyerCultistOn = new CustomNumberOption(num++, MultiMenu.main, "<color=#D2B48CFF>Lawyer</color> (Cultist Mode)", 100f, 0f, 100f, 10f,
                 PercentFormat);
             NumberOfSpecialRoles =
                 new CustomNumberOption(num++, MultiMenu.main, "Number Of Special Roles", 4, 0, 4, 1);
@@ -1084,12 +1084,12 @@ namespace TownOfUs.CustomOption
                 new CustomNumberOption(num++, MultiMenu.neutral, "Maximum Number Of Vests", 5, 1, 15, 1);
 
             Lawyer =
-                new CustomHeaderOption(num++, MultiMenu.neutral, "<color=#FFE5CCFF>Lawyer</color>");
-            LawyerDies = new CustomToggleOption(num++, MultiMenu.modifiers, "Lawyer Dies With Defendant");
-            DefendantImpPercent = new CustomNumberOption(num++, MultiMenu.modifiers, "Impostor Defendant Probability", 20f, 0f, 100f, 10f,
+                new CustomHeaderOption(num++, MultiMenu.neutral, "<color=#D2B48CFF>Lawyer</color>");
+            LawyerDies = new CustomToggleOption(num++, MultiMenu.neutral, "Lawyer Dies With Defendant");
+            DefendantImpPercent = new CustomNumberOption(num++, MultiMenu.neutral, "Impostor Defendant Probability", 20f, 0f, 100f, 10f,
                 PercentFormat);
-            NeutralDefendant = new CustomToggleOption(num++, MultiMenu.modifiers, "Neutral Roles Can Be Defendants");
-            LawyerCanTalkDefendant = new CustomToggleOption(num++, MultiMenu.modifiers, "Lawyer And Defendant Can Talk");
+            NeutralDefendant = new CustomToggleOption(num++, MultiMenu.neutral, "Neutral Roles Can Be Defendants");
+            LawyerCanTalkDefendant = new CustomToggleOption(num++, MultiMenu.neutral, "Lawyer And Defendant Can Talk");
             OnDefendantDead = new CustomStringOption(num++, MultiMenu.neutral, "Lawyer Becomes On Defendant Dead",
                 new[] { "Crew", "Amnesiac", "Survivor", "Jester" });
 
