@@ -1236,8 +1236,8 @@ The Lawyer can win with any team that does not explicitly win alone, as long as 
 | Lawyer | The percentage probability of the Lawyer appearing | Percentage | 0% |
 | Lawyer Dies With Defendant | Whether the Lawyer dies when their defendant is exiled | Toggle | True |
 | Evil Defendant Probability | The chances of the Lawyer's defendant being evil | Percentage | 20% |
-| Neutral Roles Can Be Defendants | Whether neutral benign & evil roles can be defendants | Toggle | True |
-| Lawyer And Defendant Can Talk | Whether the Lawyer and their defendant can chat outside of meetings | Toggle | True |
+| Neutral Roles Can Be Defendants | Whether neutral benign & evil roles can be defendants | Toggle | False |
+| Lawyer And Defendant Can Talk | Whether the Lawyer and their defendant can chat outside of meetings | Toggle | False |
 | Lawyer becomes on Defendant Dead | Which role the Lawyer becomes when their target dies | Crewmate / Amnesiac / Survivor / Jester | Crewmate |
 
 -----------------------
