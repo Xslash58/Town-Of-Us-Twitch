@@ -455,7 +455,7 @@ namespace TownOfUs
                 Utils.Rpc(CustomRPC.SetPhantom, byte.MaxValue);
             }
 
-            var exeTargets = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(Faction.Crewmates) && !x.Is(ModifierEnum.Lover) && !x.Is(RoleEnum.Mayor) && !x.Is(RoleEnum.Swapper) && !x.Is(RoleEnum.Vigilante) && x != SetTraitor.WillBeTraitor).ToList();
+            var exeTargets = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(Faction.Crewmates) && !x.Is(ModifierEnum.Lover) && !x.Is(RoleEnum.Mayor) && !x.Is(RoleEnum.Swapper) && !x.Is(RoleEnum.Lawyer) && !x.Is(RoleEnum.Vigilante) && x != SetTraitor.WillBeTraitor).ToList();
             foreach (var role in Role.GetRoles(RoleEnum.Executioner))
             {
                 var exe = (Executioner)role;
@@ -465,6 +465,31 @@ namespace TownOfUs
                     exeTargets.Remove(exe.target);
 
                     Utils.Rpc(CustomRPC.SetTarget, role.Player.PlayerId, exe.target.PlayerId);
+                }
+            }
+
+            var impdef = Random.RandomRangeInt(0, 100);
+            bool canBeImp = CustomGameOptions.DefendantImpPercent > impdef;
+            var isValidDefendant = (PlayerControl x) =>
+            {
+                return ((x.Is(Faction.Crewmates) && !canBeImp)
+                    || ((x.Is(Faction.Impostors) || x.Is(Faction.NeutralKilling)) && canBeImp)
+                    || ((x.Is(Faction.NeutralEvil) || x.Is(Faction.NeutralBenign)) && CustomGameOptions.NeutralDefendant))
+                && !x.Is(ModifierEnum.Lover) && !x.Is(RoleEnum.Executioner)
+                && !x.Is(RoleEnum.Mayor) && !x.Is(RoleEnum.Swapper)
+                && x != SetTraitor.WillBeTraitor;
+            };
+
+            var lwyrTargets = PlayerControl.AllPlayerControls.ToArray().Where(x => isValidDefendant(x)).ToList();
+            foreach (var role in Role.GetRoles(RoleEnum.Lawyer))
+            {
+                var lwyr = (Lawyer)role;
+                if (lwyrTargets.Count > 0)
+                {
+                    lwyr.target = lwyrTargets[Random.RandomRangeInt(0, exeTargets.Count)];
+                    lwyrTargets.Remove(lwyr.target);
+
+                    Utils.Rpc(CustomRPC.SetTarget, role.Player.PlayerId, lwyr.target.PlayerId);
                 }
             }
 
@@ -1374,6 +1399,9 @@ namespace TownOfUs
 
                     if (CustomGameOptions.SurvivorOn > 0)
                         NeutralBenignRoles.Add((typeof(Survivor), CustomGameOptions.SurvivorOn, false));
+
+                    if (CustomGameOptions.LawyerOn > 0)
+                        NeutralBenignRoles.Add((typeof(Lawyer), CustomGameOptions.LawyerOn, false));
 
                     if (CustomGameOptions.GuardianAngelOn > 0)
                         NeutralBenignRoles.Add((typeof(GuardianAngel), CustomGameOptions.GuardianAngelOn, false));

@@ -219,6 +219,20 @@ namespace TownOfUs.Patches
                 }
             }
 
+            if (PlayerControl.LocalPlayer.Is(RoleEnum.Lawyer))
+            {
+                var lwyr = Role.GetRole<Executioner>(PlayerControl.LocalPlayer);
+                if (lwyr.target == null)
+                {
+                    var writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId,
+                        (byte)CustomRPC.LawyerToJester, SendOption.Reliable, -1);
+                    writer.Write(lwyr.Player.PlayerId);
+                    AmongUsClient.Instance.FinishRpcImmediately(writer);
+
+                    NeutralRoles.LawyerMod.TargetColor.LwyrToJes(lwyr.Player);
+                }
+            }
+
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Glitch))
             {
                 var glitch = Role.GetRole< Glitch> (PlayerControl.LocalPlayer);
