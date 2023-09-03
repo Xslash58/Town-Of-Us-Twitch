@@ -2,6 +2,8 @@ using HarmonyLib;
 using System.Linq;
 using TownOfUs.Roles;
 using TownOfUs.Modifiers.AssassinMod;
+using UnityEngine;
+using Reactor.Utilities.Extensions;
 
 namespace TownOfUs.NeutralRoles.LawyerMod
 {
@@ -16,10 +18,15 @@ namespace TownOfUs.NeutralRoles.LawyerMod
 
             foreach (var role in Role.GetRoles(RoleEnum.Lawyer))
             {
-                if (player.PlayerId == ((Lawyer)role).target.PlayerId && CustomGameOptions.LawyerDies)
+                var lwyrRole = ((Lawyer)role);
+                if (player.PlayerId == lwyrRole.target.PlayerId && CustomGameOptions.LawyerDies)
                 {
-                    Utils.RpcMurderPlayer(role.Player, role.Player);
-                    role.IncorrectAssassinKills -= 1;
+                    lwyrRole.TargetVotedOut = true;
+                    if (!lwyrRole.Player.Data.IsDead)
+                    {
+                        AssassinKill.RpcMurderPlayer(role.Player, role.Player);
+                        role.IncorrectAssassinKills -= 1;
+                    }
                 }
             }
         }

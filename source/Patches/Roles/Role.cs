@@ -296,7 +296,7 @@ namespace TownOfUs.Roles
                 var lwyr = (Lawyer)role;
                 if (Player == lwyr.target && PlayerControl.LocalPlayer.Data.IsDead && !lwyr.Player.Data.IsDead)
                 {
-                    PlayerName += "<color=#FFE5CCFF> X</color>";
+                    PlayerName += "<color=#D2B48CFF> X</color>";
                 }
             }
 
@@ -391,6 +391,8 @@ namespace TownOfUs.Roles
 
         public static T GenRole<T>(Type type, List<PlayerControl> players)
         {
+            Debug.Log(string.Join(", ", players));
+            Debug.Log(type.Name);
             var player = players[Random.RandomRangeInt(0, players.Count)];
 
             var role = GenRole<T>(type, player);

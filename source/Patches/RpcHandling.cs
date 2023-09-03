@@ -468,12 +468,17 @@ namespace TownOfUs
                 }
             }
 
-            var impdef = Random.RandomRangeInt(0, 100);
-            bool canBeImp = CustomGameOptions.DefendantImpPercent > impdef;
-            var isValidDefendant = (PlayerControl x) =>
+            var isValidCrewDefendant = (PlayerControl x) =>
             {
-                return ((x.Is(Faction.Crewmates) && !canBeImp)
-                    || ((x.Is(Faction.Impostors) || x.Is(Faction.NeutralKilling)) && canBeImp)
+                return (x.Is(Faction.Crewmates)
+                    || ((x.Is(Faction.NeutralEvil) || x.Is(Faction.NeutralBenign)) && CustomGameOptions.NeutralDefendant))
+                && !x.Is(ModifierEnum.Lover) && !x.Is(RoleEnum.Executioner)
+                && !x.Is(RoleEnum.Mayor) && !x.Is(RoleEnum.Swapper)
+                && x != SetTraitor.WillBeTraitor;
+            };
+            var isValidEvilDefendant = (PlayerControl x) =>
+            {
+                return (x.Is(Faction.Impostors) || x.Is(Faction.NeutralKilling)
                     || ((x.Is(Faction.NeutralEvil) || x.Is(Faction.NeutralBenign)) && CustomGameOptions.NeutralDefendant))
                 && !x.Is(ModifierEnum.Lover) && !x.Is(RoleEnum.Executioner)
                 && !x.Is(RoleEnum.Mayor) && !x.Is(RoleEnum.Swapper)
@@ -484,12 +489,15 @@ namespace TownOfUs
             foreach (var role in Role.GetRoles(RoleEnum.Lawyer))
             {
                 var lwyr = (Lawyer)role;
+                var impdef = Random.RandomRangeInt(0, 100);
+                bool canBeImp = CustomGameOptions.DefendantImpPercent > impdef;
+                var lwyrTargets = PlayerControl.AllPlayerControls.ToArray().Where(x => canBeImp ? isValidEvilDefendant(x) : isValidCrewDefendant(x)).ToList();
                 if (lwyrTargets.Count > 0)
                 {
                     lwyr.target = lwyrTargets[Random.RandomRangeInt(0, exeTargets.Count)];
                     lwyrTargets.Remove(lwyr.target);
 
-                    Utils.Rpc(CustomRPC.SetTarget, role.Player.PlayerId, lwyr.target.PlayerId);
+                    Utils.Rpc(CustomRPC.SetDefendant, role.Player.PlayerId, lwyr.target.PlayerId);
                 }
             }
 
@@ -925,6 +933,12 @@ namespace TownOfUs
                         var exeRole = Role.GetRole<Executioner>(exe);
                         exeRole.target = exeTarget;
                         break;
+                    case CustomRPC.SetDefendant:
+                        var lwyr = Utils.PlayerById(reader.ReadByte());
+                        var lwyrTarget = Utils.PlayerById(reader.ReadByte());
+                        var lwyrRole = Role.GetRole<Lawyer>(lwyr);
+                        lwyrRole.target = lwyrTarget;
+                        break;
                     case CustomRPC.SetGATarget:
                         var ga = Utils.PlayerById(reader.ReadByte());
                         var gaTarget = Utils.PlayerById(reader.ReadByte());
@@ -954,6 +968,9 @@ namespace TownOfUs
                         break;
                     case CustomRPC.ExecutionerToJester:
                         TargetColor.ExeToJes(Utils.PlayerById(reader.ReadByte()));
+                        break;
+                    case CustomRPC.LawyerToJester:
+                        NeutralRoles.LawyerMod.TargetColor.LwyrToJes(Utils.PlayerById(reader.ReadByte()));
                         break;
                     case CustomRPC.GAToSurv:
                         GATargetColor.GAToSurv(Utils.PlayerById(reader.ReadByte()));

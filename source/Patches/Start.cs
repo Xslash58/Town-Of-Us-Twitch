@@ -221,7 +221,7 @@ namespace TownOfUs.Patches
 
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Lawyer))
             {
-                var lwyr = Role.GetRole<Executioner>(PlayerControl.LocalPlayer);
+                var lwyr = Role.GetRole<Lawyer>(PlayerControl.LocalPlayer);
                 if (lwyr.target == null)
                 {
                     var writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId,

@@ -1086,9 +1086,9 @@ namespace TownOfUs.CustomOption
             Lawyer =
                 new CustomHeaderOption(num++, MultiMenu.neutral, "<color=#D2B48CFF>Lawyer</color>");
             LawyerDies = new CustomToggleOption(num++, MultiMenu.neutral, "Lawyer Dies With Defendant");
-            DefendantImpPercent = new CustomNumberOption(num++, MultiMenu.neutral, "Impostor Defendant Probability", 20f, 0f, 100f, 10f,
+            DefendantImpPercent = new CustomNumberOption(num++, MultiMenu.neutral, "Killer Defendant Probability", 20f, 0f, 100f, 10f,
                 PercentFormat);
-            NeutralDefendant = new CustomToggleOption(num++, MultiMenu.neutral, "Neutral Roles Can Be Defendants", false);
+            NeutralDefendant = new CustomToggleOption(num++, MultiMenu.neutral, "Neutral Evil Roles Can Be Defendants", false);
             LawyerCanTalkDefendant = new CustomToggleOption(num++, MultiMenu.neutral, "Lawyer And Defendant Can Talk", false);
             OnDefendantDead = new CustomStringOption(num++, MultiMenu.neutral, "Lawyer Becomes On Defendant Dead",
                 new[] { "Crew", "Amnesiac", "Survivor", "Jester" });

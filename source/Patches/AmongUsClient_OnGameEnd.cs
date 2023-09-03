@@ -293,7 +293,7 @@ namespace TownOfUs
             foreach (var role in Role.GetRoles(RoleEnum.Lawyer))
             {
                 var lwyr = (Lawyer)role;
-                if (!lwyr.TargetVotedOut)
+                if (!lwyr.TargetVotedOut && !lwyr.Player.Data.IsDead)
                 {
                     var isImp = TempData.winners[0].IsImpostor;
                     var lwyrWinData = new WinningPlayerData(lwyr.Player.Data);

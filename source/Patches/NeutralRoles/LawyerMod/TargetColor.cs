@@ -21,7 +21,7 @@ namespace TownOfUs.NeutralRoles.LawyerMod
         {
             foreach (var player in __instance.playerStates)
                 if (player.TargetPlayerId == role.target.PlayerId)
-                    player.NameText.color = Color.blue;
+                    player.NameText.color = new Color(0.93f, 0.7f, 0.55f, 1f);
         }
 
         private static void Postfix(HudManager __instance)
@@ -36,7 +36,7 @@ namespace TownOfUs.NeutralRoles.LawyerMod
 
             if (MeetingHud.Instance != null) UpdateMeeting(MeetingHud.Instance, role);
 
-            role.target.nameText().color = Color.cyan;
+            role.target.nameText().color = new Color(0.93f, 0.7f, 0.55f, 1f);
 
             if (!role.target.Data.IsDead && !role.target.Data.Disconnected && !role.target.Is(RoleEnum.Vampire)) return;
             if (role.TargetVotedOut) return;

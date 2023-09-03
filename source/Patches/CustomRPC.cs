@@ -7,6 +7,7 @@ namespace TownOfUs
         SetCouple,
         SetAssassin,
         SetTarget,
+        SetDefendant,
         SetGATarget,
 
         SetPhantom,
