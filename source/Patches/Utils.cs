@@ -91,7 +91,12 @@ namespace TownOfUs
             return player.Is(ModifierEnum.Lover);
         }
 
-        public static bool IsDefendant(this PlayerControl player, PlayerControl source)
+        public static bool IsOtherLover(this PlayerControl player, PlayerControl source)
+        {
+            return player.Is(ModifierEnum.Lover) && Modifier.GetModifier<Lover>(source).OtherLover.Player.PlayerId == player.PlayerId;
+        }
+
+        public static bool IsLegalCounsel(this PlayerControl player, PlayerControl source)
         {
             if (!CustomGameOptions.LawyerCanTalkDefendant) return false;
             bool defendant = source.Is(RoleEnum.Lawyer) && Role.GetRole<Lawyer>(source).target.PlayerId == player.PlayerId;
