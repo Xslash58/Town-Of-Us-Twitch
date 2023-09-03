@@ -472,7 +472,7 @@ namespace TownOfUs
             {
                 return (x.Is(Faction.Crewmates)
                     || ((x.Is(Faction.NeutralEvil) || x.Is(Faction.NeutralBenign)) && CustomGameOptions.NeutralDefendant))
-                && !x.Is(ModifierEnum.Lover) && !x.Is(RoleEnum.Lawyer)
+                && !x.Is(ModifierEnum.Lover) && !x.HasLegalCounsel()
                 && !x.Is(RoleEnum.Mayor) && !x.Is(RoleEnum.Swapper)
                 && x != SetTraitor.WillBeTraitor;
             };
@@ -480,7 +480,7 @@ namespace TownOfUs
             {
                 return (x.Is(Faction.Impostors) || x.Is(Faction.NeutralKilling)
                     || ((x.Is(Faction.NeutralEvil) || x.Is(Faction.NeutralBenign)) && CustomGameOptions.NeutralDefendant))
-                && !x.Is(ModifierEnum.Lover) && !x.Is(RoleEnum.Lawyer)
+                && !x.Is(ModifierEnum.Lover) && !x.HasLegalCounsel()
                 && !x.Is(RoleEnum.Mayor) && !x.Is(RoleEnum.Swapper)
                 && x != SetTraitor.WillBeTraitor;
             };
@@ -491,11 +491,10 @@ namespace TownOfUs
                 var impdef = Random.RandomRangeInt(0, 100);
                 bool canBeImp = CustomGameOptions.DefendantImpPercent > impdef;
                 var lwyrTargets = PlayerControl.AllPlayerControls.ToArray().Where(x => canBeImp ? isValidEvilDefendant(x) : isValidCrewDefendant(x)).ToList();
+                lwyrTargets.Shuffle();
                 if (lwyrTargets.Count > 0)
                 {
-                    lwyr.target = lwyrTargets[Random.RandomRangeInt(0, lwyrTargets.Count)];
-                    lwyrTargets.Remove(lwyr.target);
-
+                    lwyr.target = lwyrTargets.FirstOrDefault();
                     Utils.Rpc(CustomRPC.SetDefendant, role.Player.PlayerId, lwyr.target.PlayerId);
                 }
             }
