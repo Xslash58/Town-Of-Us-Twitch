@@ -109,7 +109,7 @@ namespace TownOfUs
             if (!CustomGameOptions.LawyerCanTalkDefendant) return false;
             bool defendant = false;
             foreach (var role in Role.GetRoles(RoleEnum.Lawyer))
-                if (((Lawyer)role).target.PlayerId == player.PlayerId)
+                if (((Lawyer)role).target != null && ((Lawyer)role).target.PlayerId == player.PlayerId)
                     defendant = true;
             return player.Is(RoleEnum.Lawyer) || defendant;
         }
