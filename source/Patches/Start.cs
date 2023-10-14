@@ -3,6 +3,7 @@ using HarmonyLib;
 using Hazel;
 using TownOfUs.NeutralRoles.ExecutionerMod;
 using TownOfUs.NeutralRoles.GuardianAngelMod;
+using TownOfUs.NeutralRoles.LawyerMod;
 using TownOfUs.Roles;
 using TownOfUs.Roles.Cultist;
 using TownOfUs.Roles.Modifiers;
@@ -229,7 +230,7 @@ namespace TownOfUs.Patches
                     writer.Write(lwyr.Player.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
 
-                    NeutralRoles.LawyerMod.TargetColor.LwyrToJes(lwyr.Player);
+                    LawyerTargetColor.LwyrToJes(lwyr.Player);
                 }
             }
 

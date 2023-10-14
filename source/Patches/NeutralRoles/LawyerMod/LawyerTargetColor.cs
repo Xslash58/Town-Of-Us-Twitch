@@ -15,7 +15,7 @@ namespace TownOfUs.NeutralRoles.LawyerMod
     }
 
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
-    public class TargetColor
+    public class LawyerTargetColor
     {
         private static void UpdateMeeting(MeetingHud __instance, Lawyer role)
         {
