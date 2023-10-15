@@ -93,7 +93,7 @@ namespace TownOfUs
 
         public static bool IsOtherLover(this PlayerControl player, PlayerControl source)
         {
-            return player.Is(ModifierEnum.Lover) && Modifier.GetModifier<Lover>(source).OtherLover.Player.PlayerId == player.PlayerId;
+            return player.Is(ModifierEnum.Lover) && Modifier.GetModifier<Lover>(player).OtherLover.Player.PlayerId == source.PlayerId;
         }
 
         public static bool IsLegalCounsel(this PlayerControl player, PlayerControl source)
