@@ -296,7 +296,7 @@ namespace TownOfUs.Roles
                 var lwyr = (Lawyer)role;
                 if (Player == lwyr.target && PlayerControl.LocalPlayer.Data.IsDead && !lwyr.Player.Data.IsDead)
                 {
-                    PlayerName += "<color=#D2B48CFF> X</color>";
+                    PlayerName += "<color=#D2B48CFF> @</color>";
                 }
             }
 
