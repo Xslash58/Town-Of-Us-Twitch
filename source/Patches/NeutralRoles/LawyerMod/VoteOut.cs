@@ -24,7 +24,7 @@ namespace TownOfUs.NeutralRoles.LawyerMod
                     lwyrRole.TargetVotedOut = true;
                     if (!lwyrRole.Player.Data.IsDead)
                     {
-                        AssassinKill.RpcMurderPlayer(role.Player, role.Player);
+                        AssassinKill.MurderPlayer(role.Player, role.Player);
                         role.IncorrectAssassinKills -= 1;
                     }
                 }
