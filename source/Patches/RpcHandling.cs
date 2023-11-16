@@ -473,7 +473,7 @@ namespace TownOfUs
             {
                 return (x.Is(Faction.Crewmates)
                     || ((x.Is(Faction.NeutralEvil) || x.Is(Faction.NeutralBenign)) && CustomGameOptions.NeutralDefendant))
-                && !x.Is(ModifierEnum.Lover) && !x.HasLegalCounsel()
+                && !x.Is(ModifierEnum.Lover) && !x.Is(RoleEnum.Lawyer) && !x.HasLegalCounsel()
                 && !x.Is(RoleEnum.Mayor) && !x.Is(RoleEnum.Swapper)
                 && x != SetTraitor.WillBeTraitor;
             };
@@ -481,7 +481,7 @@ namespace TownOfUs
             {
                 return (x.Is(Faction.Impostors) || x.Is(Faction.NeutralKilling)
                     || ((x.Is(Faction.NeutralEvil) || x.Is(Faction.NeutralBenign)) && CustomGameOptions.NeutralDefendant))
-                && !x.Is(ModifierEnum.Lover) && !x.HasLegalCounsel()
+                && !x.Is(ModifierEnum.Lover) && !x.Is(RoleEnum.Lawyer) && !x.HasLegalCounsel()
                 && !x.Is(RoleEnum.Mayor) && !x.Is(RoleEnum.Swapper)
                 && x != SetTraitor.WillBeTraitor;
             };
