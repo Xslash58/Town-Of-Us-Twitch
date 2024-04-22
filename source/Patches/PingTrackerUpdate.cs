@@ -25,6 +25,7 @@ namespace TownOfUs
                 (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started
                     ? "<color=#00FF00FF>Formerly: Slushiegoose & Polus.gg</color>\n" +
                      $"Host: {host.PlayerName}" : "") +
+                (!MeetingHud.Instance ? "\n<color=#A970FF>Twitch Fork: Xslash58</color>" : "") +
                     "</size>";
         }
     }
