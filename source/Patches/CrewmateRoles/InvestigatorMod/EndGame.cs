@@ -8,8 +8,6 @@ namespace TownOfUs.CrewmateRoles.InvestigatorMod
         public static void Reset()
         {
             foreach (var role in Role.GetRoles(RoleEnum.Investigator)) ((Investigator) role).AllPrints.Clear();
-            
-            UnityEngine.Camera.main.transform.rotation = UnityEngine.Quaternion.Euler(0, 0, 0); //Camera reset
         }
 
         [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.ExitGame))]
