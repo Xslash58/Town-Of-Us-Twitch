@@ -8,7 +8,7 @@ namespace TownOfUs.Roles.Modifiers
         public UpsideDown(PlayerControl player) : base(player)
         {
             Name = "Upside-down";
-            TaskText = () => "⅄on ɐɹǝ ndsᴉpǝ poʍu";
+            TaskText = () => "umop episdn era noY";
             Color = Patches.Colors.Mini;
             ModifierType = ModifierEnum.UpsideDown;
         }
