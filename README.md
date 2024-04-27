@@ -1359,7 +1359,7 @@ If you have any bugs or any need to contact me, join the [Discord Server](https:
 [BryBry16](https://github.com/Brybry16/BetterPolus) - For the code used for Better Polus.\
 [Alexejhero](https://github.com/SubmergedAmongUs/Submerged) - For the Submerged map.\
 [Jsushi07](https://github.com/Jsushi07) - For mini modifier.\
-[ZIELONY_03](https://github.com/ZIELONY_03) - For your time in making these skins.
+[ZIELONY_03](https://github.com/ZIELONY_03) - For skins you made in this mod.
 
 [Essentials](https://github.com/DorCoMaNdO/Reactor-Essentials) - For created custom game options.\
 v1.0.3 uses [Essentials](https://github.com/DorCoMaNdO/Reactor-Essentials) directly.\
