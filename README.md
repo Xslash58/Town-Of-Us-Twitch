@@ -59,6 +59,7 @@ Join Town-Of-Us-R's [Discord](https://discord.gg/ugyc4EVUYZ) if you have any pro
   <ul> <li>Reverted to legacy hats system</li> </ul>
   <ul> <li>Redirected Updater to this fork</li> </ul>
   <ul> <li>PingTracker changes</li> </ul>
+  <ul> <li>Option to hide Host from PingTracker</li> </ul>
   </details>
 </details>
 
