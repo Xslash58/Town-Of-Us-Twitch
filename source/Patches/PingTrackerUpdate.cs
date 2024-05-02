@@ -26,7 +26,7 @@ namespace TownOfUs
                 (AmongUsClient.Instance?.GameState != InnerNet.InnerNetClient.GameStates.Started
                     ? "<color=#00FF00FF>Formerly: Slushiegoose & Polus.gg</color>" +
                      (CustomGameOptions.HideHost ? "" : $"\nHost: {host.PlayerName}") : "") +
-                    "</size>";
+                    "</size>gfds";
         }
     }
 }
