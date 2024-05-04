@@ -10,7 +10,7 @@ namespace TownOfUs.ImpostorRoles.DisorienterMod
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
     public class HudManagerUpdate
     {
-        public static Sprite Disorient => TownOfUs.BlackmailSprite;
+        public static Sprite Disorient => TownOfUs.DisorientSprite;
 
         public static void Postfix(HudManager __instance)
         {
