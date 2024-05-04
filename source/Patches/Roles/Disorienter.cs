@@ -1,6 +1,6 @@
-﻿using Il2CppSystem.Threading.Tasks;
-using System;
+﻿using System;
 using System.Timers;
+using TownOfUs.Extensions;
 using UnityEngine;
 
 namespace TownOfUs.Roles
@@ -54,6 +54,8 @@ namespace TownOfUs.Roles
             if (player == PlayerControl.LocalPlayer)
             {
                 Camera.main.transform.rotation = Quaternion.Euler(0, 0, 180);
+                foreach (var p in PlayerControl.AllPlayerControls) p.nameText().gameObject.SetActive(false);
+
                 _timer = new();
                 _timer.Elapsed += FinishDisorient;
                 _timer.Interval = CustomGameOptions.DisorientTime * 1000;
@@ -64,6 +66,7 @@ namespace TownOfUs.Roles
         void FinishDisorient(object sender, ElapsedEventArgs e)
         {
             Camera.main.transform.rotation = Quaternion.Euler(0, 0, 0);
+            foreach (var p in PlayerControl.AllPlayerControls) p.nameText().gameObject.SetActive(true);
             _timer.Stop();
         }
     }
