@@ -10,7 +10,7 @@ namespace TownOfUs.ImpostorRoles.BlackmailerMod
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
     public class HudManagerUpdate
     {
-        public static Sprite Blackmail => TownOfUs.BlackmailSprite;
+        public static Sprite Disorient => TownOfUs.BlackmailSprite;
 
         public static void Postfix(HudManager __instance)
         {
@@ -26,7 +26,7 @@ namespace TownOfUs.ImpostorRoles.BlackmailerMod
                 role.BlackmailButton.gameObject.SetActive(false);
             }
 
-            role.BlackmailButton.graphic.sprite = Blackmail;
+            role.BlackmailButton.graphic.sprite = Disorient;
             role.BlackmailButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
                     && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);

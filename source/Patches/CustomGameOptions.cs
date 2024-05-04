@@ -67,6 +67,7 @@ namespace TownOfUs
         public static int GuardianAngelOn => (int)Generate.GuardianAngelOn.Get();
         public static int MysticOn => (int)Generate.MysticOn.Get();
         public static int BlackmailerOn => (int)Generate.BlackmailerOn.Get();
+        public static int DisorienterOn => (int)Generate.DisorienterOn.Get();
         public static int PlaguebearerOn => (int)Generate.PlaguebearerOn.Get();
         public static int WerewolfOn => (int)Generate.WerewolfOn.Get();
         public static int DetectiveOn => (int)Generate.DetectiveOn.Get();
@@ -272,6 +273,8 @@ namespace TownOfUs
         public static float MysticArrowDuration => Generate.MysticArrowDuration.Get();
         public static float BlackmailCd => Generate.BlackmailCooldown.Get();
         public static bool BlackmailInvisible => Generate.BlackmailInvisible.Get();
+        public static float DisorientCd => Generate.DisorientCooldown.Get();
+        public static float DisorientTime => Generate.DisorientTime.Get();
         public static float GiantSlow => Generate.GiantSlow.Get();
         public static float MiniSpeed => Generate.MiniSpeed.Get();
         public static float FlashSpeed => Generate.FlashSpeed.Get();
