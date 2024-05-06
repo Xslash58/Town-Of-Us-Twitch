@@ -55,6 +55,10 @@ namespace TownOfUs.Roles
             {
                 Camera.main.transform.rotation = Quaternion.Euler(0, 0, 180);
                 foreach (var p in PlayerControl.AllPlayerControls) p.nameText().gameObject.SetActive(false);
+                HudManager.Instance?.MapButton.gameObject.SetActive(false);
+                HudManager.Instance?.KillButton.gameObject.SetActive(false);
+                HudManager.Instance?.AbilityButton.gameObject.SetActive(false);
+                HudManager.Instance?.ReportButton.gameObject.SetActive(false);
 
                 _timer = new();
                 _timer.Elapsed += FinishDisorient;
@@ -67,6 +71,10 @@ namespace TownOfUs.Roles
         {
             Camera.main.transform.rotation = Quaternion.Euler(0, 0, 0);
             foreach (var p in PlayerControl.AllPlayerControls) p.nameText().gameObject.SetActive(true);
+            HudManager.Instance?.MapButton.gameObject.SetActive(true);
+            HudManager.Instance?.KillButton.gameObject.SetActive(true);
+            HudManager.Instance?.AbilityButton.gameObject.SetActive(true);
+            HudManager.Instance?.ReportButton.gameObject.SetActive(true);
             _timer.Stop();
         }
     }
