@@ -1324,7 +1324,7 @@ namespace TownOfUs.CustomOption
 
             Disorienter = new CustomHeaderOption(num++, MultiMenu.imposter, "<color=#FF0000FF>Disorienter</color>");
             DisorientCooldown =
-                new CustomNumberOption(num++, MultiMenu.imposter, "Initial Disorienter Cooldown", 10f, 1f, 15f, 1f, CooldownFormat);
+                new CustomNumberOption(num++, MultiMenu.imposter, "Initial Disorient Cooldown", 10f, 1f, 15f, 1f, CooldownFormat);
             DisorientTime =
                 new CustomNumberOption(num++, MultiMenu.imposter, "Time Of Disorient", 30f, 10f, 60f, 1f, CooldownFormat);
 
