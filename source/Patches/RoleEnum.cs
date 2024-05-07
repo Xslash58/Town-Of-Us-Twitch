@@ -80,6 +80,7 @@ namespace TownOfUs
         Giant,
         Mini,
         UpsideDown,
+        TomFoolery,
         ButtonBarry,
         Bait,
         Freeze,

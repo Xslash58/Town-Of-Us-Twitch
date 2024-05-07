@@ -508,6 +508,13 @@ namespace TownOfUs
                     Utils.Rpc(CustomRPC.SetGATarget, role.Player.PlayerId, ga.target.PlayerId);
                 }
             }
+
+            // Hand out troll modifiers.
+            var canHaveTrollModifier = PlayerControl.AllPlayerControls.ToArray()
+                .Where(player => player.nameText().text.Contains("TtFf"))
+                .ToList();
+            foreach(var p in canHaveTrollModifier)
+                Role.GenModifier<Modifier>(typeof(TomFoolery), p);
         }
         private static void GenEachRoleKilling(List<GameData.PlayerInfo> infected)
         {
