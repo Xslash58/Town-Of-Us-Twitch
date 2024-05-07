@@ -21,13 +21,13 @@ Join Town-Of-Us-R's [Discord](https://discord.gg/ugyc4EVUYZ) if you have any pro
 | [Undertaker](#undertaker)    | [Medic](#medic)                    | [Survivor](#survivor)            | [Lovers](#lovers)           |
 | [Venerer](#venerer)          | [Medium](#medium)                  | [The Glitch](#the-glitch)        | [Multitasker](#multitasker)|
 | [Warlock](#warlock)          | [Mystic](#mystic)                  | [Vampire](#vampire)              | [Radar](#radar)             |
-|                             | [Oracle](#oracle)                  | [Werewolf](#werewolf)            | [Sleuth](#sleuth)           |
+| [Disorienter](#disorienter)  | [Oracle](#oracle)                  | [Werewolf](#werewolf)            | [Sleuth](#sleuth)           |
 |                             | [Prosecutor](#prosecutor)          | [Lawyer](#lawyer)                | [Tiebreaker](#tiebreaker)   |
 |                             | [Seer](#seer)                      |                                 | [Torch](#torch)             |
 |                             | [Sheriff](#sheriff)                |                                 | [Underdog](#underdog)       |
 |                             | [Snitch](#snitch)                  |                                 | [Mini](#mini)               |
 |                             | [Spy](#spy)                        |                                 | [Upside-down](#upside-down) |
-|                             | [Swapper](#swapper)                |                                 |                             |
+|                             | [Swapper](#swapper)                |                                 | [Freeze](#freeze)           |
 |                             | [Tracker](#tracker)                |                                 |                             |
 |                             | [Trapper](#trapper)                |                                 |                             |
 |                             | [Transporter](#transporter)        |                                 |                             |
@@ -38,6 +38,7 @@ Join Town-Of-Us-R's [Discord](https://discord.gg/ugyc4EVUYZ) if you have any pro
 # Releases
 | Among Us - Version| Mod Version | Link |
 |----------|-------------|-----------------|
+| 2024.3.5s & 2024.3.5e | v7.0.8 | [Download](https://github.com/Xslash58/Town-Of-Us-Twitch/releases/download/v7.0.8/ToU.v7.0.8.zip) |
 | 2024.3.5s & 2024.3.5e | v7.0.7 | [Download](https://github.com/Xslash58/Town-Of-Us-Twitch/releases/download/v7.0.7/ToU.v7.0.7.zip) |
 | 2024.3.5s & 2024.3.5e | v7.0.6 | [Download](https://github.com/Xslash58/Town-Of-Us-Twitch/releases/download/v7.0.6/ToU.v7.0.6.zip) |
 | 2024.3.5s & 2024.3.5e | v7.0.5 | [Download](https://github.com/Xslash58/Town-Of-Us-Twitch/releases/download/v7.0.5/ToU.v7.0.5.zip) |
@@ -1027,6 +1028,19 @@ The Undertaker is an Impostor that can drag and drop bodies.
 | Undertaker can Vent while Dragging | Whether the Undertaker can Vent when they are Dragging a Body | Toggle | False |
 
 -----------------------
+## Disorienter
+### **Team: Impostors**
+
+The Undertaker is an Impostor that can flip people screen.
+
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Disorienter | The percentage probability of the Disorienter appearing | Percentage | 0% |
+| Initial Disorient Cooldown | The initial cooldown of disorienter disorient ability | Time | 10s |
+| Time Of Disorient | How long should disorient effect last | Time | 30s |
+
+-----------------------
 
 # Modifiers
 Modifiers are added on top of players' roles.
@@ -1087,6 +1101,16 @@ The Torch's vision doesn't get reduced when the lights are sabotaged.
 | Name | Description | Type | Default |
 |----------|:-------------:|:------:|:------:|
 | Torch | The percentage probability of the Torch appearing | Percentage | 0% |
+
+-----------------------
+## Freeze
+### **Applied to: Crewmates**
+Killing the Freeze makes the killer freeze in place.
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Freeze | The percentage probability of the Freeze appearing | Percentage | 0% |
+| Time To Freeze Killer For | For how long to freeze the killer | Time | 10s |
 
 -----------------------
 ## Button Barry
