@@ -1404,10 +1404,24 @@ namespace TownOfUs
                     blackmailer.Blackmailed?.myRend().material.SetFloat("_Outline", 0f);
                 }
             }
+            if (PlayerControl.LocalPlayer.Is(RoleEnum.Disorienter))
+            {
+                var disorienter = Role.GetRole<Disorienter>(PlayerControl.LocalPlayer);
+                disorienter.LastDisoriented = DateTime.UtcNow;
+                if (disorienter.Player.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+                {
+                    disorienter.Disoriented?.myRend().material.SetFloat("_Outline", 0f);
+                }
+            }
             foreach (var role in Role.GetRoles(RoleEnum.Blackmailer))
             {
                 var blackmailer = (Blackmailer)role;
                 blackmailer.Blackmailed = null;
+            }
+            foreach (var role in Role.GetRoles(RoleEnum.Disorienter))
+            {
+                var disorienter = (Disorienter)role;
+                disorienter.Disoriented = null;
             }
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Bomber))
             {

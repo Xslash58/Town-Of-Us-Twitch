@@ -70,6 +70,7 @@ namespace TownOfUs.CustomOption
 
         public static CustomHeaderOption ImpostorSupportRoles;
         public static CustomNumberOption BlackmailerOn;
+        public static CustomNumberOption DisorienterOn;
         public static CustomNumberOption JanitorOn;
         public static CustomNumberOption MinerOn;
         public static CustomNumberOption UndertakerOn;
@@ -418,6 +419,10 @@ namespace TownOfUs.CustomOption
         public static CustomNumberOption BlackmailCooldown;
         public static CustomToggleOption BlackmailInvisible;
 
+        public static CustomHeaderOption Disorienter;
+        public static CustomNumberOption DisorientCooldown;
+        public static CustomNumberOption DisorientTime;
+
         public static CustomHeaderOption Plaguebearer;
         public static CustomNumberOption InfectCooldown;
         public static CustomNumberOption PestKillCooldown;
@@ -652,6 +657,8 @@ namespace TownOfUs.CustomOption
 
             ImpostorSupportRoles = new CustomHeaderOption(num++, MultiMenu.imposter, "Impostor Support Roles");
             BlackmailerOn = new CustomNumberOption(num++, MultiMenu.imposter, "<color=#FF0000FF>Blackmailer</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
+            DisorienterOn = new CustomNumberOption(num++, MultiMenu.imposter, "<color=#FF0000FF>Disorienter</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
             JanitorOn = new CustomNumberOption(num++, MultiMenu.imposter, "<color=#FF0000FF>Janitor</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
@@ -1320,6 +1327,12 @@ namespace TownOfUs.CustomOption
                 new CustomNumberOption(num++, MultiMenu.imposter, "Initial Blackmail Cooldown", 10f, 1f, 15f, 1f, CooldownFormat);
             BlackmailInvisible =
                 new CustomToggleOption(num++, MultiMenu.imposter, "Only Target Sees Blackmail", false);
+
+            Disorienter = new CustomHeaderOption(num++, MultiMenu.imposter, "<color=#FF0000FF>Disorienter</color>");
+            DisorientCooldown =
+                new CustomNumberOption(num++, MultiMenu.imposter, "Initial Disorient Cooldown", 10f, 1f, 15f, 1f, CooldownFormat);
+            DisorientTime =
+                new CustomNumberOption(num++, MultiMenu.imposter, "Time Of Disorient", 30f, 10f, 60f, 1f, CooldownFormat);
 
             Miner = new CustomHeaderOption(num++, MultiMenu.imposter, "<color=#FF0000FF>Miner</color>");
             MineCooldown =

@@ -931,6 +931,10 @@ namespace TownOfUs
                         var blackmailer = Role.GetRole<Blackmailer>(Utils.PlayerById(reader.ReadByte()));
                         blackmailer.Blackmailed = Utils.PlayerById(reader.ReadByte());
                         break;
+                    case CustomRPC.Disorient:
+                        var disorienter = Role.GetRole<Disorienter>(Utils.PlayerById(reader.ReadByte()));
+                        disorienter.Disorient(Utils.PlayerById(reader.ReadByte()));
+                        break;
                     case CustomRPC.SnitchCultistReveal:
                         var snitch = Role.GetRole<CultistSnitch>(Utils.PlayerById(reader.ReadByte()));
                         snitch.CompletedTasks = true;
@@ -1454,6 +1458,9 @@ namespace TownOfUs
 
                     if (CustomGameOptions.BlackmailerOn > 0)
                         ImpostorRoles.Add((typeof(Blackmailer), CustomGameOptions.BlackmailerOn, true));
+
+                    if (CustomGameOptions.DisorienterOn > 0)
+                        ImpostorRoles.Add((typeof(Disorienter), CustomGameOptions.DisorienterOn, true));
 
                     if (CustomGameOptions.MinerOn > 0)
                         ImpostorRoles.Add((typeof(Miner), CustomGameOptions.MinerOn, true));

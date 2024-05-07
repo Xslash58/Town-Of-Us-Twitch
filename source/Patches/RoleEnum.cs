@@ -55,6 +55,7 @@ namespace TownOfUs
         Bomber,
         Warlock,
         Venerer,
+        Disorienter,
 
         Crewmate,
         Impostor,

@@ -147,6 +147,13 @@ namespace TownOfUs.Patches
                 blackmailer.LastBlackmailed = blackmailer.LastBlackmailed.AddSeconds(CustomGameOptions.InitialCooldowns - CustomGameOptions.BlackmailCd);
             }
 
+            if (PlayerControl.LocalPlayer.Is(RoleEnum.Disorienter))
+            {
+                var disorienter = Role.GetRole<Disorienter>(PlayerControl.LocalPlayer);
+                disorienter.LastDisoriented = DateTime.UtcNow;
+                disorienter.LastDisoriented = disorienter.LastDisoriented.AddSeconds(CustomGameOptions.InitialCooldowns - CustomGameOptions.DisorientCd);
+            }
+
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Escapist))
             {
                 var escapist = Role.GetRole<Escapist>(PlayerControl.LocalPlayer);

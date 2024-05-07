@@ -73,6 +73,7 @@ namespace TownOfUs
         public static Sprite BlackmailSprite;
         public static Sprite BlackmailLetterSprite;
         public static Sprite BlackmailOverlaySprite;
+        public static Sprite DisorientSprite;
         public static Sprite LighterSprite;
         public static Sprite DarkerSprite;
         public static Sprite InfectSprite;
@@ -170,6 +171,7 @@ namespace TownOfUs
             VestSprite = CreateSprite("TownOfUs.Resources.Vest.png");
             ProtectSprite = CreateSprite("TownOfUs.Resources.Protect.png");
             BlackmailSprite = CreateSprite("TownOfUs.Resources.Blackmail.png");
+            DisorientSprite = CreateSprite("TownOfUs.Resources.Disorient.png");
             BlackmailLetterSprite = CreateSprite("TownOfUs.Resources.BlackmailLetter.png");
             BlackmailOverlaySprite = CreateSprite("TownOfUs.Resources.BlackmailOverlay.png");
             LighterSprite = CreateSprite("TownOfUs.Resources.Lighter.png");
