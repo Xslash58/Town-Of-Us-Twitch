@@ -694,6 +694,11 @@ namespace TownOfUs
                     BaitReport(killer, target);
                 }
 
+                if (target.Is(ModifierEnum.Freeze))
+                {
+                    FreezeKiller(killer, target);
+                }
+
                 if (target.Is(ModifierEnum.Aftermath))
                 {
                     Aftermath.ForceAbility(killer, target);
@@ -827,6 +832,19 @@ namespace TownOfUs
                     }
                 }
             }
+        }
+
+        public static void FreezeKiller(PlayerControl killer, PlayerControl target)
+        {
+            Coroutines.Start(FreezeKillerDelay(killer, target));
+        }
+
+        public static IEnumerator FreezeKillerDelay(PlayerControl killer, PlayerControl target)
+        {
+            var oldSpeed = killer.MyPhysics.Speed;
+            killer.MyPhysics.Speed = 0;
+            yield return new WaitForSeconds(CustomGameOptions.FreezeTime);
+            killer.MyPhysics.Speed = oldSpeed;
         }
 
         public static void Convert(PlayerControl player)

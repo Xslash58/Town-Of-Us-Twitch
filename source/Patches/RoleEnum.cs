@@ -81,6 +81,7 @@ namespace TownOfUs
         UpsideDown,
         ButtonBarry,
         Bait,
+        Freeze,
         Sleuth,
         Aftermath,
         Radar,

@@ -90,6 +90,7 @@ namespace TownOfUs
         public static int UpsideDownOn => (int)Generate.UpsideDownOn.Get();
         public static int ButtonBarryOn => (int)Generate.ButtonBarryOn.Get();
         public static int BaitOn => (int)Generate.BaitOn.Get();
+        public static int FreezeOn => (int)Generate.FreezeOn.Get();
         public static int LoversOn => (int)Generate.LoversOn.Get();
         public static int SleuthOn => (int)Generate.SleuthOn.Get();
         public static int AftermathOn => (int)Generate.AftermathOn.Get();
@@ -278,6 +279,7 @@ namespace TownOfUs
         public static float DiseasedMultiplier => Generate.DiseasedKillMultiplier.Get();
         public static float BaitMinDelay => Generate.BaitMinDelay.Get();
         public static float BaitMaxDelay => Generate.BaitMaxDelay.Get();
+        public static float FreezeTime => Generate.FreezeTime.Get();
         public static float InfectCd => Generate.InfectCooldown.Get();
         public static float PestKillCd => Generate.PestKillCooldown.Get();
         public static bool PestVent => Generate.PestVent.Get();

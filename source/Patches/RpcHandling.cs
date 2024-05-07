@@ -1489,6 +1489,9 @@ namespace TownOfUs
                     if (Check(CustomGameOptions.BaitOn))
                         CrewmateModifiers.Add((typeof(Bait), CustomGameOptions.BaitOn));
 
+                    if (Check(CustomGameOptions.FreezeOn))
+                        CrewmateModifiers.Add((typeof(Freeze), CustomGameOptions.FreezeOn));
+
                     if (Check(CustomGameOptions.AftermathOn))
                         CrewmateModifiers.Add((typeof(Aftermath), CustomGameOptions.AftermathOn));
 
