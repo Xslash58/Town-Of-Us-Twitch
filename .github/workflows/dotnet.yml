@@ -26,3 +26,8 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4.3.3
+      with:
+        name: TownOfUs.dll
+        path: /home/runner/work/Town-Of-Us-Twitch/Town-Of-Us-Twitch/source/bin/Debug/net6.0/TownOfUs.dll
