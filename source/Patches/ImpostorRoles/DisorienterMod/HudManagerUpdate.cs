@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Linq;
 using TownOfUs.Extensions;
 using AmongUs.GameOptions;
+using TownOfUs.CrewmateRoles.TimeLordMod;
 
 namespace TownOfUs.ImpostorRoles.DisorienterMod
 {
@@ -25,6 +26,10 @@ namespace TownOfUs.ImpostorRoles.DisorienterMod
                 role.DisorientButton.graphic.enabled = true;
                 role.DisorientButton.gameObject.SetActive(false);
             }
+
+            //TimeLordPatch
+            if(RecordRewind.rewinding)
+                role.FinishDisorient();
 
             role.DisorientButton.graphic.sprite = Disorient;
             role.DisorientButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)

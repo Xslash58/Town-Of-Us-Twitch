@@ -3,6 +3,7 @@ using System;
 using TownOfUs.ImpostorRoles.BomberMod;
 using TownOfUs.CrewmateRoles.MedicMod;
 using TownOfUs.Patches;
+using TownOfUs.CrewmateRoles.TimeLordMod;
 
 namespace TownOfUs.Roles
 {
@@ -59,6 +60,13 @@ namespace TownOfUs.Roles
                 var bomber = GetRole<Bomber>(PlayerControl.LocalPlayer);
                 bomber.Bomb.ClearBomb();
                 DetonateKillStart();
+            }
+            //TimeLord patch
+            if (RecordRewind.rewinding)
+            {
+                var bomber = GetRole<Bomber>(PlayerControl.LocalPlayer);
+                bomber.Bomb.ClearBomb();
+                Detonated = true;
             }
         }
         public void DetonateKillStart()
