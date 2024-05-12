@@ -63,7 +63,7 @@ namespace TownOfUs.Roles
             }
         }
 
-        void FinishDisorient(object sender, ElapsedEventArgs e)
+        public void FinishDisorient(object sender = null, ElapsedEventArgs e = null)
         {
             Camera.main.transform.rotation = Quaternion.Euler(0, 0, 0);
             foreach (var p in PlayerControl.AllPlayerControls) p.nameText().gameObject.SetActive(true);

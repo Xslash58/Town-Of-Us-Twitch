@@ -12,6 +12,7 @@ namespace TownOfUs
         Seer,
         Executioner,
         Lawyer,
+        TimeLord,
         Spy,
         Glitch,
         Snitch,

@@ -43,6 +43,7 @@ namespace TownOfUs
         public static Sprite SwapperSwitchDisabled;
         public static Sprite Footprint;
         public static Sprite NormalKill;
+        public static Sprite RewindSprite;
         public static Sprite MedicSprite;
         public static Sprite SeerSprite;
         public static Sprite SampleSprite;
@@ -143,6 +144,7 @@ namespace TownOfUs
             SwapperSwitchDisabled = CreateSprite("TownOfUs.Resources.SwapperSwitchDisabled.png");
             Footprint = CreateSprite("TownOfUs.Resources.Footprint.png");
             NormalKill = CreateSprite("TownOfUs.Resources.NormalKill.png");
+            RewindSprite = CreateSprite("TownOfUs.Resources.Rewind.png");
             MedicSprite = CreateSprite("TownOfUs.Resources.Medic.png");
             SeerSprite = CreateSprite("TownOfUs.Resources.Seer.png");
             SampleSprite = CreateSprite("TownOfUs.Resources.Sample.png");

@@ -34,6 +34,7 @@ Join Town-Of-Us-R's [Discord](https://discord.gg/ugyc4EVUYZ) if you have any pro
 |                             | [Vampire Hunter](#vampire-hunter)  |                                 |                             |
 |                             | [Veteran](#veteran)                |                                 |                             |
 |                             | [Vigilante](#vigilante)            |                                 |                             |
+|                             | [Time Lord](#time-lord)            |                                 |                             |
 -----------------------
 # Releases
 | Among Us - Version| Mod Version | Link |
@@ -589,6 +590,24 @@ All the votes for the first player will instead be counted towards the second pl
 |----------|:-------------:|:------:|:------:|
 | Swapper | The percentage probability of the Swapper appearing | Percentage | 0% |
 | Swapper Can Button | Whether the Swapper Can Press the Button | Toggle | True |
+
+-----------------------
+## Time Lord
+### **Team: Crewmates**
+The Time Lord is a Crewmate that can rewind time and reverse the positions of all players.\
+If enabled, any players killed during this time will be revived.\
+Nothing but movements and kills are affected.\
+If enabled, the Time Lord can't use Vitals to make things more balanced.
+
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Time Lord | The percentage probability of the Time Lord appearing | Percentage | 0% |
+| Revive During Rewind | Whether the Time Lord revives dead players when rewinding | Toggle | True |
+| Rewind Duration | How far the rewind goes back in time | Time | 2s |
+| Rewind Cooldown | The cooldown of the Time Lord's Rewind button | Time | 25s |
+| Max Uses | The amount of times the Rewind ability can be used | Number | 5 |
+| Time Lord can use Vitals | Whether the Time Lord has the ability to use Vitals | Toggle | False |
 
 -----------------------
 ## Transporter

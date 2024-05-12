@@ -37,6 +37,7 @@ using TownOfUs.CrewmateRoles.MayorMod;
 using System.Reflection;
 using TownOfUs.Patches.NeutralRoles;
 using TownOfUs.NeutralRoles.LawyerMod;
+using TownOfUs.CrewmateRoles.TimeLordMod;
 
 namespace TownOfUs
 {
@@ -833,6 +834,16 @@ namespace TownOfUs
                         var other = Utils.PlayerById(readByte2);
                         PerformKillButton.Remember(Role.GetRole<Amnesiac>(amnesiac), other);
                         break;
+                    case CustomRPC.Rewind:
+                        readByte = reader.ReadByte();
+                        var TimeLordPlayer = Utils.PlayerById(readByte);
+                        var TimeLordRole = Role.GetRole<TimeLord>(TimeLordPlayer);
+                        StartStop.StartRewind(TimeLordRole);
+                        break;
+                    case CustomRPC.RewindRevive:
+                        readByte = reader.ReadByte();
+                        RecordRewind.ReviveBody(Utils.PlayerById(readByte));
+                        break;
                     case CustomRPC.Protect:
                         readByte1 = reader.ReadByte();
                         readByte2 = reader.ReadByte();
@@ -1361,6 +1372,9 @@ namespace TownOfUs
 
                     if (CustomGameOptions.InvestigatorOn > 0)
                         CrewmateRoles.Add((typeof(Investigator), CustomGameOptions.InvestigatorOn, false));
+
+                    if (CustomGameOptions.TimeLordOn > 0)
+                        CrewmateRoles.Add((typeof(TimeLord), CustomGameOptions.TimeLordOn, true));
 
                     if (CustomGameOptions.MedicOn > 0)
                         CrewmateRoles.Add((typeof(Medic), CustomGameOptions.MedicOn, true));

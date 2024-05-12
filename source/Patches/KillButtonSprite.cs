@@ -30,6 +30,7 @@ namespace TownOfUs
         private static Sprite Transport => TownOfUs.TransportSprite;
         private static Sprite Mediate => TownOfUs.MediateSprite;
         private static Sprite Vest => TownOfUs.VestSprite;
+        private static Sprite Rewind => TownOfUs.RewindSprite;
         private static Sprite Protect => TownOfUs.ProtectSprite;
         private static Sprite Infect => TownOfUs.InfectSprite;
         private static Sprite Trap => TownOfUs.TrapSprite;
@@ -54,6 +55,11 @@ namespace TownOfUs
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Seer) || PlayerControl.LocalPlayer.Is(RoleEnum.CultistSeer))
             {
                 __instance.KillButton.graphic.sprite = Seer;
+                flag = true;
+            }
+            else if (PlayerControl.LocalPlayer.Is(RoleEnum.TimeLord))
+            {
+                __instance.KillButton.graphic.sprite = Rewind;
                 flag = true;
             }
             else if (PlayerControl.LocalPlayer.Is(RoleEnum.Medic))
