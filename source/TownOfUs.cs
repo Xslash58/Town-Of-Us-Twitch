@@ -20,6 +20,7 @@ using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TownOfUs.Patches.ScreenEffects;
+using TownOfUs.CrewmateRoles.DetectiveMod;
 using System.IO;
 
 namespace TownOfUs
@@ -102,6 +103,7 @@ namespace TownOfUs
         public static Sprite MimicSprite;
         public static Sprite LockSprite;
         public static Sprite StalkSprite;
+        public static Sprite CrimeSceneSprite;
 
         public static Sprite SettingsButtonSprite;
         public static Sprite CrewSettingsButtonSprite;
@@ -203,6 +205,7 @@ namespace TownOfUs
             MimicSprite = CreateSprite("TownOfUs.Resources.Mimic.png");
             LockSprite = CreateSprite("TownOfUs.Resources.Lock.png");
             StalkSprite = CreateSprite("TownOfUs.Resources.Stalk.png");
+            CrimeSceneSprite = CreateSprite("TownOfUs.Resources.CrimeScene.png");
 
             SettingsButtonSprite = CreateSprite("TownOfUs.Resources.SettingsButton.png");
             CrewSettingsButtonSprite = CreateSprite("TownOfUs.Resources.Crewmate.png");
@@ -217,6 +220,7 @@ namespace TownOfUs
             ZoomMinusButton = CreateSprite("TownOfUs.Resources.Minus.png");
 
             PalettePatch.Load();
+            ClassInjector.RegisterTypeInIl2Cpp<CrimeScene>();
             ClassInjector.RegisterTypeInIl2Cpp<RainbowBehaviour>();
 
             // RegisterInIl2CppAttribute.Register();

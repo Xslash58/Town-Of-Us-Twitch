@@ -200,19 +200,18 @@ However, as a consequence the Aurial cannot see who is who.
 -----------------------
 ## Detective
 ### **Team: Crewmates**
-The Detective is a Crewmate that can inspect bodies and then examine players.\
-The Detective must first find a body and inspect it.\
-During the same or following rounds the Detective can then examine players to see if they were the killer.\
-If the examined player is the killer they will receive a red flash, else the flash will be green.\
-If the killer of the inspected player dies, the following round the examine button will disable indicating to the Detective the killer is dead.
+The Detective is a Crewmate that can inspect crime scenes and then examine players.\
+The Detective must first find a crime scene and inspect it.\
+During the same or following rounds the Detective can then examine players to see if they were near it before he inspected it.\
+If the examined player were near the crime scene, they will receive a red flash, else the flash will be green.
 ### Game Options
 | Name | Description | Type | Default |
 |----------|:-------------:|:------:|:------:|
 | Detective | The percentage probability of the Detective appearing | Percentage | 0% |
 | Examine Cooldown | The cooldown of the Detective's Examine button | Time | 25s |
 | Show Detective Reports | Whether the Detective should get information when reporting a body | Toggle | True |
-| Time Where Detective Reports Will Have Role | If a body has been dead for shorter than this amount, the Detective's report will contain the killer's role | Time | 15s |
-| Time Where Detective Reports Will Have Faction | If a body has been dead for shorter than this amount, the Detective's report will contain the killer's faction | Time | 30s |
+| Time Where Detective Reports Will Have Role | If a crime scene is shorter than this amount, the Detective's report will contain the killer's role | Time | 15s |
+| Time Where Detective Reports Will Have Faction | If a crime scene is shorter than this amount, the Detective's report will contain the killer's faction | Time | 30s |
 | Can Detect Last Killer | Whether the Detective can also detect the last player who killed (resets on round start) | Toggle | False |
 
 -----------------------

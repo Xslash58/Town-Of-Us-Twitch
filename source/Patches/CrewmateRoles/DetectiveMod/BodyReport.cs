@@ -43,7 +43,7 @@ namespace TownOfUs.CrewmateRoles.DetectiveMod
                 return;
 
             if (DestroyableSingleton<HudManager>.Instance)
-                DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, reportMsg);
+                DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, reportMsg, censor: false);
         }
     }
 }
