@@ -38,7 +38,11 @@ namespace TownOfUs.CrewmateRoles.DetectiveMod
                         Coroutines.Start(Utils.FlashCoroutine(Color.red));
                         var deadPlayer = role.InvestigatingScene.DeadPlayer;
                         if (DestroyableSingleton<HudManager>.Instance)
-                            DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, $"{role.ClosestPlayer.GetDefaultOutfit().PlayerName} was at the scene of {deadPlayer.GetDefaultOutfit().PlayerName}'s death!");
+                        {
+                            string msg = CustomGameOptions.PolishTranslations ? $"{role.ClosestPlayer.GetDefaultOutfit().PlayerName} byl na miejscu zbrodni {deadPlayer.GetDefaultOutfit().PlayerName}!"
+                                : $"{role.ClosestPlayer.GetDefaultOutfit().PlayerName} was at the scene of {deadPlayer.GetDefaultOutfit().PlayerName}'s death!";
+                            DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, msg, censor:false);
+                        }
                     }
                     else Coroutines.Start(Utils.FlashCoroutine(Color.green));
                 }
