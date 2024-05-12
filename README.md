@@ -39,6 +39,7 @@ Join Town-Of-Us-R's [Discord](https://discord.gg/ugyc4EVUYZ) if you have any pro
 # Releases
 | Among Us - Version| Mod Version | Link |
 |----------|-------------|-----------------|
+| 2024.3.5s & 2024.3.5e | v7.0.9 | [Download](https://github.com/Xslash58/Town-Of-Us-Twitch/releases/download/v7.0.9/ToU.v7.0.9.zip) |
 | 2024.3.5s & 2024.3.5e | v7.0.8 | [Download](https://github.com/Xslash58/Town-Of-Us-Twitch/releases/download/v7.0.8/ToU.v7.0.8.zip) |
 | 2024.3.5s & 2024.3.5e | v7.0.7 | [Download](https://github.com/Xslash58/Town-Of-Us-Twitch/releases/download/v7.0.7/ToU.v7.0.7.zip) |
 | 2024.3.5s & 2024.3.5e | v7.0.6 | [Download](https://github.com/Xslash58/Town-Of-Us-Twitch/releases/download/v7.0.6/ToU.v7.0.6.zip) |
