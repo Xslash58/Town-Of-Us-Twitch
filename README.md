@@ -49,7 +49,35 @@ Join Town-Of-Us-R's [Discord](https://discord.gg/ugyc4EVUYZ) if you have any pro
 <details>
   <summary> Changelog </summary>
   <details>
+  <summary> v7.0.9 </summary>
+  <h3>Fork:</h3>
+  <ul> <li>New skins</li> </ul>
+  <ul> <li>New Role: Time Lord</li> </ul>
+  <ul> <li>Role Rework: Detective</li> </ul>
+  </details>
+  <details>
+  <summary> v7.0.8 </summary>
+  <h3>Fork:</h3>
+  <ul> <li>New Modifier: Freeze</li> </ul>
+  <ul> <li>New Role: Disorienter</li> </ul>
+  <ul> <li>New Modifier: TomFoolery</li> </ul>
+  <ul> <li>New skins</li> </ul>
+  </details>
+  <details>
+  <summary> v7.0.7 </summary>
+  <h3>Fork:</h3>
+  <ul> <li>Fixed Polish Oracle translations</li> </ul>
+  <ul> <li>New skins</li> </ul>
+  </details>
+  <details>
+  <summary> v7.0.6 </summary>
+  <h3>Fork:</h3>
+  <ul> <li>New Role: Lawyer</li> </ul>
+  <ul> <li>Polish translations for Oracle</li> </ul>
+  </details>
+  <details>
   <summary> v7.0.5 </summary>
+  <h3>Fork:</h3>
   <ul> <li>Fixed Updater</li> </ul>
   </details>
   <details>
