@@ -96,6 +96,7 @@ namespace TownOfUs.NeutralRoles.AmnesiacMod
                 case RoleEnum.Prosecutor:
                 case RoleEnum.Oracle:
                 case RoleEnum.Aurial:
+                case RoleEnum.TimeLord:
 
                     rememberImp = false;
                     rememberNeut = false;
