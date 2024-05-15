@@ -841,9 +841,17 @@ namespace TownOfUs
 
         public static IEnumerator FreezeKillerDelay(PlayerControl killer, PlayerControl target)
         {
+            var bodies = Object.FindObjectsOfType<DeadBody>();
             var oldSpeed = killer.MyPhysics.Speed;
+
+            if(!CustomGameOptions.FreezeReport) 
+                foreach (var body in bodies) body.myCollider.enabled = false;
             killer.MyPhysics.Speed = 0;
+            
             yield return new WaitForSeconds(CustomGameOptions.FreezeTime);
+            
+            if (!CustomGameOptions.FreezeReport)
+                foreach (var body in bodies) if(body && body.myCollider) body.myCollider.enabled = true;
             killer.MyPhysics.Speed = oldSpeed;
         }
 
