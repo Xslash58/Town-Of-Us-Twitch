@@ -12,6 +12,7 @@ using TownOfUs.Roles.Modifiers;
 using TownOfUs.ImpostorRoles.BomberMod;
 using TownOfUs.CrewmateRoles.AurialMod;
 using TownOfUs.Patches.ScreenEffects;
+using MonoMod.Cil;
 
 namespace TownOfUs.NeutralRoles.AmnesiacMod
 {
@@ -96,6 +97,7 @@ namespace TownOfUs.NeutralRoles.AmnesiacMod
                 case RoleEnum.Prosecutor:
                 case RoleEnum.Oracle:
                 case RoleEnum.Aurial:
+                case RoleEnum.TimeLord:
 
                     rememberImp = false;
                     rememberNeut = false;
@@ -346,6 +348,14 @@ namespace TownOfUs.NeutralRoles.AmnesiacMod
                 aurialRole.knownPlayerRoles.Clear();
                 if (amnesiac.AmOwner) aurialRole.ApplyEffect();
                 aurialRole.Loaded = true;
+            }
+
+            else if (role == RoleEnum.TimeLord)
+            {
+                var timeLordRole = Role.GetRole<TimeLord>(amnesiac);
+                timeLordRole.StartRewind = DateTime.UtcNow.AddSeconds(-10.0f);
+                timeLordRole.FinishRewind = DateTime.UtcNow;
+                timeLordRole.UsesLeft = CustomGameOptions.RewindMaxUses;
             }
 
             else if (role == RoleEnum.Arsonist)
