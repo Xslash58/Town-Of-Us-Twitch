@@ -39,6 +39,7 @@ Join Town-Of-Us-R's [Discord](https://discord.gg/ugyc4EVUYZ) if you have any pro
 # Releases
 | Among Us - Version| Mod Version | Link |
 |----------|-------------|-----------------|
+| 2024.3.5s & 2024.3.5e | v7.0.10 | [Download](https://github.com/Xslash58/Town-Of-Us-Twitch/releases/download/v7.0.10/ToU.v7.0.10.zip) |
 | 2024.3.5s & 2024.3.5e | v7.0.9 | [Download](https://github.com/Xslash58/Town-Of-Us-Twitch/releases/download/v7.0.9/ToU.v7.0.9.zip) |
 | 2024.3.5s & 2024.3.5e | v7.0.8 | [Download](https://github.com/Xslash58/Town-Of-Us-Twitch/releases/download/v7.0.8/ToU.v7.0.8.zip) |
 | 2024.3.5s & 2024.3.5e | v7.0.7 | [Download](https://github.com/Xslash58/Town-Of-Us-Twitch/releases/download/v7.0.7/ToU.v7.0.7.zip) |
@@ -48,6 +49,14 @@ Join Town-Of-Us-R's [Discord](https://discord.gg/ugyc4EVUYZ) if you have any pro
 
 <details>
   <summary> Changelog </summary>
+  <details>
+  <summary> v7.0.10 </summary>
+  <h3>Fork:</h3>
+  <ul> <li>Added option to allow Killer for report on Freeze</li> </ul>
+  <ul> <li>New skins</li> </ul>
+  <ul> <li>Fix: TimeLord & Amnesiac compatibility</li> </ul>
+  <ul> <li>Fix: Killer now can't report body on Freeze</li> </ul>
+  </details>
   <details>
   <summary> v7.0.9 </summary>
   <h3>Fork:</h3>
