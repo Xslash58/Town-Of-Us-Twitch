@@ -289,6 +289,7 @@ namespace TownOfUs
         public static float BaitMinDelay => Generate.BaitMinDelay.Get();
         public static float BaitMaxDelay => Generate.BaitMaxDelay.Get();
         public static float FreezeTime => Generate.FreezeTime.Get();
+        public static bool FreezeReport => Generate.FreezeReport.Get();
         public static float InfectCd => Generate.InfectCooldown.Get();
         public static float PestKillCd => Generate.PestKillCooldown.Get();
         public static bool PestVent => Generate.PestVent.Get();
