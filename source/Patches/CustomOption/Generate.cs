@@ -80,6 +80,7 @@ namespace TownOfUs.CustomOption
         public static CustomNumberOption AftermathOn;
         public static CustomNumberOption BaitOn;
         public static CustomNumberOption FreezeOn;
+        public static CustomNumberOption RadiativeOn;
         public static CustomNumberOption DiseasedOn;
         public static CustomNumberOption FrostyOn;
         public static CustomNumberOption MultitaskerOn;
@@ -532,6 +533,8 @@ namespace TownOfUs.CustomOption
         public static CustomNumberOption FreezeTime;
         public static CustomToggleOption FreezeReport;
 
+        public static CustomHeaderOption Radiative;
+        
         public static CustomHeaderOption Lovers;
         public static CustomToggleOption BothLoversDie;
         public static CustomNumberOption LovingImpPercent;
@@ -684,6 +687,8 @@ namespace TownOfUs.CustomOption
             BaitOn = new CustomNumberOption(num++, MultiMenu.modifiers, "<color=#00B3B3FF>Bait</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
             FreezeOn = new CustomNumberOption(num++, MultiMenu.modifiers, "<color=#00EDEB>Freeze</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
+            RadiativeOn = new CustomNumberOption(num++, MultiMenu.modifiers, "<color=#39FF14>Radiative</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
             DiseasedOn = new CustomNumberOption(num++, MultiMenu.modifiers, "<color=#808080FF>Diseased</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);

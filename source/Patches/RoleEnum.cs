@@ -81,6 +81,7 @@ namespace TownOfUs
         Giant,
         Mini,
         UpsideDown,
+        Radiative,
         TomFoolery,
         ButtonBarry,
         Bait,
