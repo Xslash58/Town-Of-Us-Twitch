@@ -285,13 +285,32 @@ namespace TownOfUs
             impRoles.Shuffle();
 
             // Hand out appropriate roles to crewmates and impostors.
-            foreach (var (type, _, unique) in crewRoles)
+
+            if (!CustomGameOptions.DuplicateRoles)
             {
-                Role.GenRole<Role>(type, crewmates);
+                foreach (var (type, _, unique) in crewRoles)
+                {
+                    Role.GenRole<Role>(type, crewmates);
+                }
+                foreach (var (type, _, unique) in impRoles)
+                {
+                    Role.GenRole<Role>(type, impostors);
+                }
             }
-            foreach (var (type, _, unique) in impRoles)
+            else
             {
-                Role.GenRole<Role>(type, impostors);
+                foreach (var crewmate in crewmates)
+                {
+                    int roleId = Random.Range(0, crewRoles.Count);
+                    (Type type, int _, bool unique) role = crewRoles[roleId];
+                    Role.GenRole<Role>(role.type, crewmate);
+                }
+                foreach (var impostor in impostors)
+                {
+                    int roleId = Random.Range(0, impRoles.Count);
+                    (Type type, int _, bool unique) role = impRoles[roleId];
+                    Role.GenRole<Role>(role.type, impostor);
+                }
             }
 
             // Assign vanilla roles to anyone who did not receive a role.
