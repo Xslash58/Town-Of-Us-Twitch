@@ -1501,6 +1501,9 @@ namespace TownOfUs
                     if (CustomGameOptions.BomberOn > 0)
                         ImpostorRoles.Add((typeof(Bomber), CustomGameOptions.BomberOn, true));
 
+                    if (CustomGameOptions.DetonatorOn > 0)
+                        ImpostorRoles.Add((typeof(Detonator), CustomGameOptions.DetonatorOn, true));
+
                     if (CustomGameOptions.WarlockOn > 0)
                         ImpostorRoles.Add((typeof(Warlock), CustomGameOptions.WarlockOn, false));
 
