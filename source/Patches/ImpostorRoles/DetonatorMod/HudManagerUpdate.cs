@@ -42,16 +42,16 @@ namespace TownOfUs.ImpostorRoles.DetonatorMod
             {
                 role.PlantButton.graphic.sprite = PlantSprite;
                 Utils.SetTarget(ref role.ClosestPlayer, role.PlantButton, GameOptionsData.KillDistances[GameOptionsManager.Instance.currentNormalGameOptions.KillDistance], notBombed);
+                role.PlantButton.SetCoolDown(role.PlantTimer(false), CustomGameOptions.DetonatorPlantCooldown);
             }
             else
             {
                 role.PlantButton.graphic.sprite = DetonateSprite;
                 role.PlantButton.SetTarget(null);
                 role.PlantButton.graphic.color = new(255, 255, 255, 1);
+                role.PlantButton.SetCoolDown(role.PlantTimer(true), CustomGameOptions.DetonatorDetonateCooldown);
             }
             
-
-            role.PlantButton.SetCoolDown(role.PlantTimer(), CustomGameOptions.BlackmailCd);
 
             if (role.BombPlayer != null && !role.BombPlayer.Data.IsDead && !role.BombPlayer.Data.Disconnected)
             {

@@ -20,7 +20,7 @@ namespace TownOfUs.ImpostorRoles.DetonatorMod
                 if (!__instance.isActiveAndEnabled || role.ClosestPlayer == null) return false;
                 if (__instance.isCoolingDown) return false;
                 if (!__instance.isActiveAndEnabled) return false;
-                if (role.PlantTimer() != 0) return false;
+                if (role.BombAttached ? role.PlantTimer(true) != 0 : role.PlantTimer(false) != 0) return false;
 
                 var interact = Utils.Interact(PlayerControl.LocalPlayer, target);
                 if (interact[4] == true)

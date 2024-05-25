@@ -1,5 +1,4 @@
 using System;
-using TownOfUs.Roles;
 
 namespace TownOfUs.CustomOption
 {
@@ -434,7 +433,10 @@ namespace TownOfUs.CustomOption
         public static CustomNumberOption DisorientTime;
 
         public static CustomHeaderOption Detonator;
-        public static CustomNumberOption DetonatorCooldown;
+        public static CustomNumberOption DetonatorPlantCooldown;
+        public static CustomNumberOption DetonatorDetonateCooldown;
+        public static CustomNumberOption DetonatorMaxKillsInDetonation;
+        public static CustomNumberOption DetonatorRadius;
 
         public static CustomHeaderOption Plaguebearer;
         public static CustomNumberOption InfectCooldown;
@@ -1339,9 +1341,15 @@ namespace TownOfUs.CustomOption
             BomberVent =
                 new CustomToggleOption(num++, MultiMenu.imposter, "Bomber Can Vent", false);
 
-            Detonator = new CustomHeaderOption(num++, MultiMenu.imposter, "<color=#FF0000FF>Disorienter</color>");
-            DetonatorCooldown =
-                new CustomNumberOption(num++, MultiMenu.imposter, "Initial Plant Cooldown", 10f, 1f, 15f, 1f, CooldownFormat);
+            Detonator = new CustomHeaderOption(num++, MultiMenu.imposter, "<color=#FF0000FF>Detonator</color>");
+            DetonatorPlantCooldown =
+                new CustomNumberOption(num++, MultiMenu.imposter, "Plant Cooldown", 10f, 1f, 15f, 1f, CooldownFormat);
+            DetonatorDetonateCooldown =
+                new CustomNumberOption(num++, MultiMenu.imposter, "Detonate Cooldown", 10f, 1f, 15f, 1f, CooldownFormat);
+            DetonatorMaxKillsInDetonation =
+                new CustomNumberOption(num++, MultiMenu.imposter, "Max Kills In Detonation", 5, 1, 15, 1);
+            DetonatorRadius =
+                new CustomNumberOption(num++, MultiMenu.imposter, "Detonate Radius", 0.25f, 0.05f, 1f, 0.05f, MultiplierFormat);
 
             Traitor = new CustomHeaderOption(num++, MultiMenu.imposter, "<color=#FF0000FF>Traitor</color>");
             LatestSpawn = new CustomNumberOption(num++, MultiMenu.imposter, "Minimum People Alive When Traitor Can Spawn", 5, 3, 15, 1);

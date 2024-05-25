@@ -23,7 +23,7 @@ namespace TownOfUs.Roles
         {
             Name = "Detonator";
             ImpostorText = () => "Attach Bombs To Kill Multiple Crewmates At Once";
-            TaskText = () => "Attach bombs to crewmates";
+            TaskText = () => "Detonate crewmates";
             Color = Palette.ImpostorRed;
             LastPlanted = DateTime.UtcNow;
             StartingCooldown = DateTime.UtcNow;
@@ -51,11 +51,12 @@ namespace TownOfUs.Roles
                 ExtraButtons.Add(value);
             }
         }
-        public float PlantTimer()
+        public float PlantTimer(bool detonate)
         {
             var utcNow = DateTime.UtcNow;
             var timeSpan = utcNow - LastPlanted;
-            var num = CustomGameOptions.DisorientCd * 1000f;
+            var num = !detonate ? CustomGameOptions.DetonatorPlantCooldown * 1000f
+                : CustomGameOptions.DetonatorDetonateCooldown * 1000f;
             var flag2 = num - (float)timeSpan.TotalMilliseconds < 0f;
             if (flag2) return 0;
             return (num - (float)timeSpan.TotalMilliseconds) / 1000f;
@@ -63,9 +64,14 @@ namespace TownOfUs.Roles
 
         public void Detonate(PlayerControl playerToDetonate)
         {
-            var playersToDie = Utils.GetClosestPlayers(playerToDetonate.transform.position, CustomGameOptions.DetonateRadius, false);
+            var playersToDie = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+            
+            if (CustomGameOptions.DetonatorMaxKillsInDetonation == 1) playersToDie.Add(playerToDetonate);
+            else playersToDie = Utils.GetClosestPlayers(playerToDetonate.transform.position, CustomGameOptions.DetonatorRadius, false);
+
             playersToDie = Shuffle(playersToDie);
-            while (playersToDie.Count > CustomGameOptions.MaxKillsInDetonation) playersToDie.Remove(playersToDie[playersToDie.Count - 1]);
+            
+            while (playersToDie.Count > CustomGameOptions.DetonatorMaxKillsInDetonation) playersToDie.Remove(playersToDie[playersToDie.Count - 1]);
             foreach (var player in playersToDie)
             {
                 if (!player.Is(RoleEnum.Pestilence) && !player.IsShielded() && !player.IsProtected() && player != ShowRoundOneShield.FirstRoundShielded)
