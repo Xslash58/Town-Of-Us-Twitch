@@ -494,7 +494,7 @@ namespace TownOfUs.Roles
                         if (modifier.GetType() == typeof(Lover))
                             __instance.__4__this.RoleText.text = $"<size=50%>{modifier.TaskText()}</size>";
                         else
-                            __instance.__4__this.RoleText.text = $"<size=50%>You are also {modifier.Name}</size>";
+                            __instance.__4__this.RoleText.text = $"<size=30%>You are also {modifier.Name}</size>";
                         __instance.__4__this.RoleText.color = modifier.Color;
                     }
                 }
@@ -546,7 +546,7 @@ namespace TownOfUs.Roles
                         if (modifier.GetType() == typeof(Lover))
                             __instance.__4__this.RoleText.text = $"<size=50%>{modifier.TaskText()}</size>";
                         else
-                            __instance.__4__this.RoleText.text = $"<size=50%>You are also {modifier.Name}</size>";
+                            __instance.__4__this.RoleText.text = $"<size=30%>You are also {modifier.Name}</size>";
                         __instance.__4__this.RoleText.color = modifier.Color;
                     }
 
@@ -601,7 +601,7 @@ namespace TownOfUs.Roles
                         if (modifier.GetType() == typeof(Lover))
                             __instance.__4__this.RoleText.text = $"<size=50%>{modifier.TaskText()}</size>";
                         else
-                            __instance.__4__this.RoleText.text = $"<size=50%>You are also {modifier.Name}</size>";
+                            __instance.__4__this.RoleText.text = $"<size=30%>You are also {modifier.Name}</size>";
                         __instance.__4__this.RoleText.color = modifier.Color;
                     }
 
