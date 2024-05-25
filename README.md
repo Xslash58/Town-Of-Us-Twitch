@@ -22,7 +22,7 @@ Join Town-Of-Us-R's [Discord](https://discord.gg/ugyc4EVUYZ) if you have any pro
 | [Venerer](#venerer)          | [Medium](#medium)                  | [The Glitch](#the-glitch)        | [Multitasker](#multitasker)|
 | [Warlock](#warlock)          | [Mystic](#mystic)                  | [Vampire](#vampire)              | [Radar](#radar)             |
 | [Disorienter](#disorienter)  | [Oracle](#oracle)                  | [Werewolf](#werewolf)            | [Sleuth](#sleuth)           |
-|                             | [Prosecutor](#prosecutor)          | [Lawyer](#lawyer)                | [Tiebreaker](#tiebreaker)   |
+| [Detonator](#detonator)      | [Prosecutor](#prosecutor)          | [Lawyer](#lawyer)                | [Tiebreaker](#tiebreaker)   |
 |                             | [Seer](#seer)                      |                                 | [Torch](#torch)             |
 |                             | [Sheriff](#sheriff)                |                                 | [Underdog](#underdog)       |
 |                             | [Snitch](#snitch)                  |                                 | [Mini](#mini)               |
@@ -1095,6 +1095,23 @@ The Undertaker is an Impostor that can flip people screen.
 | Disorienter | The percentage probability of the Disorienter appearing | Percentage | 0% |
 | Initial Disorient Cooldown | The initial cooldown of disorienter disorient ability | Time | 10s |
 | Time Of Disorient | How long should disorient effect last | Time | 30s |
+
+-----------------------
+## Detonator
+### **Team: Impostors**
+
+The Detonator is an Impostor who has the ability to plant bombs on players instead of the ground to kill in any time.\
+After a bomb is planted, the bomb will detonate once Detonator clicks the button.\
+Once the bomb detonates it will kill all crewmates (and Impostors!) inside the radius (including the player who the bomb was planted on).
+
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Detonator | The percentage probability of the Detonator appearing | Percentage | 0% |
+| Plant Cooldown | Cooldown of plant | Time | 30s |
+| Detonate Cooldown | After this time Detonator can detonate the bomb | Time | 10s |
+| Max Kills In Detonation | Maximum number of kills in the detonation (including planted player) | Number | 5 |
+| Detonate Radius | How wide the detonate radius is | Multiplier | 0.25x |
 
 -----------------------
 

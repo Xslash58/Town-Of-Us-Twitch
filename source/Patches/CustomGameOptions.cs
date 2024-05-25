@@ -69,6 +69,7 @@ namespace TownOfUs
         public static int MysticOn => (int)Generate.MysticOn.Get();
         public static int BlackmailerOn => (int)Generate.BlackmailerOn.Get();
         public static int DisorienterOn => (int)Generate.DisorienterOn.Get();
+        public static int DetonatorOn => (int)Generate.DetonatorOn.Get();
         public static int PlaguebearerOn => (int)Generate.PlaguebearerOn.Get();
         public static int WerewolfOn => (int)Generate.WerewolfOn.Get();
         public static int DetectiveOn => (int)Generate.DetectiveOn.Get();
@@ -317,6 +318,10 @@ namespace TownOfUs
         public static int MaxKillsInDetonation => (int) Generate.MaxKillsInDetonation.Get();
         public static float DetonateRadius => Generate.DetonateRadius.Get();
         public static bool BomberVent => Generate.BomberVent.Get();
+        public static float DetonatorPlantCooldown => Generate.DetonatorPlantCooldown.Get();
+        public static float DetonatorDetonateCooldown => Generate.DetonatorDetonateCooldown.Get();
+        public static int DetonatorMaxKillsInDetonation => (int)Generate.DetonatorMaxKillsInDetonation.Get();
+        public static float DetonatorRadius => Generate.DetonatorRadius.Get();
         public static float ObserveCooldown => Generate.ObserveCooldown.Get();
         public static bool DoomsayerGuessNeutralBenign => Generate.DoomsayerGuessNeutralBenign.Get();
         public static bool DoomsayerGuessNeutralEvil => Generate.DoomsayerGuessNeutralEvil.Get();

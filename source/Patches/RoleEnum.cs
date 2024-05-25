@@ -54,6 +54,7 @@ namespace TownOfUs
         Blackmailer,
         Escapist,
         Bomber,
+        Detonator,
         Warlock,
         Venerer,
         Disorienter,
