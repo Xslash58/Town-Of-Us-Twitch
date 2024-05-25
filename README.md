@@ -28,7 +28,7 @@ Join Town-Of-Us-R's [Discord](https://discord.gg/ugyc4EVUYZ) if you have any pro
 |                             | [Snitch](#snitch)                  |                                 | [Mini](#mini)               |
 |                             | [Spy](#spy)                        |                                 | [Upside-down](#upside-down) |
 |                             | [Swapper](#swapper)                |                                 | [Freeze](#freeze)           |
-|                             | [Tracker](#tracker)                |                                 |                             |
+|                             | [Tracker](#tracker)                |                                 | [Radiative](#radiative)     |
 |                             | [Trapper](#trapper)                |                                 |                             |
 |                             | [Transporter](#transporter)        |                                 |                             |
 |                             | [Vampire Hunter](#vampire-hunter)  |                                 |                             |
@@ -1167,6 +1167,18 @@ Killing the Freeze makes the killer freeze in place.
 |----------|:-------------:|:------:|:------:|
 | Freeze | The percentage probability of the Freeze appearing | Percentage | 0% |
 | Time To Freeze Killer For | For how long to freeze the killer | Time | 10s |
+
+-----------------------
+## Radiative
+### **Applied to: Crewmates**
+Radiative player has a radiation sphere around him. If other players stay too long in this radius, they get killed.
+Since this modifier is applied to crewmates, radiated player should avoid other players.
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Radiative | The percentage probability of the Radiative appearing | Percentage | 0% |
+| Cooldown Between Radiation Kill | How often should script check for players in radius | Time | 10s |
+| Radiation Radius | Radius of the radiation around player | Multiplier | 0.2x |
 
 -----------------------
 ## Button Barry

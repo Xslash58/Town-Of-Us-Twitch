@@ -80,6 +80,7 @@ namespace TownOfUs.CustomOption
         public static CustomNumberOption AftermathOn;
         public static CustomNumberOption BaitOn;
         public static CustomNumberOption FreezeOn;
+        public static CustomNumberOption RadiativeOn;
         public static CustomNumberOption DiseasedOn;
         public static CustomNumberOption FrostyOn;
         public static CustomNumberOption MultitaskerOn;
@@ -532,6 +533,10 @@ namespace TownOfUs.CustomOption
         public static CustomNumberOption FreezeTime;
         public static CustomToggleOption FreezeReport;
 
+        public static CustomHeaderOption Radiative;
+        public static CustomNumberOption RadiativeCooldown;
+        public static CustomNumberOption RadiativeRadius;
+
         public static CustomHeaderOption Lovers;
         public static CustomToggleOption BothLoversDie;
         public static CustomNumberOption LovingImpPercent;
@@ -684,6 +689,8 @@ namespace TownOfUs.CustomOption
             BaitOn = new CustomNumberOption(num++, MultiMenu.modifiers, "<color=#00B3B3FF>Bait</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
             FreezeOn = new CustomNumberOption(num++, MultiMenu.modifiers, "<color=#00EDEB>Freeze</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
+            RadiativeOn = new CustomNumberOption(num++, MultiMenu.modifiers, "<color=#39FF14>Radiative</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
             DiseasedOn = new CustomNumberOption(num++, MultiMenu.modifiers, "<color=#808080FF>Diseased</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
@@ -1376,6 +1383,10 @@ namespace TownOfUs.CustomOption
             FreezeTime = new CustomNumberOption(num++, MultiMenu.modifiers, "Time To Freeze Killer For", 10f, 1f, 30f, 1f, CooldownFormat);
             FreezeReport =
                 new CustomToggleOption(num++, MultiMenu.modifiers, "Can Killer Report On Freeze", false);
+
+            Radiative = new CustomHeaderOption(num++, MultiMenu.modifiers, "<color=#39FF14>Radiative</color>");
+            RadiativeCooldown = new CustomNumberOption(num++, MultiMenu.modifiers, "Cooldown Between Radiation Kill", 10f, 1f, 30f, 1f, CooldownFormat);
+            RadiativeRadius = new CustomNumberOption(num++, MultiMenu.modifiers, "Radiation Radius", 0.2f, 0.05f, 1f, 0.05f, MultiplierFormat);
 
             Diseased = new CustomHeaderOption(num++, MultiMenu.modifiers, "<color=#808080FF>Diseased</color>");
             DiseasedKillMultiplier = new CustomNumberOption(num++, MultiMenu.modifiers, "Diseased Kill Multiplier", 3f, 1.5f, 5f, 0.5f, MultiplierFormat);

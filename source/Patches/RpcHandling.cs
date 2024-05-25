@@ -1520,6 +1520,9 @@ namespace TownOfUs
                     if (Check(CustomGameOptions.FreezeOn))
                         CrewmateModifiers.Add((typeof(Freeze), CustomGameOptions.FreezeOn));
 
+                    if(Check(CustomGameOptions.RadiativeOn))
+                        CrewmateModifiers.Add((typeof(Radiative), CustomGameOptions.RadiativeOn));
+
                     if (Check(CustomGameOptions.AftermathOn))
                         CrewmateModifiers.Add((typeof(Aftermath), CustomGameOptions.AftermathOn));
 
