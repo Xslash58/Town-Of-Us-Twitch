@@ -1,11 +1,9 @@
 ﻿using Reactor.Utilities;
 using System.Collections;
-using TownOfUs.CrewmateRoles.DetectiveMod;
 using TownOfUs.CrewmateRoles.MedicMod;
 using TownOfUs.Extensions;
 using TownOfUs.Patches;
 using UnityEngine;
-using static Epic.OnlineServices.Helper;
 
 namespace TownOfUs.Roles.Modifiers
 {
@@ -17,7 +15,7 @@ namespace TownOfUs.Roles.Modifiers
         public Radiative(PlayerControl player) : base(player)
         {
             Name = "Radiative";
-            TaskText = () => "You are radioactive... radioactive catJAM";
+            TaskText = () => "You are radioactive";
             Color = Patches.Colors.Radiative;
             ModifierType = ModifierEnum.Radiative;
         }
@@ -37,15 +35,12 @@ namespace TownOfUs.Roles.Modifiers
                 radiationVisual.layer = LayerMask.NameToLayer("Players");
 
                 radiationVisual.transform.localScale = new Vector3(
-                    0.2f * ShipStatus.Instance.MaxLightRadius * 2f,
-                    0.2f * ShipStatus.Instance.MaxLightRadius * 2f,
-                    0.2f * ShipStatus.Instance.MaxLightRadius * 2f);
+                    CustomGameOptions.RadiativeRadius * ShipStatus.Instance.MaxLightRadius * 2f,
+                    CustomGameOptions.RadiativeRadius * ShipStatus.Instance.MaxLightRadius * 2f,
+                    CustomGameOptions.RadiativeRadius * ShipStatus.Instance.MaxLightRadius * 2f);
 
                 radiationVisual.GetComponent<MeshRenderer>().material = Roles.Bomber.bombMaterial;
                 radiationVisual.GetComponent<MeshRenderer>().material.color = Color.green;
-
-                //SpriteRenderer render = radiationVisual.AddComponent<SpriteRenderer>();
-                //render.sprite = TownOfUs.bo;
             }
 
             radiationVisual.transform.position = new Vector3(Player.transform.position.x,
@@ -55,19 +50,25 @@ namespace TownOfUs.Roles.Modifiers
             if (!isTimerSet && Player == PlayerControl.LocalPlayer)
             {
                 isTimerSet = true;
-                Coroutines.Start(RadiateNearby());
+                Coroutines.Start(DelayRadiate());
             }
 
             return true;
         }
 
+        IEnumerator DelayRadiate()
+        {
+            yield return new WaitForSeconds(7);
+            Coroutines.Start(RadiateNearby());
+        }
+
         IEnumerator RadiateNearby()
         {
-            yield return new WaitForSeconds(10);
+            yield return new WaitForSeconds(CustomGameOptions.RadiateCooldown);
 
             if (Player != null)
             {
-                var playersToDie = Utils.GetClosestPlayers(Player.transform.position, 0.2f, false);
+                var playersToDie = Utils.GetClosestPlayers(Player.transform.position, CustomGameOptions.RadiativeRadius, false);
 
                 foreach (var player in playersToDie)
                 {

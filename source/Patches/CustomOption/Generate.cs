@@ -534,7 +534,9 @@ namespace TownOfUs.CustomOption
         public static CustomToggleOption FreezeReport;
 
         public static CustomHeaderOption Radiative;
-        
+        public static CustomNumberOption RadiativeCooldown;
+        public static CustomNumberOption RadiativeRadius;
+
         public static CustomHeaderOption Lovers;
         public static CustomToggleOption BothLoversDie;
         public static CustomNumberOption LovingImpPercent;
@@ -1381,6 +1383,10 @@ namespace TownOfUs.CustomOption
             FreezeTime = new CustomNumberOption(num++, MultiMenu.modifiers, "Time To Freeze Killer For", 10f, 1f, 30f, 1f, CooldownFormat);
             FreezeReport =
                 new CustomToggleOption(num++, MultiMenu.modifiers, "Can Killer Report On Freeze", false);
+
+            Radiative = new CustomHeaderOption(num++, MultiMenu.modifiers, "<color=#39FF14>Radiative</color>");
+            RadiativeCooldown = new CustomNumberOption(num++, MultiMenu.modifiers, "Cooldown Between Radiation Kill", 10f, 1f, 30f, 1f, CooldownFormat);
+            RadiativeRadius = new CustomNumberOption(num++, MultiMenu.modifiers, "Radiation Radius", 0.2f, 0.05f, 1f, 0.05f, MultiplierFormat);
 
             Diseased = new CustomHeaderOption(num++, MultiMenu.modifiers, "<color=#808080FF>Diseased</color>");
             DiseasedKillMultiplier = new CustomNumberOption(num++, MultiMenu.modifiers, "Diseased Kill Multiplier", 3f, 1.5f, 5f, 0.5f, MultiplierFormat);
