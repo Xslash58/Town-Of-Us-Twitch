@@ -27,10 +27,6 @@ namespace TownOfUs.ImpostorRoles.DisorienterMod
                 role.DisorientButton.gameObject.SetActive(false);
             }
 
-            //TimeLordPatch
-            if(RecordRewind.rewinding)
-                role.FinishDisorient();
-
             role.DisorientButton.graphic.sprite = Disorient;
             role.DisorientButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
                     && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
