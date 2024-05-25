@@ -39,6 +39,7 @@ Join Town-Of-Us-R's [Discord](https://discord.gg/ugyc4EVUYZ) if you have any pro
 # Releases
 | Among Us - Version| Mod Version | Link |
 |----------|-------------|-----------------|
+| 2024.3.5s & 2024.3.5e | v7.1.0 | [Download](https://github.com/Xslash58/Town-Of-Us-Twitch/releases/download/v7.1.0/ToU.v7.1.0.zip) |
 | 2024.3.5s & 2024.3.5e | v7.0.10 | [Download](https://github.com/Xslash58/Town-Of-Us-Twitch/releases/download/v7.0.10/ToU.v7.0.10.zip) |
 | 2024.3.5s & 2024.3.5e | v7.0.9 | [Download](https://github.com/Xslash58/Town-Of-Us-Twitch/releases/download/v7.0.9/ToU.v7.0.9.zip) |
 | 2024.3.5s & 2024.3.5e | v7.0.8 | [Download](https://github.com/Xslash58/Town-Of-Us-Twitch/releases/download/v7.0.8/ToU.v7.0.8.zip) |
@@ -49,6 +50,16 @@ Join Town-Of-Us-R's [Discord](https://discord.gg/ugyc4EVUYZ) if you have any pro
 
 <details>
   <summary> Changelog </summary>
+  <details>
+  <summary> v7.1.0 </summary>
+  <h3>Fork:</h3>
+  <ul> <li>New Role: Detonator</li> </ul>
+  <ul> <li>New Modifier: Radiative</li> </ul>
+  <ul> <li>New Start Animation</li> </ul>
+  <ul> <li>Option to hide nicknames</li> </ul>
+  <ul> <li>Fix: Mini now has larger range for tasks</li> </ul>
+  <ul> <li>Fix: Disorienter now won't crash on Time Lord rewind</li> </ul>
+  </details>
   <details>
   <summary> v7.0.10 </summary>
   <h3>Fork:</h3>
