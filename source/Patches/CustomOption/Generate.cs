@@ -1343,9 +1343,9 @@ namespace TownOfUs.CustomOption
 
             Detonator = new CustomHeaderOption(num++, MultiMenu.imposter, "<color=#FF0000FF>Detonator</color>");
             DetonatorPlantCooldown =
-                new CustomNumberOption(num++, MultiMenu.imposter, "Plant Cooldown", 10f, 1f, 15f, 1f, CooldownFormat);
+                new CustomNumberOption(num++, MultiMenu.imposter, "Plant Cooldown", 30f, 1f, 120f, 1f, CooldownFormat);
             DetonatorDetonateCooldown =
-                new CustomNumberOption(num++, MultiMenu.imposter, "Detonate Cooldown", 10f, 1f, 15f, 1f, CooldownFormat);
+                new CustomNumberOption(num++, MultiMenu.imposter, "Detonate Cooldown", 10f, 1f, 120f, 1f, CooldownFormat);
             DetonatorMaxKillsInDetonation =
                 new CustomNumberOption(num++, MultiMenu.imposter, "Max Kills In Detonation", 5, 1, 15, 1);
             DetonatorRadius =
