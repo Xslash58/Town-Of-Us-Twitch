@@ -39,7 +39,7 @@ namespace TownOfUs.Roles.Modifiers
                     CustomGameOptions.RadiativeRadius * ShipStatus.Instance.MaxLightRadius * 2f,
                     CustomGameOptions.RadiativeRadius * ShipStatus.Instance.MaxLightRadius * 2f);
 
-                radiationVisual.GetComponent<MeshRenderer>().material = Roles.Bomber.bombMaterial;
+                radiationVisual.GetComponent<MeshRenderer>().material = Roles.Trapper.trapMaterial;
                 radiationVisual.GetComponent<MeshRenderer>().material.color = Color.green;
             }
 
@@ -64,7 +64,7 @@ namespace TownOfUs.Roles.Modifiers
 
         IEnumerator RadiateNearby()
         {
-            yield return new WaitForSeconds(CustomGameOptions.RadiateCooldown);
+            yield return new WaitForSeconds(CustomGameOptions.RadiativeCooldown);
 
             if (Player != null)
             {
