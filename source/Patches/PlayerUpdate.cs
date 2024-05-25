@@ -1,11 +1,10 @@
 ﻿using HarmonyLib;
 using TownOfUs.Extensions;
-using UnityEngine;
 
 namespace TownOfUs.Patches
 {
     [HarmonyPatch]
-    public class GameUpdate
+    public class PlayerUpdate
     {
         public static bool NameHide = false;
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
