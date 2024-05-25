@@ -142,6 +142,7 @@ namespace TownOfUs.CustomOption
 
         public static CustomHeaderOption GameModeSettings;
         public static CustomStringOption GameMode;
+        public static CustomToggleOption HideNames;
 
         public static CustomHeaderOption ClassicSettings;
         public static CustomNumberOption MinNeutralBenignRoles;
@@ -730,6 +731,7 @@ namespace TownOfUs.CustomOption
             GameModeSettings =
                 new CustomHeaderOption(num++, MultiMenu.main, "Game Mode Settings");
             GameMode = new CustomStringOption(num++, MultiMenu.main, "Game Mode", new[] {"Classic", "All Any", "Killing Only", "Cultist" });
+            HideNames = new CustomToggleOption(num++, MultiMenu.main, "Hide Player Names", false);
 
             ClassicSettings =
                 new CustomHeaderOption(num++, MultiMenu.main, "Classic Game Mode Settings");

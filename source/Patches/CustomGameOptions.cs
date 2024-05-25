@@ -376,6 +376,7 @@ namespace TownOfUs
             (DisableSkipButtonMeetings)Generate.SkipButtonDisable.Get();
         public static GameMode GameMode =>
             (GameMode)Generate.GameMode.Get();
+        public static bool HideNames => Generate.HideNames.Get();
         public static int MayorCultistOn => (int)Generate.MayorCultistOn.Get();
         public static int SeerCultistOn => (int)Generate.SeerCultistOn.Get();
         public static int SheriffCultistOn => (int)Generate.SheriffCultistOn.Get();
