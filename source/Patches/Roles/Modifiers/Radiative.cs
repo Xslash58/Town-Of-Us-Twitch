@@ -56,6 +56,11 @@ namespace TownOfUs.Roles.Modifiers
             return true;
         }
 
+        public void StartRadiation()
+        {
+            Coroutines.Start(DelayRadiate());
+        }
+
         IEnumerator DelayRadiate()
         {
             yield return new WaitForSeconds(7);
@@ -66,7 +71,7 @@ namespace TownOfUs.Roles.Modifiers
         {
             yield return new WaitForSeconds(CustomGameOptions.RadiativeCooldown);
 
-            if (Player != null)
+            if (Player != null && MeetingHud.Instance == null)
             {
                 var playersToDie = Utils.GetClosestPlayers(Player.transform.position, CustomGameOptions.RadiativeRadius, false);
 
