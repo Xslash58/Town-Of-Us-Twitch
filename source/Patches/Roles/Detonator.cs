@@ -1,9 +1,9 @@
 using UnityEngine;
 using System;
-using TownOfUs.ImpostorRoles.BomberMod;
 using TownOfUs.CrewmateRoles.MedicMod;
 using TownOfUs.Patches;
-using TownOfUs.CrewmateRoles.TimeLordMod;
+using System.Collections;
+using Reactor.Utilities;
 
 namespace TownOfUs.Roles
 {
@@ -15,6 +15,7 @@ namespace TownOfUs.Roles
         public bool Detonated = false;
         public bool BombAttached = false;
         public PlayerControl ClosestPlayer;
+        public AudioSource BeepSource;
         public PlayerControl BombPlayer;
         public DateTime LastPlanted;
         public DateTime StartingCooldown { get; set; }
@@ -62,6 +63,33 @@ namespace TownOfUs.Roles
             return (num - (float)timeSpan.TotalMilliseconds) / 1000f;
         }
 
+        public void Plant(PlayerControl player)
+        {
+            Utils.Rpc(CustomRPC.DetonatorBombBeep, PlayerControl.LocalPlayer.PlayerId, player.PlayerId);
+            RpcPlant(player);
+        }
+        public void RpcPlant(PlayerControl player)
+        {
+            if (BeepSource != null) return;
+
+            AudioClip clip = TownOfUs.BeepClip;
+            GameObject obj = new("SFx_BombTicking");
+            obj.transform.position = player.transform.position;
+            BeepSource = obj.AddComponent<AudioSource>();
+            BeepSource.clip = clip;
+
+            BeepSource.loop = true;
+            BeepSource.volume = 0.2f;
+            if(player != PlayerControl.LocalPlayer) BeepSource.spatialBlend = 1.0f;
+            BeepSource.minDistance = 1f;
+            BeepSource.maxDistance = 2f;
+            BeepSource.rolloffMode = AudioRolloffMode.Linear;
+
+            BeepSource.Play();
+
+            Coroutines.Start(SoundFollowPlayer());
+        }
+
         public void Detonate(PlayerControl playerToDetonate)
         {
             var playersToDie = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
@@ -98,6 +126,26 @@ namespace TownOfUs.Roles
                 playersToDie[r] = tmp;
             }
             return playersToDie;
+        }
+        public void CancelDetonation()
+        {
+            BombAttached = false;
+            BombPlayer = null;
+        }
+
+        IEnumerator SoundFollowPlayer()
+        {
+            yield return new WaitForSeconds(0.1f);
+            if (BeepSource != null && BombPlayer != null && !BombPlayer.Data.IsDead && !MeetingHud.Instance)
+            {
+                BeepSource.transform.position = BombPlayer.transform.position;
+                Coroutines.Start(SoundFollowPlayer());
+            }
+            else
+            {
+                GameObject.Destroy(BeepSource.gameObject);
+                BeepSource = null;
+            }
         }
     }
 }

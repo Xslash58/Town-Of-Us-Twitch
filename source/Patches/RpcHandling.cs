@@ -953,6 +953,12 @@ namespace TownOfUs
                         var disorienter = Role.GetRole<Disorienter>(Utils.PlayerById(reader.ReadByte()));
                         disorienter.Disorient(Utils.PlayerById(reader.ReadByte()));
                         break;
+                    case CustomRPC.DetonatorBombBeep:
+                        var detonator = Role.GetRole<Detonator>(Utils.PlayerById(reader.ReadByte()));
+                        var detonatorBombPlayer = Utils.PlayerById(reader.ReadByte());
+                        detonator.BombPlayer = detonatorBombPlayer;
+                        detonator.RpcPlant(detonatorBombPlayer);
+                        break;
                     case CustomRPC.SnitchCultistReveal:
                         var snitch = Role.GetRole<CultistSnitch>(Utils.PlayerById(reader.ReadByte()));
                         snitch.CompletedTasks = true;

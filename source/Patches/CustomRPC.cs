@@ -79,6 +79,7 @@ namespace TownOfUs
         HunterCatchPlayer,
         Retribution,
         Disorient,
+        DetonatorBombBeep,
 
         BypassKill,
         BypassMultiKill,

@@ -117,6 +117,8 @@ namespace TownOfUs
         public static Sprite ZoomPlusButton;
         public static Sprite ZoomMinusButton;
 
+        public static AudioClip BeepClip;
+
         public static Vector3 ButtonPosition { get; private set; } = new Vector3(2.6f, 0.7f, -9f);
 
         private static DLoadImage _iCallLoadImage;
@@ -219,6 +221,8 @@ namespace TownOfUs
             ZoomPlusButton = CreateSprite("TownOfUs.Resources.Plus.png");
             ZoomMinusButton = CreateSprite("TownOfUs.Resources.Minus.png");
 
+            BeepClip = CreateAudioClip("TownOfUs.Resources.Beep.wav");
+
             PalettePatch.Load();
             ClassInjector.RegisterTypeInIl2Cpp<CrimeScene>();
             ClassInjector.RegisterTypeInIl2Cpp<RainbowBehaviour>();
@@ -248,6 +252,25 @@ namespace TownOfUs
 
             _harmony.PatchAll();
             SubmergedCompatibility.Initialize();
+        }
+
+        public static AudioClip CreateAudioClip(string resourceName)
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            using (var audioStream = assembly.GetManifestResourceStream(resourceName))
+            {
+                if (audioStream == null)
+                {
+                    Debug.LogError($"Resource not found: {resourceName}");
+                    return null;
+                }
+
+                var audioData = Audio.ReadFully(audioStream);
+
+                var audioClip = Audio.WavUtility.ToAudioClip(audioData, resourceName);
+                audioClip.DontDestroy();
+                return audioClip;
+            }
         }
 
         public static Sprite CreateSprite(string name)
