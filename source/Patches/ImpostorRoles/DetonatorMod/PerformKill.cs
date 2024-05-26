@@ -36,6 +36,7 @@ namespace TownOfUs.ImpostorRoles.DetonatorMod
                             else role.BombPlayer.nameText().color = Color.clear;
                         }
                         role.BombPlayer = target;
+                        role.Plant(role.BombPlayer);
                         role.BombAttached = true;
                     } else
                     {
