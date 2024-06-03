@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using UnityEngine;
 
 namespace TownOfUs.Patches
 {
@@ -15,6 +16,8 @@ namespace TownOfUs.Patches
             __instance.HostIcon.enabled = false;
             foreach (var state in __instance.playerStates)
                 state.NameText.text = string.Empty;
+            foreach(var bubble in GameObject.FindObjectsOfType<ChatBubble>())
+                bubble.NameText.text = string.Empty;
         }
 
         [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.CoIntro))]
