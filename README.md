@@ -1508,6 +1508,7 @@ If you have any bugs or any need to contact me, join the [Discord Server](https:
 [Term](https://www.twitch.tv/termboii) - For creating Transporter, Medium, Blackmailer, Plaguebearer, Sleuth, Multitasker and porting v2.5.0 to the new Among Us version (v2021.12.15).\
 [BryBry16](https://github.com/Brybry16/BetterPolus) - For the code used for Better Polus.\
 [Alexejhero](https://github.com/SubmergedAmongUs/Submerged) - For the Submerged map.\
+[whichtwix](https://github.com/whichtwix) - For hat lag fix.\
 [Jsushi07](https://github.com/Jsushi07) - For mini modifier.\
 [fariparedes](https://github.com/fariparedes) - For lawyer role code.\
 [ZIELONY_03](https://twitch.tv/ZIELONY_03) - For skins you made in this mod.\
