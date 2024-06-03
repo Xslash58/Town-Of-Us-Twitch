@@ -39,6 +39,7 @@ Join Town-Of-Us-R's [Discord](https://discord.gg/ugyc4EVUYZ) if you have any pro
 # Releases
 | Among Us - Version| Mod Version | Link |
 |----------|-------------|-----------------|
+| 2024.3.5s & 2024.3.5e | v7.1.2 | [Download](https://github.com/Xslash58/Town-Of-Us-Twitch/releases/download/v7.1.2/ToU.v7.1.2.zip) |
 | 2024.3.5s & 2024.3.5e | v7.1.1 | [Download](https://github.com/Xslash58/Town-Of-Us-Twitch/releases/download/v7.1.1/ToU.v7.1.1.zip) |
 | 2024.3.5s & 2024.3.5e | v7.1.0 | [Download](https://github.com/Xslash58/Town-Of-Us-Twitch/releases/download/v7.1.0/ToU.v7.1.0.zip) |
 | 2024.3.5s & 2024.3.5e | v7.0.10 | [Download](https://github.com/Xslash58/Town-Of-Us-Twitch/releases/download/v7.0.10/ToU.v7.0.10.zip) |
@@ -51,6 +52,14 @@ Join Town-Of-Us-R's [Discord](https://discord.gg/ugyc4EVUYZ) if you have any pro
 
 <details>
   <summary> Changelog </summary>
+  <details>
+  <summary> v7.1.2 </summary>
+  <h3>Fork:</h3>
+  <ul> <li>New skins by WYSPA328, ojmoty2, xseba___</li> </ul>
+  <ul> <li>Fix: Vigilante can now guess Detonator role</li> </ul>
+  <ul> <li>Fix: Player names are now hidden in ChatBubbles on "Hide Player Names"</li> </ul>
+  <ul> <li>Fix: Upside-down modifier chat fixed</li> </ul>
+  </details>
   <details>
   <summary> v7.1.1 </summary>
   <h3>Fork:</h3>
@@ -1512,6 +1521,9 @@ If you have any bugs or any need to contact me, join the [Discord Server](https:
 [fariparedes](https://github.com/fariparedes) - For lawyer role code.\
 [ZIELONY_03](https://twitch.tv/ZIELONY_03) - For skins you made in this mod.\
 [xseba___](https://twitch.tv/xseba___) - For skins you made in this mod.
+[WYSPA328](https://twitch.tv/WYSPA328) - For skins you made in this mod.
+[ojmoty2](https://twitch.tv/ojmoty2) - For skins you made in this mod.
+[Jerzuk_](https://twitch.tv/jerzuk_) - For skins you made, skin validator website and help with the mod :3
 
 [Essentials](https://github.com/DorCoMaNdO/Reactor-Essentials) - For created custom game options.\
 v1.0.3 uses [Essentials](https://github.com/DorCoMaNdO/Reactor-Essentials) directly.\
