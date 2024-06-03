@@ -18,7 +18,11 @@ namespace TownOfUs.Roles.Modifiers
             appearance = Player.GetDefaultAppearance();
 
             if (Player == PlayerControl.LocalPlayer)
+            {
                 Camera.main.transform.rotation = Quaternion.Euler(0, 0, 180);
+                foreach (var bubble in GameObject.FindObjectsOfType<ChatBubble>())
+                    bubble.transform.rotation = Quaternion.Euler(0, 0, 180);
+            }
             
             return true;
         }
