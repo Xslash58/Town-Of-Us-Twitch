@@ -8,6 +8,7 @@ namespace TownOfUs
         SetAssassin,
         SetTarget,
         SetDefendant,
+        SetStalk,
         SetGATarget,
 
         SetPhantom,
@@ -21,6 +22,7 @@ namespace TownOfUs
 
         LoveWin,
         GlitchWin,
+        StalkerWin,
         JuggernautWin,
         ArsonistWin,
         PhantomWin,

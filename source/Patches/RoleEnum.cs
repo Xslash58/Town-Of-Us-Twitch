@@ -43,6 +43,7 @@ namespace TownOfUs
         Oracle,
         Aurial,
         Hunter,
+        Stalker,
 
         Miner,
         Swooper,

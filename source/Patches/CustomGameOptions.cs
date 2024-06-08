@@ -72,6 +72,7 @@ namespace TownOfUs
         public static int DetonatorOn => (int)Generate.DetonatorOn.Get();
         public static int PlaguebearerOn => (int)Generate.PlaguebearerOn.Get();
         public static int WerewolfOn => (int)Generate.WerewolfOn.Get();
+        public static int StalkerOn => (int)Generate.StalkerOn.Get();
         public static int DetectiveOn => (int)Generate.DetectiveOn.Get();
         public static int EscapistOn => (int)Generate.EscapistOn.Get();
         public static int ImitatorOn => (int)Generate.ImitatorOn.Get();
@@ -301,6 +302,8 @@ namespace TownOfUs
         public static float RampageDuration => Generate.RampageDuration.Get();
         public static float RampageKillCd => Generate.RampageKillCooldown.Get();
         public static bool WerewolfVent => Generate.WerewolfVent.Get();
+        public static float StalkerKillCd => Generate.StalkerKillCooldown.Get();
+        public static float StalkerChangeCd => Generate.StalkerChangeCooldown.Get();
         public static float TrapCooldown => Generate.TrapCooldown.Get();
         public static bool TrapsRemoveOnNewRound => Generate.TrapsRemoveOnNewRound.Get();
         public static int MaxTraps => (int)Generate.MaxTraps.Get();

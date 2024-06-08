@@ -27,6 +27,7 @@ using TownOfUs.CrewmateRoles.AurialMod;
 using Reactor.Networking;
 using Reactor.Networking.Extensions;
 using TownOfUs.CrewmateRoles.DetectiveMod;
+using TownOfUs.Patches.Roles;
 
 namespace TownOfUs
 {
@@ -307,6 +308,11 @@ namespace TownOfUs
                         {
                             var glitch = Role.GetRole<Glitch>(player);
                             glitch.LastKill = DateTime.UtcNow;
+                        }
+                        if (player.Is(RoleEnum.Stalker))
+                        {
+                            var stalker = Role.GetRole<Stalker>(player);
+                            stalker.LastKilled = DateTime.UtcNow;
                         }
                         else if (player.Is(RoleEnum.Juggernaut))
                         {
@@ -745,7 +751,7 @@ namespace TownOfUs
                     werewolf.LastKilled = DateTime.UtcNow.AddSeconds((CustomGameOptions.DiseasedMultiplier - 1f) * CustomGameOptions.RampageKillCd);
                     werewolf.Player.SetKillTimer(CustomGameOptions.RampageKillCd * CustomGameOptions.DiseasedMultiplier);
                     return;
-                }
+                }//TODO: STALKER
 
                 if (target.Is(ModifierEnum.Diseased) && killer.Is(RoleEnum.Vampire))
                 {

@@ -56,6 +56,7 @@ namespace TownOfUs.CustomOption
         public static CustomNumberOption GlitchOn;
         public static CustomNumberOption VampireOn;
         public static CustomNumberOption WerewolfOn;
+        public static CustomNumberOption StalkerOn;
 
         public static CustomHeaderOption ImpostorConcealingRoles;
         public static CustomNumberOption EscapistOn;
@@ -451,6 +452,10 @@ namespace TownOfUs.CustomOption
         public static CustomNumberOption RampageKillCooldown;
         public static CustomToggleOption WerewolfVent;
 
+        public static CustomHeaderOption Stalker;
+        public static CustomNumberOption StalkerKillCooldown;
+        public static CustomNumberOption StalkerChangeCooldown;
+
         public static CustomHeaderOption Detective;
         public static CustomNumberOption ExamineCooldown;
         public static CustomToggleOption DetectiveReportOn;
@@ -657,6 +662,8 @@ namespace TownOfUs.CustomOption
             VampireOn = new CustomNumberOption(num++, MultiMenu.neutral, "<color=#262626FF>Vampire</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
             WerewolfOn = new CustomNumberOption(num++, MultiMenu.neutral, "<color=#A86629FF>Werewolf</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
+            StalkerOn = new CustomNumberOption(num++, MultiMenu.neutral, "<color=#A86629FF>Stalker</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
 
             ImpostorConcealingRoles = new CustomHeaderOption(num++, MultiMenu.imposter, "Impostor Concealing Roles");
@@ -1293,6 +1300,12 @@ namespace TownOfUs.CustomOption
                 new CustomNumberOption(num++, MultiMenu.neutral, "Rampage Kill Cooldown", 10f, 0.5f, 15f, 0.5f, CooldownFormat);
             WerewolfVent =
                 new CustomToggleOption(num++, MultiMenu.neutral, "Werewolf Can Vent When Rampaged", false);
+
+            Stalker = new CustomHeaderOption(num++, MultiMenu.neutral, "<color=#A86629FF>Stalker</color>");
+            StalkerKillCooldown =
+                new CustomNumberOption(num++, MultiMenu.neutral, "Stalker Kill Cooldown", 25f, 10f, 60f, 2.5f, CooldownFormat);
+            StalkerChangeCooldown =
+                new CustomNumberOption(num++, MultiMenu.neutral, "Stalker Change Target Cooldown", 25f, 10f, 60f, 2.5f, CooldownFormat);
 
             Escapist =
                 new CustomHeaderOption(num++, MultiMenu.imposter, "<color=#FF0000FF>Escapist</color>");
