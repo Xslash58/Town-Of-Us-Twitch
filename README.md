@@ -23,7 +23,7 @@ Join Town-Of-Us-R's [Discord](https://discord.gg/ugyc4EVUYZ) if you have any pro
 | [Warlock](#warlock)          | [Mystic](#mystic)                  | [Vampire](#vampire)              | [Radar](#radar)             |
 | [Disorienter](#disorienter)  | [Oracle](#oracle)                  | [Werewolf](#werewolf)            | [Sleuth](#sleuth)           |
 | [Detonator](#detonator)      | [Prosecutor](#prosecutor)          | [Lawyer](#lawyer)                | [Tiebreaker](#tiebreaker)   |
-|                             | [Seer](#seer)                      |                                 | [Torch](#torch)             |
+|                             | [Seer](#seer)                      | [Stalker](#stalker)             | [Torch](#torch)             |
 |                             | [Sheriff](#sheriff)                |                                 | [Underdog](#underdog)       |
 |                             | [Snitch](#snitch)                  |                                 | [Mini](#mini)               |
 |                             | [Spy](#spy)                        |                                 | [Upside-down](#upside-down) |
@@ -929,6 +929,22 @@ The Lawyer can win with any team that does not explicitly win alone, as long as 
 | Neutral Roles Can Be Defendants | Whether neutral benign & evil roles can be defendants | Toggle | False |
 | Lawyer And Defendant Can Talk | Whether the Lawyer and their defendant can chat outside of meetings | Toggle | True |
 | Lawyer becomes on Defendant Dead | Which role the Lawyer becomes when their target dies | Amnesiac / Survivor / Jester / Crewmate | Amnesiac |
+
+-----------------------
+## Stalker
+### **Team: Neutral**
+
+Stalker is a Neutral role with its own win condition.\
+They have to stay near their victim in order for their kill cooldown to go down.\
+Stalker can change his victim.\
+Stalker needs to be the last killer alive to win the game.
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Stalker | The percentage probability of Stalker appearing | Percentage | 0% |
+| Stalker Kill Cooldown | The cooldown of Stalker's kill button | Time | 25s |
+| Stalker Change Target Cooldown | The cooldown of changing target by Stalker | Time | 25s |
+| Stalk Radius | How far away Stalker can be for kill cooldown to go down | Short / Normal / Long | Short |
 
 -----------------------
 # Impostor Roles

@@ -38,6 +38,7 @@ using System.Reflection;
 using TownOfUs.Patches.NeutralRoles;
 using TownOfUs.NeutralRoles.LawyerMod;
 using TownOfUs.CrewmateRoles.TimeLordMod;
+using TownOfUs.Patches.Roles;
 
 namespace TownOfUs
 {
@@ -481,6 +482,18 @@ namespace TownOfUs
                 }
             }
 
+            foreach (var role in Role.GetRoles(RoleEnum.Stalker))
+            {
+                var stalker = (Stalker)role;
+                var stalkerTargets = PlayerControl.AllPlayerControls.ToArray().Where(x => x != stalker.Player).ToList();
+                stalkerTargets.Shuffle();
+                if (stalkerTargets.Count > 0)
+                {
+                    stalker.target = stalkerTargets.FirstOrDefault();
+                    Utils.Rpc(CustomRPC.SetStalk, role.Player.PlayerId, stalker.target.PlayerId);
+                }
+            }
+
             var goodGATargets = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(Faction.Crewmates) && !x.Is(ModifierEnum.Lover)).ToList();
             var evilGATargets = PlayerControl.AllPlayerControls.ToArray().Where(x => (x.Is(Faction.Impostors) || x.Is(Faction.NeutralKilling)) && !x.Is(ModifierEnum.Lover)).ToList();
             foreach (var role in Role.GetRoles(RoleEnum.GuardianAngel))
@@ -535,6 +548,7 @@ namespace TownOfUs
 
             NeutralKillingRoles.Add((typeof(Glitch), 10, true));
             NeutralKillingRoles.Add((typeof(Werewolf), 10, true));
+            NeutralKillingRoles.Add((typeof(Stalker), 10, true));
             if (CustomGameOptions.HiddenRoles)
                 NeutralKillingRoles.Add((typeof(Juggernaut), 10, true));
             if (CustomGameOptions.AddArsonist)
@@ -907,6 +921,10 @@ namespace TownOfUs
                         var theGlitch = Role.AllRoles.FirstOrDefault(x => x.RoleType == RoleEnum.Glitch);
                         ((Glitch) theGlitch)?.Wins();
                         break;
+                    case CustomRPC.StalkerWin:
+                        var stalkerwinrole = Role.AllRoles.FirstOrDefault(x => x.RoleType == RoleEnum.Stalker);
+                        ((Stalker)stalkerwinrole)?.Wins();
+                        break;
                     case CustomRPC.JuggernautWin:
                         var juggernaut = Role.AllRoles.FirstOrDefault(x => x.RoleType == RoleEnum.Juggernaut);
                         ((Juggernaut)juggernaut)?.Wins();
@@ -938,6 +956,12 @@ namespace TownOfUs
                         var lwyrTarget = Utils.PlayerById(reader.ReadByte());
                         var lwyrRole = Role.GetRole<Lawyer>(lwyr);
                         lwyrRole.target = lwyrTarget;
+                        break;
+                    case CustomRPC.SetStalk:
+                        var stlkr = Utils.PlayerById(reader.ReadByte());
+                        var stalkTarget = Utils.PlayerById(reader.ReadByte());
+                        var stlkrRole = Role.GetRole<Stalker>(stlkr);
+                        stlkrRole.target = stalkTarget;
                         break;
                     case CustomRPC.SetGATarget:
                         var ga = Utils.PlayerById(reader.ReadByte());
@@ -1469,6 +1493,9 @@ namespace TownOfUs
 
                     if (CustomGameOptions.WerewolfOn > 0)
                         NeutralKillingRoles.Add((typeof(Werewolf), CustomGameOptions.WerewolfOn, true));
+
+                    if (CustomGameOptions.StalkerOn > 0)
+                        NeutralKillingRoles.Add((typeof(Stalker), CustomGameOptions.StalkerOn, true));
 
                     if (CustomGameOptions.GameMode == GameMode.Classic && CustomGameOptions.VampireOn > 0)
                         NeutralKillingRoles.Add((typeof(Vampire), CustomGameOptions.VampireOn, true));

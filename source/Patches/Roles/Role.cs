@@ -12,6 +12,7 @@ using Random = UnityEngine.Random;
 using TownOfUs.Extensions;
 using AmongUs.GameOptions;
 using TownOfUs.ImpostorRoles.TraitorMod;
+using TownOfUs.Patches.Roles;
 
 namespace TownOfUs.Roles
 {

@@ -4,6 +4,7 @@ using System.Linq;
 using TownOfUs.Roles;
 using TownOfUs.Roles.Modifiers;
 using TownOfUs.Extensions;
+using TownOfUs.Patches.Roles;
 
 namespace TownOfUs
 {
@@ -219,6 +220,17 @@ namespace TownOfUs
                         var glitchData = new WinningPlayerData(glitch.Player.Data);
                         if (PlayerControl.LocalPlayer != glitch.Player) glitchData.IsYou = false;
                         TempData.winners.Add(glitchData);
+                    }
+                }
+                if (type == RoleEnum.Stalker)
+                {
+                    var stalker = (Stalker)role;
+                    if (stalker.StalkerWins)
+                    {
+                        TempData.winners = new List<WinningPlayerData>();
+                        var stalkerData = new WinningPlayerData(stalker.Player.Data);
+                        if (PlayerControl.LocalPlayer != stalker.Player) stalkerData.IsYou = false;
+                        TempData.winners.Add(stalkerData);
                     }
                 }
                 else if (type == RoleEnum.Juggernaut)
