@@ -39,6 +39,7 @@ Join Town-Of-Us-R's [Discord](https://discord.gg/ugyc4EVUYZ) if you have any pro
 # Releases
 | Among Us - Version| Mod Version | Link |
 |----------|-------------|-----------------|
+| 2024.3.5s & 2024.3.5e | v7.2.0 | [Download](https://github.com/Xslash58/Town-Of-Us-Twitch/releases/download/v7.2.0/ToU.v7.2.0.zip) |
 | 2024.3.5s & 2024.3.5e | v7.1.2 | [Download](https://github.com/Xslash58/Town-Of-Us-Twitch/releases/download/v7.1.2/ToU.v7.1.2.zip) |
 | 2024.3.5s & 2024.3.5e | v7.1.1 | [Download](https://github.com/Xslash58/Town-Of-Us-Twitch/releases/download/v7.1.1/ToU.v7.1.1.zip) |
 | 2024.3.5s & 2024.3.5e | v7.1.0 | [Download](https://github.com/Xslash58/Town-Of-Us-Twitch/releases/download/v7.1.0/ToU.v7.1.0.zip) |
@@ -52,6 +53,17 @@ Join Town-Of-Us-R's [Discord](https://discord.gg/ugyc4EVUYZ) if you have any pro
 
 <details>
   <summary> Changelog </summary>
+  <details>
+  <summary> v7.2.0 </summary>
+  <h3>Upstream:</h3>
+  <ul> <li>Update Versioning.json for 2024.6.4s</li> </ul>
+  <h3>Fork:</h3>
+  <ul> <li>New Role: Stalker</li> </ul>
+  <ul> <li>New skins</li> </ul>
+  <ul> <li>Fix: Added missing roles for Assassin</li> </ul>
+  <ul> <li>Fix: Detonator cooldown now resets on meeting end</li> </ul>
+  <ul> <li>Fix: DeadBodies names are now hidden on "Hide Player Names"</li> </ul>
+  </details>
   <details>
   <summary> v7.1.2 </summary>
   <h3>Fork:</h3>
