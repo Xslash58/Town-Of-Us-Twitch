@@ -29,6 +29,8 @@ namespace TownOfUs.Patches
 
             if(reporter != null) reporter.PlayerName = string.Empty;
             if(reportedBody != null) reportedBody.PlayerName = string.Empty;
+            if (deadBodies != null && deadBodies.Count > 0)
+                foreach (var b in deadBodies) b.PlayerName = string.Empty;
         }
     }
 }
