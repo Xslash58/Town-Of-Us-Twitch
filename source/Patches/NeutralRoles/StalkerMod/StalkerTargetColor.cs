@@ -31,7 +31,7 @@ namespace TownOfUs.NeutralRoles.StalkerMod
 
             if (MeetingHud.Instance != null) UpdateMeeting(MeetingHud.Instance, role);
 
-            role.target.nameText().color = new Color(0.93f, 0.7f, 0.55f, 1f);
+            role.target.nameText().color = new Color(0.25f, 0.25f, 0.25f, 1f);
 
             if (!role.target.Data.IsDead && !role.target.Data.Disconnected && !role.target.Is(RoleEnum.Vampire)) return;
 

@@ -455,6 +455,7 @@ namespace TownOfUs.CustomOption
         public static CustomHeaderOption Stalker;
         public static CustomNumberOption StalkerKillCooldown;
         public static CustomNumberOption StalkerChangeCooldown;
+        public static CustomStringOption StalkerStalkRadius;
 
         public static CustomHeaderOption Detective;
         public static CustomNumberOption ExamineCooldown;
@@ -663,7 +664,7 @@ namespace TownOfUs.CustomOption
                 PercentFormat);
             WerewolfOn = new CustomNumberOption(num++, MultiMenu.neutral, "<color=#A86629FF>Werewolf</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
-            StalkerOn = new CustomNumberOption(num++, MultiMenu.neutral, "<color=#A86629FF>Stalker</color>", 0f, 0f, 100f, 10f,
+            StalkerOn = new CustomNumberOption(num++, MultiMenu.neutral, "<color=#404040>Stalker</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
 
             ImpostorConcealingRoles = new CustomHeaderOption(num++, MultiMenu.imposter, "Impostor Concealing Roles");
@@ -1301,11 +1302,13 @@ namespace TownOfUs.CustomOption
             WerewolfVent =
                 new CustomToggleOption(num++, MultiMenu.neutral, "Werewolf Can Vent When Rampaged", false);
 
-            Stalker = new CustomHeaderOption(num++, MultiMenu.neutral, "<color=#A86629FF>Stalker</color>");
+            Stalker = new CustomHeaderOption(num++, MultiMenu.neutral, "<color=#404040>Stalker</color>");
             StalkerKillCooldown =
                 new CustomNumberOption(num++, MultiMenu.neutral, "Stalker Kill Cooldown", 25f, 10f, 60f, 2.5f, CooldownFormat);
             StalkerChangeCooldown =
                 new CustomNumberOption(num++, MultiMenu.neutral, "Stalker Change Target Cooldown", 25f, 10f, 60f, 2.5f, CooldownFormat);
+            StalkerStalkRadius =
+               new CustomStringOption(num++, MultiMenu.neutral, "Stalk Radius", new[] { "Short", "Normal", "Long" });
 
             Escapist =
                 new CustomHeaderOption(num++, MultiMenu.imposter, "<color=#FF0000FF>Escapist</color>");

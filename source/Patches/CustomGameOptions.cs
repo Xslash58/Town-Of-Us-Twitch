@@ -304,6 +304,7 @@ namespace TownOfUs
         public static bool WerewolfVent => Generate.WerewolfVent.Get();
         public static float StalkerKillCd => Generate.StalkerKillCooldown.Get();
         public static float StalkerChangeCd => Generate.StalkerChangeCooldown.Get();
+        public static int StalkerStalkRadius => Generate.StalkerStalkRadius.Get();
         public static float TrapCooldown => Generate.TrapCooldown.Get();
         public static bool TrapsRemoveOnNewRound => Generate.TrapsRemoveOnNewRound.Get();
         public static int MaxTraps => (int)Generate.MaxTraps.Get();

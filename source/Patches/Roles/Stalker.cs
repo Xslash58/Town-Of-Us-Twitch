@@ -23,13 +23,9 @@ namespace TownOfUs.Patches.Roles
         public Stalker(PlayerControl player) : base(player)
         {
             Name = "Stalker";
-            ImpostorText = () =>
-                target == null ? "You don't have a target for some reason... weird..." : $"Stalk {target.name} To Kill Them";
-            TaskText = () =>
-                target == null
-                    ? "You don't have a target for some reason... weird...\nFake Tasks:"
-                    : $"Stalk {target.name} in order to kill them!\nFake Tasks:";
-            Color = Patches.Colors.Werewolf;
+            ImpostorText = () => $"Stalk Your Victim";
+            TaskText = () => $"Stalk your victims to kill them!\nFake Tasks:";
+            Color = Patches.Colors.Stalker;
             LastKilled = DateTime.UtcNow;
             RoleType = RoleEnum.Stalker;
             AddToRoleHistory(RoleType);
@@ -69,11 +65,6 @@ namespace TownOfUs.Patches.Roles
             LastKilled = DateTime.UtcNow;
             LastChanged = DateTime.UtcNow;
             Utils.Rpc(CustomRPC.SetStalk, Player.PlayerId, target.PlayerId);
-
-            TaskText = () =>
-                target == null
-                    ? "You don't have a target for some reason... weird...\nFake Tasks:"
-                    : $"Stalk {target.name} in order to kill them!\nFake Tasks:";
         }
 
         public float StalkerKillTimer()

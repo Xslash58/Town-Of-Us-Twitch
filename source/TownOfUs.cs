@@ -103,7 +103,6 @@ namespace TownOfUs
         public static Sprite MimicSprite;
         public static Sprite LockSprite;
         public static Sprite StalkSprite;
-        public static Sprite StalkerStalkSprite;
         public static Sprite CrimeSceneSprite;
 
         public static Sprite SettingsButtonSprite;
@@ -209,7 +208,6 @@ namespace TownOfUs
             LockSprite = CreateSprite("TownOfUs.Resources.Lock.png");
             StalkSprite = CreateSprite("TownOfUs.Resources.Stalk.png");
             CrimeSceneSprite = CreateSprite("TownOfUs.Resources.CrimeScene.png");
-            StalkerStalkSprite = CreateSprite("TownOfUs.Resources.StalkerStalk.png");
 
             SettingsButtonSprite = CreateSprite("TownOfUs.Resources.SettingsButton.png");
             CrewSettingsButtonSprite = CreateSprite("TownOfUs.Resources.Crewmate.png");
