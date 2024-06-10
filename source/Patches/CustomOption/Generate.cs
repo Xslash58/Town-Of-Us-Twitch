@@ -455,7 +455,7 @@ namespace TownOfUs.CustomOption
         public static CustomHeaderOption Stalker;
         public static CustomNumberOption StalkerKillCooldown;
         public static CustomNumberOption StalkerChangeCooldown;
-        public static CustomStringOption StalkerStalkRadius;
+        public static CustomNumberOption StalkerStalkRadius;
 
         public static CustomHeaderOption Detective;
         public static CustomNumberOption ExamineCooldown;
@@ -1308,7 +1308,7 @@ namespace TownOfUs.CustomOption
             StalkerChangeCooldown =
                 new CustomNumberOption(num++, MultiMenu.neutral, "Stalker Change Target Cooldown", 25f, 10f, 60f, 2.5f, CooldownFormat);
             StalkerStalkRadius =
-               new CustomStringOption(num++, MultiMenu.neutral, "Stalk Radius", new[] { "Short", "Normal", "Long" });
+                new CustomNumberOption(num++, MultiMenu.neutral, "Stalk Radius", 2.5f, 0.25f, 4f, 0.05f, MultiplierFormat);
 
             Escapist =
                 new CustomHeaderOption(num++, MultiMenu.imposter, "<color=#FF0000FF>Escapist</color>");

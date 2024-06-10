@@ -956,7 +956,7 @@ Stalker needs to be the last killer alive to win the game.
 | Stalker | The percentage probability of Stalker appearing | Percentage | 0% |
 | Stalker Kill Cooldown | The cooldown of Stalker's kill button | Time | 25s |
 | Stalker Change Target Cooldown | The cooldown of changing target by Stalker | Time | 25s |
-| Stalk Radius | How far away Stalker can be for kill cooldown to go down | Short / Normal / Long | Short |
+| Stalk Radius | How far away Stalker can be for kill cooldown to go down  | Multiplier | 2.5x |
 
 -----------------------
 # Impostor Roles
