@@ -26,7 +26,7 @@ namespace TownOfUs.Patches.NeutralRoles.StalkerMod
             __instance.KillButton.SetCoolDown(role.StalkerKillTimer(), CustomGameOptions.StalkerKillCd);
 
             if (role.target != null && Vector2.Distance(PlayerControl.LocalPlayer.GetTruePosition(), role.target.GetTruePosition()) <=
-            GameOptionsData.KillDistances[CustomGameOptions.StalkerStalkRadius])
+            CustomGameOptions.StalkerStalkRadius)
                 role.isNearTarget = true;
             else
                 role.isNearTarget = false;

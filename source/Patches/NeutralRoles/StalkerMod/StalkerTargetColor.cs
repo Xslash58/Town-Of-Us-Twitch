@@ -14,7 +14,7 @@ namespace TownOfUs.NeutralRoles.StalkerMod
         {
             foreach (var player in __instance.playerStates)
                 if (player.TargetPlayerId == role.target.PlayerId)
-                    player.NameText.color = new Color(0.93f, 0.7f, 0.55f, 1f);
+                    player.NameText.color = new Color(0.25f, 0.25f, 0.25f, 1f);
         }
 
         private static void Postfix(HudManager __instance)
