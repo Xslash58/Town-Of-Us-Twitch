@@ -205,6 +205,7 @@ namespace TownOfUs.CustomOption
         public static CustomToggleOption SheriffKillsGlitch;
         public static CustomToggleOption SheriffKillsVampire;
         public static CustomToggleOption SheriffKillsWerewolf;
+        public static CustomToggleOption SheriffKillsStalker;
         public static CustomNumberOption SheriffKillCd;
         public static CustomToggleOption SheriffBodyReport;
 
@@ -1050,6 +1051,8 @@ namespace TownOfUs.CustomOption
                 new CustomToggleOption(num++, MultiMenu.crewmate, "Sheriff Kills Vampire", false);
             SheriffKillsWerewolf =
                 new CustomToggleOption(num++, MultiMenu.crewmate, "Sheriff Kills Werewolf", false);
+            SheriffKillsStalker =
+                new CustomToggleOption(num++, MultiMenu.crewmate, "Sheriff Kills Stalker", false);
             SheriffKillCd =
                 new CustomNumberOption(num++, MultiMenu.crewmate, "Sheriff Kill Cooldown", 25f, 10f, 40f, 2.5f, CooldownFormat);
             SheriffBodyReport = new CustomToggleOption(num++, MultiMenu.crewmate, "Sheriff Can Report Who They've Killed");

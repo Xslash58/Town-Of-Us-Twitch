@@ -118,6 +118,7 @@ namespace TownOfUs
         public static bool SheriffKillsGlitch => Generate.SheriffKillsGlitch.Get();
         public static bool SheriffKillsVampire => Generate.SheriffKillsVampire.Get();
         public static bool SheriffKillsWerewolf => Generate.SheriffKillsWerewolf.Get();
+        public static bool SheriffKillsStalker => Generate.SheriffKillsStalker.Get();
         public static float SheriffKillCd => Generate.SheriffKillCd.Get();
         public static bool SwapperButton => Generate.SwapperButton.Get();
         public static float FootprintSize => Generate.FootprintSize.Get();
