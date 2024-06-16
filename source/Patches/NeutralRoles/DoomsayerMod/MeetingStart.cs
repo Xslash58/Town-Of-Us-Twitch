@@ -60,9 +60,9 @@ namespace TownOfUs.NeutralRoles.DoomsayerMod
         public static string RoleReportFeedback(PlayerControl player)
         {
             if (player.Is(RoleEnum.Aurial) || player.Is(RoleEnum.Imitator) || StartImitate.ImitatingPlayer == player
-                || player.Is(RoleEnum.Morphling) || player.Is(RoleEnum.Mystic)
+                || player.Is(RoleEnum.TimeLord) || player.Is(RoleEnum.Morphling) || player.Is(RoleEnum.Mystic)
                  || player.Is(RoleEnum.Spy) || player.Is(RoleEnum.Glitch))
-                return "(Aurial, Imitator, Morphling, Mystic, Spy or The Glitch)";
+                return "(Aurial, Imitator, Time Lord, Morphling, Mystic, Spy or The Glitch)";
             else if (player.Is(RoleEnum.Blackmailer) || player.Is(RoleEnum.Disorienter) || player.Is(RoleEnum.Detective) || player.Is(RoleEnum.Doomsayer)
                  || player.Is(RoleEnum.Oracle) || player.Is(RoleEnum.Snitch) || player.Is(RoleEnum.Trapper))
                 return "(Blackmailer, Disorienter, Detective, Doomsayer, Oracle, Snitch or Trapper)";
@@ -83,8 +83,8 @@ namespace TownOfUs.NeutralRoles.DoomsayerMod
                  || player.Is(RoleEnum.Swapper) || player.Is(RoleEnum.Traitor) || player.Is(RoleEnum.Veteran))
                 return "(Executioner, Jester, Mayor, Swapper, Traitor or Veteran)";
             else if (player.Is(RoleEnum.Bomber) || player.Is(RoleEnum.Detonator) || player.Is(RoleEnum.Juggernaut) || player.Is(RoleEnum.Pestilence)
-                 || player.Is(RoleEnum.Sheriff) || player.Is(RoleEnum.Vigilante) || player.Is(RoleEnum.Warlock))
-                return "(Bomber, Detonator, Juggernaut, Pestilence, Sheriff, Vigilante or Warlock)";
+                 || player.Is(RoleEnum.Stalker) || player.Is(RoleEnum.Sheriff) || player.Is(RoleEnum.Vigilante) || player.Is(RoleEnum.Warlock))
+                return "(Bomber, Detonator, Juggernaut, Pestilence, Stalker, Sheriff, Vigilante or Warlock)";
             else if (player.Is(RoleEnum.Crewmate) || player.Is(RoleEnum.Impostor))
                 return "(Crewmate or Impostor)";
             else return "Error";
