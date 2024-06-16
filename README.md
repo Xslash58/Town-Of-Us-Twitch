@@ -39,6 +39,7 @@ Join Town-Of-Us-R's [Discord](https://discord.gg/ugyc4EVUYZ) if you have any pro
 # Releases
 | Among Us - Version| Mod Version | Link |
 |----------|-------------|-----------------|
+| 2024.3.5s & 2024.3.5e | v7.2.2 | [Download](https://github.com/Xslash58/Town-Of-Us-Twitch/releases/download/v7.2.2/ToU.v7.2.2.zip) |
 | 2024.3.5s & 2024.3.5e | v7.2.1 | [Download](https://github.com/Xslash58/Town-Of-Us-Twitch/releases/download/v7.2.1/ToU.v7.2.1.zip) |
 | 2024.3.5s & 2024.3.5e | v7.2.0 | [Download](https://github.com/Xslash58/Town-Of-Us-Twitch/releases/download/v7.2.0/ToU.v7.2.0.zip) |
 | 2024.3.5s & 2024.3.5e | v7.1.2 | [Download](https://github.com/Xslash58/Town-Of-Us-Twitch/releases/download/v7.1.2/ToU.v7.1.2.zip) |
@@ -55,12 +56,20 @@ Join Town-Of-Us-R's [Discord](https://discord.gg/ugyc4EVUYZ) if you have any pro
 <details>
   <summary> Changelog </summary>
   <details>
+  <summary> v7.2.2 </summary>
+  <h3>Fork:</h3>
+  <ul> <li>Sheriff can now kill Stalker (optional)</li> </ul>
+  <ul> <li>New skins</li> </ul>
+  <ul> <li>Fix: Added missing roles for Doomsayer</li> </ul>
+  <ul> <li>Fix: Freeze is now properly named in Assasin</li> </ul>
+  <ul> <li>Fix: Vigilante can now guess Detonator when Disorienter is disabled</li> </ul>
+  </details>
+  <details>
   <summary> v7.2.1 </summary>
   <h3>Fork:</h3>
   <ul> <li>Fix: Fixed Stalker bugs and changed radius setting type</li> </ul>
   <ul> <li>New skins</li> </ul>
   </details>
-  <details>
   <details>
   <summary> v7.2.0 </summary>
   <h3>Upstream:</h3>
