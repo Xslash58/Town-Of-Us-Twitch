@@ -18,10 +18,15 @@ namespace TownOfUs.NeutralRoles.AmnesiacMod
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
             if (PlayerControl.LocalPlayer == null) return;
             if (PlayerControl.LocalPlayer.Data == null) return;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return;
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Amnesiac)) return;
 
             var role = Role.GetRole<Amnesiac>(PlayerControl.LocalPlayer);
+
+            var killButton = __instance.KillButton;
+
+            killButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
+                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
 
             var data = PlayerControl.LocalPlayer.Data;
             var isDead = data.IsDead;
@@ -30,20 +35,27 @@ namespace TownOfUs.NeutralRoles.AmnesiacMod
             var flag = (GameOptionsManager.Instance.currentNormalGameOptions.GhostsDoTasks || !data.IsDead) &&
                        (!AmongUsClient.Instance || !AmongUsClient.Instance.IsGameOver) &&
                        PlayerControl.LocalPlayer.CanMove;
+            var allocs = Physics2D.OverlapCircleAll(truePosition, maxDistance,
+                LayerMask.GetMask(new[] { "Players", "Ghost" }));
 
-            var killButton = __instance.KillButton;
             DeadBody closestBody = null;
             var closestDistance = float.MaxValue;
-            var allBodies = Object.FindObjectsOfType<DeadBody>();
 
-            foreach (var body in allBodies.Where(x => Vector2.Distance(x.TruePosition, truePosition) <= maxDistance))
+            foreach (var collider2D in allocs)
             {
-                var distance = Vector2.Distance(truePosition, body.TruePosition);
-                if (!(distance < closestDistance)) continue;
+                if (!flag || isDead || collider2D.tag != "DeadBody") continue;
+                var component = collider2D.GetComponent<DeadBody>();
+                if (!(Vector2.Distance(truePosition, component.TruePosition) <=
+                      maxDistance)) continue;
 
-                closestBody = body;
+                var distance = Vector2.Distance(truePosition, component.TruePosition);
+                if (!(distance < closestDistance)) continue;
+                closestBody = component;
                 closestDistance = distance;
             }
+
+            KillButtonTarget.SetTarget(killButton, closestBody, role);
+            __instance.KillButton.SetCoolDown(0f, 1f);
 
             if (CustomGameOptions.RememberArrows && !PlayerControl.LocalPlayer.Data.IsDead)
             {
@@ -82,12 +94,6 @@ namespace TownOfUs.NeutralRoles.AmnesiacMod
                     role.BodyArrows.Clear();
                 }
             }
-
-            __instance.KillButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
-                    && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
-            KillButtonTarget.SetTarget(killButton, closestBody, role);
-            __instance.KillButton.SetCoolDown(0f, 1f);
         }
     }
 }

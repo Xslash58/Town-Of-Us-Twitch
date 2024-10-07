@@ -5,8 +5,6 @@ using UnityEngine;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 using TownOfUs.Patches;
-using TownOfUs.CrewmateRoles.AurialMod;
-using TownOfUs.Patches.ScreenEffects;
 using System.Linq;
 using System.Collections.Generic;
 
@@ -27,23 +25,13 @@ namespace TownOfUs.CrewmateRoles.HaunterMod
         public static void ExileControllerPostfix(ExileController __instance)
         {
             if (WillBeHaunter == null) return;
-            var exiled = __instance.exiled?.Object;
+            var exiled = __instance.initData.networkedPlayer?.Object;
             if (!WillBeHaunter.Data.IsDead && exiled.Is(Faction.Crewmates) && !exiled.IsLover()) WillBeHaunter = exiled;
             if (WillBeHaunter.Data.Disconnected) return;
             if (!WillBeHaunter.Data.IsDead && WillBeHaunter != exiled) return;
 
             if (!WillBeHaunter.Is(RoleEnum.Haunter))
             {
-                if (WillBeHaunter == PlayerControl.LocalPlayer)
-                {
-                    if (PlayerControl.LocalPlayer.Is(RoleEnum.Aurial))
-                    {
-                        var aurial = Role.GetRole<Aurial>(PlayerControl.LocalPlayer);
-                        aurial.NormalVision = true;
-                        SeeAll.AllToNormal();
-                        CameraEffect.singleton.materials.Clear();
-                    }
-                }
                 var oldRole = Role.GetRole(WillBeHaunter);
                 var killsList = (oldRole.CorrectKills, oldRole.IncorrectKills, oldRole.CorrectAssassinKills, oldRole.IncorrectAssassinKills);
                 Role.RoleDictionary.Remove(WillBeHaunter.PlayerId);
@@ -101,7 +89,6 @@ namespace TownOfUs.CrewmateRoles.HaunterMod
 
             PlayerControl.LocalPlayer.transform.position = pos;
             PlayerControl.LocalPlayer.NetTransform.SnapTo(pos);
-            PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(pos);
             PlayerControl.LocalPlayer.MyPhysics.RpcEnterVent(startingVent.Id);
         }
 

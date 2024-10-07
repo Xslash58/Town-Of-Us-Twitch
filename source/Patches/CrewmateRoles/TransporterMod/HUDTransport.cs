@@ -48,7 +48,7 @@ namespace TownOfUs.CrewmateRoles.TransporterMod
             else transportButton.SetCoolDown(0f, CustomGameOptions.TransportCooldown);
 
             var renderer = transportButton.graphic;
-            if (!transportButton.isCoolingDown && role.ButtonUsable)
+            if (!transportButton.isCoolingDown && role.ButtonUsable && PlayerControl.LocalPlayer.moveable)
             {
                 renderer.color = Palette.EnabledColor;
                 renderer.material.SetFloat("_Desat", 0f);

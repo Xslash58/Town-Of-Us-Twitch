@@ -9,11 +9,6 @@ namespace TownOfUs.CrewmateRoles.MedicMod
         [HarmonyPatch(nameof(HudManager.Update))]
         public static void Postfix(HudManager __instance)
         {
-            UpdateProtectButton(__instance);
-        }
-
-        public static void UpdateProtectButton(HudManager __instance)
-        {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
             if (PlayerControl.LocalPlayer == null) return;
             if (PlayerControl.LocalPlayer.Data == null) return;

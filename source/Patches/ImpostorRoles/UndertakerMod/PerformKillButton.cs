@@ -19,6 +19,7 @@ namespace TownOfUs.ImpostorRoles.UndertakerMod
 
             if (__instance == role.DragDropButton)
             {
+                if (role.Player.inVent) return false;
                 if (role.DragDropButton.graphic.sprite == TownOfUs.DragSprite)
                 {
                     if (__instance.isCoolingDown) return false;
@@ -28,6 +29,8 @@ namespace TownOfUs.ImpostorRoles.UndertakerMod
                         PlayerControl.LocalPlayer.GetTruePosition()) > maxDistance) return false;
                     var playerId = role.CurrentTarget.ParentId;
                     var player = Utils.PlayerById(playerId);
+                    var abilityUsed = Utils.AbilityUsed(PlayerControl.LocalPlayer);
+                    if (!abilityUsed) return false;
                     if ((player.IsInfected() || role.Player.IsInfected()) && !player.Is(RoleEnum.Plaguebearer))
                     {
                         foreach (var pb in Role.GetRoles(RoleEnum.Plaguebearer)) ((Plaguebearer)pb).RpcSpreadInfection(player, role.Player);
@@ -44,6 +47,8 @@ namespace TownOfUs.ImpostorRoles.UndertakerMod
                 else
                 {
                     if (!__instance.enabled) return false;
+                    var abilityUsed = Utils.AbilityUsed(PlayerControl.LocalPlayer);
+                    if (!abilityUsed) return false;
                     Vector3 position = PlayerControl.LocalPlayer.transform.position;
 
                     if (Patches.SubmergedCompatibility.isSubmerged())

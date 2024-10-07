@@ -14,7 +14,7 @@ namespace TownOfUs.CrewmateRoles.HaunterMod
             foreach (var role in Role.GetRoles(RoleEnum.Haunter))
             {
                 var haunter = (Haunter) role;
-                if (role.Player.Data.Disconnected) return;
+                if (role.Player.Data != null && role.Player.Data.Disconnected) return;
                 var caught = haunter.Caught;
                 if (!caught)
                 {

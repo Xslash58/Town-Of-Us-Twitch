@@ -114,7 +114,7 @@ namespace TownOfUs.Roles
 
         internal virtual bool ColorCriteria()
         {
-            return SelfCriteria() || DeadCriteria() || ImpostorCriteria() || VampireCriteria() || RoleCriteria() || GuardianAngelCriteria();
+            return SelfCriteria() || DeadCriteria() || ((ImpostorCriteria() || VampireCriteria() || RoleCriteria() || GuardianAngelCriteria()) && (!PlayerControl.LocalPlayer.IsHypnotised() || MeetingHud.Instance));
         }
 
         internal virtual bool DeadCriteria()
@@ -185,17 +185,22 @@ namespace TownOfUs.Roles
             foreach (var jest in GetRoles(RoleEnum.Jester))
             {
                 var jestRole = (Jester)jest;
-                if (jestRole.VotedOut) return;
+                if (jestRole.VotedOut && CustomGameOptions.NeutralEvilWinEndsGame) return;
             }
             foreach (var exe in GetRoles(RoleEnum.Executioner))
             {
                 var exeRole = (Executioner)exe;
-                if (exeRole.TargetVotedOut) return;
+                if (exeRole.TargetVotedOut && CustomGameOptions.NeutralEvilWinEndsGame) return;
             }
             foreach (var doom in GetRoles(RoleEnum.Doomsayer))
             {
                 var doomRole = (Doomsayer)doom;
-                if (doomRole.WonByGuessing) return;
+                if (doomRole.WonByGuessing && CustomGameOptions.NeutralEvilWinEndsGame) return;
+            }
+            foreach (var sc in GetRoles(RoleEnum.SoulCollector))
+            {
+                var scRole = (SoulCollector)sc;
+                if (scRole.CollectedSouls && CustomGameOptions.NeutralEvilWinEndsGame) return;
             }
 
             VampireWins = true;
@@ -257,7 +262,7 @@ namespace TownOfUs.Roles
             return true;
         }
 
-        internal virtual bool NeutralWin(LogicGameFlowNormal __instance)
+        internal virtual bool GameEnd(LogicGameFlowNormal __instance)
         {
             return true;
         }
@@ -266,7 +271,8 @@ namespace TownOfUs.Roles
 
         protected virtual string NameText(bool revealTasks, bool revealRole, bool revealModifier, bool revealLover, PlayerVoteArea player = null)
         {
-            if (CamouflageUnCamouflage.IsCamoed && player == null) return "";
+            if (PlayerControl.LocalPlayer.IsHypnotised() && Player.GetCustomOutfitType() == CustomPlayerOutfitType.Morph) return PlayerControl.LocalPlayer.GetDefaultOutfit().PlayerName;
+            else if (((CamouflageUnCamouflage.IsCamoed && !PlayerControl.LocalPlayer.IsHypnotised()) || (PlayerControl.LocalPlayer.IsHypnotised() && PlayerControl.LocalPlayer != Player)) && player == null) return "";
 
             if (Player == null) return "";
 
@@ -616,10 +622,10 @@ namespace TownOfUs.Roles
             }
         }
 
-        [HarmonyPatch(typeof(PlayerControl._CoSetTasks_d__126), nameof(PlayerControl._CoSetTasks_d__126.MoveNext))]
+        [HarmonyPatch(typeof(PlayerControl._CoSetTasks_d__141), nameof(PlayerControl._CoSetTasks_d__141.MoveNext))]
         public static class PlayerControl_SetTasks
         {
-            public static void Postfix(PlayerControl._CoSetTasks_d__126 __instance)
+            public static void Postfix(PlayerControl._CoSetTasks_d__141 __instance)
             {
                 if (__instance == null) return;
                 var player = __instance.__4__this;
@@ -673,12 +679,16 @@ namespace TownOfUs.Roles
                     }
                 }
 
-                if (GameData.Instance.TotalTasks <= GameData.Instance.CompletedTasks) return true;
+                if (GameData.Instance.TotalTasks <= GameData.Instance.CompletedTasks)
+                {
+                    GameManager.Instance.RpcEndGame(GameOverReason.HumansByTask, false);
+                    return false;
+                }
                 
                 var result = true;
                 foreach (var role in AllRoles)
                 {
-                    var roleIsEnd = role.NeutralWin(__instance);
+                    var roleIsEnd = role.GameEnd(__instance);
                     var modifier = Modifier.GetModifier(role.Player);
                     bool modifierIsEnd = true;
                     var alives = PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList();
@@ -699,6 +709,33 @@ namespace TownOfUs.Roles
             }
         }
 
+        [HarmonyPatch]
+        public static class EndGameDisconnect
+        {
+            [HarmonyPatch(typeof(GameManager), nameof(GameManager.RpcEndGame))]
+            public static bool Prefix(GameManager __instance, GameOverReason endReason)
+            {
+                if (endReason == GameOverReason.ImpostorDisconnect)
+                {
+                    foreach (var player in PlayerControl.AllPlayerControls)
+                    {
+                        if (player.Data.IsDead || player.Data.Disconnected) continue;
+                        if (player.Is(Faction.NeutralKilling) || (player.IsCrewKiller() && CustomGameOptions.CrewKillersContinue)) return false;
+                    }
+                }
+                else if (endReason == GameOverReason.HumansDisconnect)
+                {
+                    foreach (var player in PlayerControl.AllPlayerControls)
+                    {
+                        if (player.Data.IsDead || player.Data.Disconnected) continue;
+                        if (player.Is(Faction.NeutralKilling) || (SetTraitor.WillBeTraitor == player &&
+                            PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count >= CustomGameOptions.LatestSpawn)) return false;
+                    }
+                }
+                return true;
+            }
+        }
+
         [HarmonyPatch(typeof(LobbyBehaviour), nameof(LobbyBehaviour.Start))]
         public static class LobbyBehaviour_Start
         {
@@ -714,6 +751,11 @@ namespace TownOfUs.Roles
                 {
                     ((Tracker)role).TrackerArrows.Values.DestroyAll();
                     ((Tracker)role).TrackerArrows.Clear();
+                }
+                foreach (var role in AllRoles.Where(x => x.RoleType == RoleEnum.Aurial))
+                {
+                    ((Aurial)role).SenseArrows.Values.DestroyAll();
+                    ((Aurial)role).SenseArrows.Clear();
                 }
                 foreach (var role in AllRoles.Where(x => x.RoleType == RoleEnum.Amnesiac))
                 {
@@ -748,7 +790,7 @@ namespace TownOfUs.Roles
                 switch (name)
                 {
                     case StringNames.NoExileTie:
-                        if (ExileController.Instance.exiled == null)
+                        if (ExileController.Instance.initData.networkedPlayer == null)
                         {
                             foreach (var oracle in GetRoles(RoleEnum.Oracle))
                             {
@@ -766,8 +808,8 @@ namespace TownOfUs.Roles
                     case StringNames.ExileTextPP:
                     case StringNames.ExileTextSP:
                         {
-                            if (ExileController.Instance.exiled == null) return;
-                            var info = ExileController.Instance.exiled;
+                            if (ExileController.Instance.initData.networkedPlayer == null) return;
+                            var info = ExileController.Instance.initData.networkedPlayer;
                             var role = GetRole(info.Object);
                             if (role == null) return;
                             var roleName = role.RoleType == RoleEnum.Glitch ? role.Name : $"The {role.Name}";

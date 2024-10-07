@@ -22,13 +22,13 @@ namespace TownOfUs.Roles
         public DateTime LastKill { get; set; }
         public bool PestilenceWins { get; set; }
 
-        internal override bool NeutralWin(LogicGameFlowNormal __instance)
+        internal override bool GameEnd(LogicGameFlowNormal __instance)
         {
             if (Player.Data.IsDead || Player.Data.Disconnected) return true;
 
             if (PlayerControl.AllPlayerControls.ToArray().Count(x => !x.Data.IsDead && !x.Data.Disconnected) <= 2 &&
                     PlayerControl.AllPlayerControls.ToArray().Count(x => !x.Data.IsDead && !x.Data.Disconnected &&
-                    (x.Data.IsImpostor() || x.Is(Faction.NeutralKilling))) == 1)
+                    (x.Data.IsImpostor() || x.Is(Faction.NeutralKilling) || x.IsCrewKiller())) == 1)
             {
                 Utils.Rpc(CustomRPC.PestilenceWin, Player.PlayerId);
                 Wins();

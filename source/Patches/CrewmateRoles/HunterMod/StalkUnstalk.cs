@@ -1,7 +1,7 @@
 using HarmonyLib;
 using TownOfUs.Roles;
 
-namespace TownOfUs.CrewmateRoles.VeteranMod
+namespace TownOfUs.CrewmateRoles.HunterMod
 {
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
     [HarmonyPriority(Priority.Last)]

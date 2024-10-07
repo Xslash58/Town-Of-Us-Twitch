@@ -3,6 +3,7 @@ using HarmonyLib;
 using TownOfUs.Roles;
 using UnityEngine;
 using TownOfUs.Extensions;
+using TownOfUs.Roles.Modifiers;
 
 namespace TownOfUs.NeutralRoles.PlaguebearerMod
 {
@@ -19,15 +20,21 @@ namespace TownOfUs.NeutralRoles.PlaguebearerMod
             var infectButton = __instance.KillButton;
             var role = Role.GetRole<Plaguebearer>(PlayerControl.LocalPlayer);
 
-            foreach (var playerId in role.InfectedPlayers)
+            if (!PlayerControl.LocalPlayer.IsHypnotised())
             {
-                var player = Utils.PlayerById(playerId);
-                var data = player?.Data;
-                if (data == null || data.Disconnected || data.IsDead || PlayerControl.LocalPlayer.Data.IsDead || playerId == PlayerControl.LocalPlayer.PlayerId)
-                    continue;
+                foreach (var playerId in role.InfectedPlayers)
+                {
+                    var player = Utils.PlayerById(playerId);
+                    var data = player?.Data;
+                    if (data == null || data.Disconnected || data.IsDead || PlayerControl.LocalPlayer.Data.IsDead || playerId == PlayerControl.LocalPlayer.PlayerId)
+                        continue;
 
-                player.myRend().material.SetColor("_VisorColor", role.Color);
-                player.nameText().color = Color.black;
+                    player.myRend().material.SetColor("_VisorColor", role.Color);
+
+                    var colour = Color.black;
+                    if (player.Is(ModifierEnum.Shy)) colour.a = Modifier.GetModifier<Shy>(player).Opacity;
+                    player.nameText().color = colour;
+                }
             }
 
             infectButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)

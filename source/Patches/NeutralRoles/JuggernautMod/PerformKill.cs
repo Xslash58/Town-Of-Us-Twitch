@@ -14,6 +14,7 @@ namespace TownOfUs.NeutralRoles.JuggernautMod
             if (!flag) return true;
             if (PlayerControl.LocalPlayer.Data.IsDead) return false;
             if (!PlayerControl.LocalPlayer.CanMove) return false;
+            if (!__instance.isActiveAndEnabled || __instance.isCoolingDown) return false;
             var role = Role.GetRole<Juggernaut>(PlayerControl.LocalPlayer);
             if (role.Player.inVent) return false;
             if (role.KillTimer() != 0) return false;

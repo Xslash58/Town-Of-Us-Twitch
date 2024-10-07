@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Hazel;
 using Reactor.Utilities;
+using UnityEngine;
 
 namespace TownOfUs.CustomOption
 {
@@ -49,6 +50,15 @@ namespace TownOfUs.CustomOption
                 else if (type == CustomOptionType.String) value = reader.ReadInt32();
 
                 customOption?.Set(value);
+
+                var panels = GameObject.FindObjectsOfType<ViewSettingsInfoPanel>();
+                foreach (var panel in panels) {
+                    if (panel.titleText.text == customOption.Name)
+                    {
+                        panel.SetInfo(StringNames.ImpostorsCategory, customOption.ToString(), 61);
+                        panel.titleText.text = customOption.Name;
+                    }
+                }
 
                 //PluginSingleton<TownOfUs>.Instance.Log.LogInfo($"{customOption?.Name} : {customOption}:");
             }

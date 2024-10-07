@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 using TMPro;
+using System.Linq;
+using TownOfUs.Extensions;
 
 namespace TownOfUs.Roles
 {
@@ -30,11 +32,19 @@ namespace TownOfUs.Roles
 
         public bool OnAlert => TimeRemaining > 0f;
 
+        internal override bool GameEnd(LogicGameFlowNormal __instance)
+        {
+            if (Player.Data.IsDead || Player.Data.Disconnected || !CustomGameOptions.CrewKillersContinue) return true;
+
+            if (PlayerControl.AllPlayerControls.ToArray().Count(x => !x.Data.IsDead && !x.Data.Disconnected && x.Data.IsImpostor()) > 0 && (UsesLeft > 0 || Enabled)) return false;
+
+            return true;
+        }
+
         public float AlertTimer()
         {
             var utcNow = DateTime.UtcNow;
             var timeSpan = utcNow - LastAlerted;
-            ;
             var num = CustomGameOptions.AlertCd * 1000f;
             var flag2 = num - (float) timeSpan.TotalMilliseconds < 0f;
             if (flag2) return 0;

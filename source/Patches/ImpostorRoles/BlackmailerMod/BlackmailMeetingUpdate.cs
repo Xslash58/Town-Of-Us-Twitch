@@ -4,10 +4,11 @@ using UnityEngine;
 using System.Linq;
 using System.Collections;
 using Reactor.Utilities;
+using AmongUs.QuickChat;
 
 namespace TownOfUs.ImpostorRoles.BlackmailerMod
 {
-    public class DisorientMeetingUpdate
+    public class BlackmailMeetingUpdate
     {
         public static bool shookAlready = false;
         public static Sprite PrevXMark = null;
@@ -99,6 +100,23 @@ namespace TownOfUs.ImpostorRoles.BlackmailerMod
         public class StopChatting
         {
             public static bool Prefix(TextBoxTMP __instance)
+            {
+                var blackmailers = Role.AllRoles.Where(x => x.RoleType == RoleEnum.Blackmailer && x.Player != null).Cast<Blackmailer>();
+                foreach (var role in blackmailers)
+                {
+                    if (MeetingHud.Instance && role.Blackmailed != null && !role.Blackmailed.Data.IsDead && role.Blackmailed.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+
+        [HarmonyPatch(typeof(QuickChatMenu), nameof(QuickChatMenu.Open))]
+        public class DisableQuickChat
+        {
+            public static bool Prefix(QuickChatMenu __instance)
             {
                 var blackmailers = Role.AllRoles.Where(x => x.RoleType == RoleEnum.Blackmailer && x.Player != null).Cast<Blackmailer>();
                 foreach (var role in blackmailers)

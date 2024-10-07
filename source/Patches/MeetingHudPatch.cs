@@ -23,7 +23,7 @@ namespace TownOfUs.Patches
         [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.CoIntro))]
         [HarmonyPostfix]
 
-        public static void Postfix(GameData.PlayerInfo reporter, GameData.PlayerInfo reportedBody, Il2CppInterop.Runtime.InteropTypes.Arrays.Il2CppReferenceArray<GameData.PlayerInfo> deadBodies)
+        public static void Postfix(NetworkedPlayerInfo reporter, NetworkedPlayerInfo reportedBody, Il2CppInterop.Runtime.InteropTypes.Arrays.Il2CppReferenceArray<NetworkedPlayerInfo> deadBodies)
         {
             if (!CustomGameOptions.HideNames) return;
 

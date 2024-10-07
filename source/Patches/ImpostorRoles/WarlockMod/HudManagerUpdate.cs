@@ -44,6 +44,16 @@ namespace TownOfUs.ImpostorRoles.WarlockMod
                     role.StartUseTime = DateTime.UtcNow;
                     role.Charging = false;
                 }
+                if (PlayerControl.LocalPlayer.moveable && __instance.KillButton.currentTarget != null)
+                {
+                    role.ChargeText.color = Palette.EnabledColor;
+                    role.ChargeText.material.SetFloat("_Desat", 0f);
+                }
+                else
+                {
+                    role.ChargeText.color = Palette.DisabledClear;
+                    role.ChargeText.material.SetFloat("_Desat", 1f);
+                }
             }
             else if (PlayerControl.LocalPlayer.killTimer == 0f)
             {
@@ -52,12 +62,24 @@ namespace TownOfUs.ImpostorRoles.WarlockMod
                     role.StartChargeTime = DateTime.UtcNow;
                     role.Charging = true;
                 }
+                if (PlayerControl.LocalPlayer.moveable && __instance.KillButton.currentTarget != null)
+                {
+                    role.ChargeText.color = Palette.EnabledColor;
+                    role.ChargeText.material.SetFloat("_Desat", 0f);
+                }
+                else
+                {
+                    role.ChargeText.color = Palette.DisabledClear;
+                    role.ChargeText.material.SetFloat("_Desat", 1f);
+                }
             }
             else
             {
                 role.ChargePercent = 0;
                 role.Charging = false;
                 role.UsingCharge = false;
+                role.ChargeText.color = Palette.DisabledClear;
+                role.ChargeText.material.SetFloat("_Desat", 1f);
             }
             return;
         }

@@ -78,6 +78,11 @@ namespace TownOfUs.Roles.Modifiers
                     grenadier.Flash();
                 }
             }
+            else if (role is Hypnotist hypnotist)
+            {
+                hypnotist.HypnotisedPlayers.Add(hypnotist.Player.PlayerId);
+                if (hypnotist.HysteriaActive) hypnotist.Hysteria();
+            }
             else if (role is Janitor janitor)
             {
                 Utils.Rpc(CustomRPC.JanitorClean, PlayerControl.LocalPlayer.PlayerId, db.ParentId);
@@ -101,7 +106,7 @@ namespace TownOfUs.Roles.Modifiers
                     if (morphling.SampledPlayer == null) morphling._morphButton.graphic.sprite = TownOfUs.MorphSprite;
                     morphling.SampledPlayer = corpse;
                     morphling.MorphedPlayer = corpse;
-                    Utils.Morph(morphling.Player, corpse, true);
+                    Utils.Morph(morphling.Player, corpse);
                 }
             }
             else if (role is Swooper swooper)
@@ -175,6 +180,7 @@ namespace TownOfUs.Roles.Modifiers
                 else PlayerControl.LocalPlayer.SetKillTimer(GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown + CustomGameOptions.DetonateDelay);
                 DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(null);
                 bomber.Bomb = BombExtentions.CreateBomb(pos);
+                if (CustomGameOptions.AllImpsSeeBomb) Utils.Rpc(CustomRPC.Plant, pos.x, pos.y, pos.z);
             }
         }
     }

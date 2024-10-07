@@ -1,6 +1,7 @@
 using HarmonyLib;
 using TownOfUs.Extensions;
 using TownOfUs.Roles;
+using TownOfUs.Roles.Modifiers;
 using UnityEngine;
 
 namespace TownOfUs.NeutralRoles.GuardianAngelMod
@@ -36,7 +37,15 @@ namespace TownOfUs.NeutralRoles.GuardianAngelMod
 
             if (MeetingHud.Instance != null) UpdateMeeting(MeetingHud.Instance, role);
 
-            if (!CustomGameOptions.GAKnowsTargetRole) role.target.nameText().color = new Color(1f, 0.85f, 0f, 1f);
+            if (!PlayerControl.LocalPlayer.IsHypnotised())
+            {
+                if (!CustomGameOptions.GAKnowsTargetRole)
+                {
+                    var colour = new Color(1f, 0.85f, 0f);
+                    if (role.target.Is(ModifierEnum.Shy)) colour.a = Modifier.GetModifier<Shy>(role.target).Opacity;
+                    role.target.nameText().color = colour;
+                }
+            }
 
             if (!role.target.Data.IsDead && !role.target.Data.Disconnected) return;
 

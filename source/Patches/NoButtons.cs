@@ -2,7 +2,7 @@ using HarmonyLib;
 
 namespace TownOfUs.Patches
 {
-    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetRole))]
+    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CoSetRole))]
     public class NoButtons
     {
         public static void Postfix()

@@ -19,9 +19,9 @@ namespace TownOfUs.CustomOption
 
         protected internal float Get()
         {
-            return (float) Value;
+            return (float)Value;
         }
-       
+
         protected internal void Increase()
         {
             var increment = Increment > 5 && Input.GetKeyInt(KeyCode.LeftShift) ? 5 : Increment;
@@ -46,8 +46,6 @@ namespace TownOfUs.CustomOption
         {
             base.OptionCreated();
             var number = Setting.Cast<NumberOption>();
-
-            number.TitleText.text = Name;
             number.ValidRange = new FloatRange(Min, Max);
             number.Increment = Increment;
             number.Value = number.oldValue = Get();

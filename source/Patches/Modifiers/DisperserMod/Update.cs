@@ -27,7 +27,7 @@ namespace TownOfUs.Modifiers.DisperserMod
             if (role.DisperseButton == null)
             {
                 role.DisperseButton = Object.Instantiate(__instance.KillButton, __instance.transform.parent);
-                role.DisperseButton.GetComponentsInChildren<TextMeshPro>()[0].text = "";
+                foreach (var text in role.DisperseButton.GetComponentsInChildren<TextMeshPro>()) text.text = "";
                 role.DisperseButton.graphic.enabled = true;
                 role.DisperseButton.graphic.sprite = DisperseButton;
             }

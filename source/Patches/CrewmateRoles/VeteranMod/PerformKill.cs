@@ -20,6 +20,8 @@ namespace TownOfUs.CrewmateRoles.VeteranMod
                 if (__instance.isCoolingDown) return false;
                 if (!__instance.isActiveAndEnabled) return false;
                 if (role.AlertTimer() != 0) return false;
+                var abilityUsed = Utils.AbilityUsed(PlayerControl.LocalPlayer);
+                if (!abilityUsed) return false;
                 role.TimeRemaining = CustomGameOptions.AlertDuration;
                 role.UsesLeft--;
                 role.Alert();

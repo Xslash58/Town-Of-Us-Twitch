@@ -17,6 +17,7 @@ namespace TownOfUs.ImpostorRoles.BlackmailerMod
             var target = role.ClosestPlayer;
             if (__instance == role.BlackmailButton)
             {
+                if (role.Player.inVent) return false;
                 if (!__instance.isActiveAndEnabled || role.ClosestPlayer == null) return false;
                 if (__instance.isCoolingDown) return false;
                 if (!__instance.isActiveAndEnabled) return false;

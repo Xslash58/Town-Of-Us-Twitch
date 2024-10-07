@@ -51,7 +51,7 @@ namespace TownOfUs.NeutralRoles.GuardianAngelMod
             else protectButton.SetCoolDown(0f, CustomGameOptions.ProtectCd);
 
             var renderer = protectButton.graphic;
-            if (role.Protecting || (!protectButton.isCoolingDown && role.ButtonUsable))
+            if (role.Protecting || (!protectButton.isCoolingDown && role.ButtonUsable && PlayerControl.LocalPlayer.moveable))
             {
                 renderer.color = Palette.EnabledColor;
                 renderer.material.SetFloat("_Desat", 0f);

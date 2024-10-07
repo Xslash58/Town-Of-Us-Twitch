@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using System.Linq;
 using TownOfUs.Roles;
 using UnityEngine;
 
@@ -39,7 +40,11 @@ namespace TownOfUs.NeutralRoles.WerewolfMod
             if (role.Rampaged)
             {
                 role.RampageButton.SetCoolDown(role.TimeRemaining, CustomGameOptions.RampageDuration);
-                Utils.SetTarget(ref role.ClosestPlayer, __instance.KillButton, float.NaN);
+                role.RampageButton.graphic.color = Palette.EnabledColor;
+                role.RampageButton.graphic.material.SetFloat("_Desat", 0f);
+                if ((CamouflageUnCamouflage.IsCamoed && CustomGameOptions.CamoCommsKillAnyone) || PlayerControl.LocalPlayer.IsHypnotised()) Utils.SetTarget(ref role.ClosestPlayer, __instance.KillButton);
+                else if (role.Player.IsLover()) Utils.SetTarget(ref role.ClosestPlayer, __instance.KillButton, float.NaN, PlayerControl.AllPlayerControls.ToArray().Where(x => !x.IsLover()).ToList());
+                else Utils.SetTarget(ref role.ClosestPlayer, __instance.KillButton);
 
                 return;
             }
@@ -47,8 +52,16 @@ namespace TownOfUs.NeutralRoles.WerewolfMod
             {
                 role.RampageButton.SetCoolDown(role.RampageTimer(), CustomGameOptions.RampageCd);
 
-                role.RampageButton.graphic.color = Palette.EnabledColor;
-                role.RampageButton.graphic.material.SetFloat("_Desat", 0f);
+                if (role.RampageTimer() > 0f || !PlayerControl.LocalPlayer.moveable)
+                {
+                    role.RampageButton.graphic.color = Palette.DisabledClear;
+                    role.RampageButton.graphic.material.SetFloat("_Desat", 1f);
+                }
+                else
+                {
+                    role.RampageButton.graphic.color = Palette.EnabledColor;
+                    role.RampageButton.graphic.material.SetFloat("_Desat", 0f);
+                }
 
                 return;
             }

@@ -10,8 +10,6 @@ using TownOfUs.Patches;
 using AmongUs.GameOptions;
 using TownOfUs.CrewmateRoles.ImitatorMod;
 using TownOfUs.Roles.Modifiers;
-using TownOfUs.CrewmateRoles.AurialMod;
-using TownOfUs.Patches.ScreenEffects;
 
 namespace TownOfUs.ImpostorRoles.TraitorMod
 {
@@ -29,7 +27,7 @@ namespace TownOfUs.ImpostorRoles.TraitorMod
 
         public static void ExileControllerPostfix(ExileController __instance)
         {
-            var exiled = __instance.exiled?.Object;
+            var exiled = __instance.initData.networkedPlayer?.Object;
             var alives = PlayerControl.AllPlayerControls.ToArray()
                     .Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList();
             foreach (var player in alives)
@@ -56,6 +54,25 @@ namespace TownOfUs.ImpostorRoles.TraitorMod
 
                 if (PlayerControl.LocalPlayer.Is(RoleEnum.Investigator)) Footprint.DestroyAll(Role.GetRole<Investigator>(PlayerControl.LocalPlayer));
 
+                if (PlayerControl.LocalPlayer.Is(RoleEnum.Detective))
+                {
+                    var detecRole = Role.GetRole<Detective>(PlayerControl.LocalPlayer);
+                    detecRole.ExamineButton.gameObject.SetActive(false);
+                    foreach (GameObject scene in detecRole.CrimeScenes)
+                    {
+                        UnityEngine.Object.Destroy(scene);
+                    }
+                }
+
+                if (PlayerControl.LocalPlayer.Is(RoleEnum.Hunter))
+                {
+                    var hunterRole = Role.GetRole<Hunter>(PlayerControl.LocalPlayer);
+                    UnityEngine.Object.Destroy(hunterRole.UsesText);
+                    hunterRole.StalkButton.SetTarget(null);
+                    hunterRole.StalkButton.gameObject.SetActive(false);
+                    HudManager.Instance.KillButton.buttonLabelText.gameObject.SetActive(false);
+                }
+
                 if (PlayerControl.LocalPlayer.Is(RoleEnum.Engineer))
                 {
                     var engineerRole = Role.GetRole<Engineer>(PlayerControl.LocalPlayer);
@@ -68,6 +85,13 @@ namespace TownOfUs.ImpostorRoles.TraitorMod
                     trackerRole.TrackerArrows.Values.DestroyAll();
                     trackerRole.TrackerArrows.Clear();
                     Object.Destroy(trackerRole.UsesText);
+                }
+
+                if (PlayerControl.LocalPlayer.Is(RoleEnum.Aurial))
+                {
+                    var aurialRole = Role.GetRole<Aurial>(PlayerControl.LocalPlayer);
+                    aurialRole.SenseArrows.Values.DestroyAll();
+                    aurialRole.SenseArrows.Clear();
                 }
 
                 if (PlayerControl.LocalPlayer.Is(RoleEnum.Transporter))
@@ -93,14 +117,6 @@ namespace TownOfUs.ImpostorRoles.TraitorMod
                 {
                     var trapperRole = Role.GetRole<Trapper>(PlayerControl.LocalPlayer);
                     Object.Destroy(trapperRole.UsesText);
-                }
-
-                if (PlayerControl.LocalPlayer.Is(RoleEnum.Aurial))
-                {
-                    var aurial = Role.GetRole<Aurial>(PlayerControl.LocalPlayer);
-                    aurial.NormalVision = true;
-                    SeeAll.AllToNormal();
-                    CameraEffect.singleton.materials.Clear();
                 }
 
                 if (PlayerControl.LocalPlayer == StartImitate.ImitatingPlayer) StartImitate.ImitatingPlayer = null;
@@ -137,6 +153,8 @@ namespace TownOfUs.ImpostorRoles.TraitorMod
                     player2.nameText().color = Patches.Colors.Impostor;
                 }
             }
+
+            WillBeTraitor = null;
 
             if (CustomGameOptions.TraitorCanAssassin) new Assassin(player);
 

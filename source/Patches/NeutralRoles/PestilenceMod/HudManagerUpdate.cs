@@ -1,4 +1,5 @@
 using HarmonyLib;
+using System.Linq;
 using TownOfUs.Roles;
 
 namespace TownOfUs.NeutralRoles.PestilenceMod
@@ -20,7 +21,9 @@ namespace TownOfUs.NeutralRoles.PestilenceMod
 
             __instance.KillButton.SetCoolDown(role.KillTimer(), CustomGameOptions.PestKillCd);
 
-            Utils.SetTarget(ref role.ClosestPlayer, __instance.KillButton);
+            if ((CamouflageUnCamouflage.IsCamoed && CustomGameOptions.CamoCommsKillAnyone) || PlayerControl.LocalPlayer.IsHypnotised()) Utils.SetTarget(ref role.ClosestPlayer, __instance.KillButton);
+            else if (role.Player.IsLover()) Utils.SetTarget(ref role.ClosestPlayer, __instance.KillButton, float.NaN, PlayerControl.AllPlayerControls.ToArray().Where(x => !x.IsLover()).ToList());
+            else Utils.SetTarget(ref role.ClosestPlayer, __instance.KillButton);
         }
     }
 }

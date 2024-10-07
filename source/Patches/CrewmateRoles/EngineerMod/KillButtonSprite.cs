@@ -10,7 +10,6 @@ namespace TownOfUs.CrewmateRoles.EngineerMod
         [HarmonyPatch(nameof(HudManager.Update))]
         public static void Postfix(HudManager __instance)
         {
-            if (CustomGameOptions.GameMode == GameMode.Cultist) return;
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
             if (PlayerControl.LocalPlayer == null) return;
             if (PlayerControl.LocalPlayer.Data == null) return;
@@ -48,15 +47,19 @@ namespace TownOfUs.CrewmateRoles.EngineerMod
             if (system == null) return;
             var sabActive = system.AnyActive;
             var renderer = __instance.KillButton.graphic;
-            if (sabActive & role.ButtonUsable & __instance.KillButton.enabled)
+            if (sabActive & role.ButtonUsable & __instance.KillButton.enabled && PlayerControl.LocalPlayer.moveable)
             {
                 renderer.color = Palette.EnabledColor;
                 renderer.material.SetFloat("_Desat", 0f);
+                role.UsesText.color = Palette.EnabledColor;
+                role.UsesText.material.SetFloat("_Desat", 0f);
                 return;
             }
 
             renderer.color = Palette.DisabledClear;
             renderer.material.SetFloat("_Desat", 1f);
+            role.UsesText.color = Palette.DisabledClear;
+            role.UsesText.material.SetFloat("_Desat", 1f);
         }
     }
 }

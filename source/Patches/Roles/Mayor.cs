@@ -1,4 +1,6 @@
+using System.Linq;
 using UnityEngine;
+using TownOfUs.Extensions;
 
 namespace TownOfUs.Roles
 {
@@ -8,7 +10,7 @@ namespace TownOfUs.Roles
         {
             Name = "Mayor";
             ImpostorText = () => "Reveal Yourself To Save The Town";
-            TaskText = () => "Reveal yourself when the time is right";
+            TaskText = () => "Lead the town to victory";
             Color = Patches.Colors.Mayor;
             RoleType = RoleEnum.Mayor;
             AddToRoleHistory(RoleType);
@@ -27,6 +29,15 @@ namespace TownOfUs.Roles
         {
             if (!Player.Data.IsDead) return Revealed || base.RoleCriteria();
             return false || base.RoleCriteria();
+        }
+
+        internal override bool GameEnd(LogicGameFlowNormal __instance)
+        {
+            if (Player.Data.IsDead || Player.Data.Disconnected || !CustomGameOptions.CrewKillersContinue) return true;
+
+            if (PlayerControl.AllPlayerControls.ToArray().Count(x => !x.Data.IsDead && !x.Data.Disconnected && x.Data.IsImpostor()) > 0) return false;
+
+            return true;
         }
     }
 }

@@ -24,6 +24,8 @@ namespace TownOfUs.ImpostorRoles.EscapistMod
                 if (!__instance.isActiveAndEnabled) return false;
                 if (role.EscapeButton.graphic.sprite == MarkSprite)
                 {
+                    var abilityUsed = Utils.AbilityUsed(PlayerControl.LocalPlayer);
+                    if (!abilityUsed) return false;
                     role.EscapePoint = PlayerControl.LocalPlayer.transform.position;
                     role.EscapeButton.graphic.sprite = EscapeSprite;
                     DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(null);
@@ -34,6 +36,8 @@ namespace TownOfUs.ImpostorRoles.EscapistMod
                 {
                     if (__instance.isCoolingDown) return false;
                     if (role.EscapeTimer() != 0) return false;
+                    var abilityUsed = Utils.AbilityUsed(PlayerControl.LocalPlayer);
+                    if (!abilityUsed) return false;
                     Utils.Rpc(CustomRPC.Escape, PlayerControl.LocalPlayer.PlayerId, role.EscapePoint);
                     role.LastEscape = DateTime.UtcNow;
                     Escapist.Escape(role.Player);

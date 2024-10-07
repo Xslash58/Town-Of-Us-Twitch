@@ -50,7 +50,7 @@ namespace TownOfUs.Roles
 
             if (Player.GetCustomOutfitType() != CustomPlayerOutfitType.PlayerNameOnly)
             {
-                Player.SetOutfit(CustomPlayerOutfitType.PlayerNameOnly, new GameData.PlayerOutfit()
+                Player.SetOutfit(CustomPlayerOutfitType.PlayerNameOnly, new NetworkedPlayerInfo.PlayerOutfit()
                 {
                     ColorId = Player.GetDefaultOutfit().ColorId,
                     HatId = "",

@@ -22,9 +22,17 @@ namespace TownOfUs.CrewmateRoles.InvestigatorMod
 
         public static void Postfix(HudManager __instance)
         {
-            if (!GameStarted || !PlayerControl.LocalPlayer.Is(RoleEnum.Investigator)) return;
+            if ((GameManager.Instance && !GameManager.Instance.GameHasStarted) || !PlayerControl.LocalPlayer.Is(RoleEnum.Investigator)) return;
+            if (MeetingHud.Instance) return;
             // New Footprint
             var investigator = Role.GetRole<Investigator>(PlayerControl.LocalPlayer);
+
+            if (PlayerControl.LocalPlayer.Data.IsDead)
+            {
+                Footprint.DestroyAll(investigator);
+                return;
+            }
+
             _time += Time.deltaTime;
             if (_time >= Interval)
             {

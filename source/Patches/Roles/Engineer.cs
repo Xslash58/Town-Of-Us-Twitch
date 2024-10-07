@@ -8,7 +8,7 @@ namespace TownOfUs.Roles
         {
             Name = "Engineer";
             ImpostorText = () => "Maintain Important Systems On The Ship";
-            TaskText = () => CustomGameOptions.GameMode == GameMode.Cultist ? "Vent around" : "Vent around and fix sabotages";
+            TaskText = () => "Vent around and fix sabotages";
             Color = Patches.Colors.Engineer;
             RoleType = RoleEnum.Engineer;
             AddToRoleHistory(RoleType);

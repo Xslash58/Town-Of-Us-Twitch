@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Linq;
 using TownOfUs.Extensions;
 using AmongUs.GameOptions;
+using TownOfUs.Roles.Modifiers;
 
 namespace TownOfUs.ImpostorRoles.BlackmailerMod
 {
@@ -26,7 +27,10 @@ namespace TownOfUs.ImpostorRoles.BlackmailerMod
                 role.BlackmailButton.gameObject.SetActive(false);
             }
 
+            if (PlayerControl.LocalPlayer.Data.IsDead) role.BlackmailButton.SetTarget(null);
+
             role.BlackmailButton.graphic.sprite = Disorient;
+
             role.BlackmailButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
                     && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
@@ -35,30 +39,35 @@ namespace TownOfUs.ImpostorRoles.BlackmailerMod
                 player => role.Blackmailed?.PlayerId != player.PlayerId
             ).ToList();
 
-            Utils.SetTarget(ref role.ClosestPlayer, role.BlackmailButton, GameOptionsData.KillDistances[GameOptionsManager.Instance.currentNormalGameOptions.KillDistance], notBlackmailed);
-
             role.BlackmailButton.SetCoolDown(role.BlackmailTimer(), CustomGameOptions.BlackmailCd);
+            if (PlayerControl.LocalPlayer.moveable) Utils.SetTarget(ref role.ClosestPlayer, role.BlackmailButton, float.NaN, notBlackmailed);
+            else role.BlackmailButton.SetTarget(null);
 
-            if (role.Blackmailed != null && !role.Blackmailed.Data.IsDead && !role.Blackmailed.Data.Disconnected)
+            if (!PlayerControl.LocalPlayer.IsHypnotised())
             {
-                role.Blackmailed.myRend().material.SetFloat("_Outline", 1f);
-                role.Blackmailed.myRend().material.SetColor("_OutlineColor", new Color(0.3f, 0.0f, 0.0f));
-                if (role.Blackmailed.GetCustomOutfitType() != CustomPlayerOutfitType.Camouflage &&
-                    role.Blackmailed.GetCustomOutfitType() != CustomPlayerOutfitType.Swooper)
-                    role.Blackmailed.nameText().color = new Color(0.3f, 0.0f, 0.0f);
-                else role.Blackmailed.nameText().color = Color.clear;
-            }
+                if (role.Blackmailed != null && !role.Blackmailed.Data.IsDead && !role.Blackmailed.Data.Disconnected)
+                {
+                    if (role.Blackmailed.GetCustomOutfitType() != CustomPlayerOutfitType.Camouflage &&
+                        role.Blackmailed.GetCustomOutfitType() != CustomPlayerOutfitType.Swooper)
+                    {
+                        var colour = new Color(0.3f, 0f, 0f);
+                        if (role.Blackmailed.Is(ModifierEnum.Shy)) colour.a = Modifier.GetModifier<Shy>(role.Blackmailed).Opacity;
+                        role.Blackmailed.nameText().color = colour;
+                    }
+                    else role.Blackmailed.nameText().color = Color.clear;
+                }
 
-            var imps = PlayerControl.AllPlayerControls.ToArray().Where(
-                player => player.Data.IsImpostor() && player != role.Blackmailed
-            ).ToList();
+                var imps = PlayerControl.AllPlayerControls.ToArray().Where(
+                    player => player.Data.IsImpostor() && player != role.Blackmailed
+                ).ToList();
 
-            foreach (var imp in imps)
-            {
-                if ((imp.GetCustomOutfitType() == CustomPlayerOutfitType.Camouflage ||
-                    imp.GetCustomOutfitType() == CustomPlayerOutfitType.Swooper)) imp.nameText().color = Color.clear;
-                else if (imp.nameText().color == Color.clear ||
-                    imp.nameText().color == new Color(0.3f, 0.0f, 0.0f)) imp.nameText().color = Patches.Colors.Impostor;
+                foreach (var imp in imps)
+                {
+                    if (imp.GetCustomOutfitType() == CustomPlayerOutfitType.Camouflage ||
+                        imp.GetCustomOutfitType() == CustomPlayerOutfitType.Swooper) imp.nameText().color = Color.clear;
+                    else if (imp.nameText().color == Color.clear ||
+                        imp.nameText().color == new Color(0.3f, 0.0f, 0.0f)) imp.nameText().color = Patches.Colors.Impostor;
+                }
             }
         }
     }

@@ -2,6 +2,7 @@
 using HarmonyLib;
 using TownOfUs.Extensions;
 using TownOfUs.Roles;
+using TownOfUs.Roles.Modifiers;
 using UnityEngine;
 
 namespace TownOfUs.NeutralRoles.ArsonistMod
@@ -19,15 +20,21 @@ namespace TownOfUs.NeutralRoles.ArsonistMod
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Arsonist)) return;
             var role = Role.GetRole<Arsonist>(PlayerControl.LocalPlayer);
 
-            foreach (var playerId in role.DousedPlayers)
+            if (!PlayerControl.LocalPlayer.IsHypnotised())
             {
-                var player = Utils.PlayerById(playerId);
-                var data = player?.Data;
-                if (data == null || data.Disconnected || data.IsDead || PlayerControl.LocalPlayer.Data.IsDead)
-                    continue;
+                foreach (var playerId in role.DousedPlayers)
+                {
+                    var player = Utils.PlayerById(playerId);
+                    var data = player?.Data;
+                    if (data == null || data.Disconnected || data.IsDead || PlayerControl.LocalPlayer.Data.IsDead)
+                        continue;
 
-                player.myRend().material.SetColor("_VisorColor", role.Color);
-                player.nameText().color = Color.black;
+                    player.myRend().material.SetColor("_VisorColor", role.Color);
+
+                    var colour = Color.black;
+                    if (player.Is(ModifierEnum.Shy)) colour.a = Modifier.GetModifier<Shy>(player).Opacity;
+                    player.nameText().color = colour;
+                }
             }
 
             if (role.IgniteButton == null)
@@ -39,6 +46,8 @@ namespace TownOfUs.NeutralRoles.ArsonistMod
 
             role.IgniteButton.graphic.sprite = IgniteSprite;
             role.IgniteButton.transform.localPosition = new Vector3(-2f, 0f, 0f);
+
+            if (PlayerControl.LocalPlayer.Data.IsDead) role.IgniteButton.SetTarget(null);
 
             __instance.KillButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
                     && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
@@ -62,13 +71,19 @@ namespace TownOfUs.NeutralRoles.ArsonistMod
 
             if (role.DousedAlive < CustomGameOptions.MaxDoused)
             {
-                Utils.SetTarget(ref role.ClosestPlayerDouse, __instance.KillButton, float.NaN, notDoused);
+                if ((CamouflageUnCamouflage.IsCamoed && CustomGameOptions.CamoCommsKillAnyone) || PlayerControl.LocalPlayer.IsHypnotised()) Utils.SetTarget(ref role.ClosestPlayerDouse, __instance.KillButton, float.NaN, notDoused);
+                else if (role.Player.IsLover()) Utils.SetTarget(ref role.ClosestPlayerDouse, __instance.KillButton, float.NaN, PlayerControl.AllPlayerControls.ToArray().Where(x => !x.IsLover() && !role.DousedPlayers.Contains(x.PlayerId)).ToList());
+                else Utils.SetTarget(ref role.ClosestPlayerDouse, __instance.KillButton, float.NaN, notDoused);
             }
+            else __instance.KillButton.SetTarget(null);
 
             if (role.DousedAlive > 0)
             {
-                Utils.SetTarget(ref role.ClosestPlayerIgnite, role.IgniteButton, float.NaN, doused);
+                if ((CamouflageUnCamouflage.IsCamoed && CustomGameOptions.CamoCommsKillAnyone) || PlayerControl.LocalPlayer.IsHypnotised()) Utils.SetTarget(ref role.ClosestPlayerIgnite, role.IgniteButton, float.NaN, doused);
+                else if (role.Player.IsLover()) Utils.SetTarget(ref role.ClosestPlayerIgnite, role.IgniteButton, float.NaN, PlayerControl.AllPlayerControls.ToArray().Where(x => !x.IsLover() && role.DousedPlayers.Contains(x.PlayerId)).ToList());
+                else Utils.SetTarget(ref role.ClosestPlayerIgnite, role.IgniteButton, float.NaN, doused);
             }
+            else role.IgniteButton.SetTarget(null);
 
             return;
         }

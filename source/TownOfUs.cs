@@ -1,7 +1,4 @@
 using System;
-using System.Linq;
-using System.Net;
-using System.Net.Sockets;
 using System.Reflection;
 using BepInEx;
 using BepInEx.Configuration;
@@ -18,10 +15,11 @@ using Il2CppInterop.Runtime;
 using Il2CppInterop.Runtime.Injection;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using TownOfUs.Patches.ScreenEffects;
 using TownOfUs.CrewmateRoles.DetectiveMod;
+using TownOfUs.NeutralRoles.SoulCollectorMod;
 using System.IO;
+using Reactor.Utilities;
 
 namespace TownOfUs
 {
@@ -85,25 +83,31 @@ namespace TownOfUs
         public static Sprite ExamineSprite;
         public static Sprite EscapeSprite;
         public static Sprite MarkSprite;
-        public static Sprite Revive2Sprite;
-        public static Sprite WhisperSprite;
         public static Sprite ImitateSelectSprite;
         public static Sprite ImitateDeselectSprite;
         public static Sprite ObserveSprite;
         public static Sprite BiteSprite;
-        public static Sprite StakeSprite;
         public static Sprite RevealSprite;
         public static Sprite ConfessSprite;
         public static Sprite NoAbilitySprite;
         public static Sprite CamouflageSprite;
         public static Sprite CamoSprintSprite;
         public static Sprite CamoSprintFreezeSprite;
-        public static Sprite RadiateSprite;
         public static Sprite HackSprite;
         public static Sprite MimicSprite;
         public static Sprite LockSprite;
         public static Sprite StalkSprite;
         public static Sprite CrimeSceneSprite;
+        public static Sprite CampaignSprite;
+        public static Sprite FortifySprite;
+        public static Sprite HypnotiseSprite;
+        public static Sprite HysteriaSprite;
+        public static Sprite JailSprite;
+        public static Sprite InJailSprite;
+        public static Sprite ExecuteSprite;
+        public static Sprite CollectSprite;
+        public static Sprite ReapSprite;
+        public static Sprite SoulSprite;
 
         public static Sprite SettingsButtonSprite;
         public static Sprite CrewSettingsButtonSprite;
@@ -116,6 +120,8 @@ namespace TownOfUs
 
         public static Sprite ZoomPlusButton;
         public static Sprite ZoomMinusButton;
+        public static Sprite ZoomPlusActiveButton;
+        public static Sprite ZoomMinusActiveButton;
 
         public static AudioClip BeepClip;
 
@@ -126,14 +132,14 @@ namespace TownOfUs
 
         private Harmony _harmony;
 
-        public ConfigEntry<string> Ip { get; set; }
+        public static ConfigEntry<bool> DeadSeeGhosts { get; set; }
 
-        public ConfigEntry<ushort> Port { get; set; }
         public static string RuntimeLocation;
+        
         public override void Load()
         {
             RuntimeLocation = Path.GetDirectoryName(Assembly.GetAssembly(typeof(TownOfUs)).Location);
-
+            ReactorCredits.Register<TownOfUs>(ReactorCredits.AlwaysShow);
             System.Console.WriteLine("000.000.000.000/000000000000000000");
 
             _harmony = new Harmony("com.slushiegoose.townofus");
@@ -189,25 +195,31 @@ namespace TownOfUs
             ExamineSprite = CreateSprite("TownOfUs.Resources.Examine.png");
             EscapeSprite = CreateSprite("TownOfUs.Resources.Recall.png");
             MarkSprite = CreateSprite("TownOfUs.Resources.Mark.png");
-            Revive2Sprite = CreateSprite("TownOfUs.Resources.Revive2.png");
-            WhisperSprite = CreateSprite("TownOfUs.Resources.Whisper.png");
             ImitateSelectSprite = CreateSprite("TownOfUs.Resources.ImitateSelect.png");
             ImitateDeselectSprite = CreateSprite("TownOfUs.Resources.ImitateDeselect.png");
             ObserveSprite = CreateSprite("TownOfUs.Resources.Observe.png");
             BiteSprite = CreateSprite("TownOfUs.Resources.Bite.png");
-            StakeSprite = CreateSprite("TownOfUs.Resources.Stake.png");
             RevealSprite = CreateSprite("TownOfUs.Resources.Reveal.png");
             ConfessSprite = CreateSprite("TownOfUs.Resources.Confess.png");
             NoAbilitySprite = CreateSprite("TownOfUs.Resources.NoAbility.png");
             CamouflageSprite = CreateSprite("TownOfUs.Resources.Camouflage.png");
             CamoSprintSprite = CreateSprite("TownOfUs.Resources.CamoSprint.png");
             CamoSprintFreezeSprite = CreateSprite("TownOfUs.Resources.CamoSprintFreeze.png");
-            RadiateSprite = CreateSprite("TownOfUs.Resources.Radiate.png");
             HackSprite = CreateSprite("TownOfUs.Resources.Hack.png");
             MimicSprite = CreateSprite("TownOfUs.Resources.Mimic.png");
             LockSprite = CreateSprite("TownOfUs.Resources.Lock.png");
             StalkSprite = CreateSprite("TownOfUs.Resources.Stalk.png");
             CrimeSceneSprite = CreateSprite("TownOfUs.Resources.CrimeScene.png");
+            CampaignSprite = CreateSprite("TownOfUs.Resources.Campaign.png");
+            FortifySprite = CreateSprite("TownOfUs.Resources.Fortify.png");
+            HypnotiseSprite = CreateSprite("TownOfUs.Resources.Hypnotise.png");
+            HysteriaSprite = CreateSprite("TownOfUs.Resources.Hysteria.png");
+            JailSprite = CreateSprite("TownOfUs.Resources.Jail.png");
+            InJailSprite = CreateSprite("TownOfUs.Resources.InJail.png");
+            ExecuteSprite = CreateSprite("TownOfUs.Resources.Execute.png");
+            CollectSprite = CreateSprite("TownOfUs.Resources.Collect.png");
+            ReapSprite = CreateSprite("TownOfUs.Resources.Reap.png");
+            SoulSprite = CreateSprite("TownOfUs.Resources.Soul.png");
 
             SettingsButtonSprite = CreateSprite("TownOfUs.Resources.SettingsButton.png");
             CrewSettingsButtonSprite = CreateSprite("TownOfUs.Resources.Crewmate.png");
@@ -220,38 +232,25 @@ namespace TownOfUs
 
             ZoomPlusButton = CreateSprite("TownOfUs.Resources.Plus.png");
             ZoomMinusButton = CreateSprite("TownOfUs.Resources.Minus.png");
+            ZoomPlusActiveButton = CreateSprite("TownOfUs.Resources.PlusActive.png");
+            ZoomMinusActiveButton = CreateSprite("TownOfUs.Resources.MinusActive.png");
 
             BeepClip = CreateAudioClip("TownOfUs.Resources.Beep.wav");
 
             PalettePatch.Load();
             ClassInjector.RegisterTypeInIl2Cpp<CrimeScene>();
             ClassInjector.RegisterTypeInIl2Cpp<RainbowBehaviour>();
+            ClassInjector.RegisterTypeInIl2Cpp<CrimeScene>();
+            ClassInjector.RegisterTypeInIl2Cpp<Soul>();
 
             // RegisterInIl2CppAttribute.Register();
 
-            Ip = Config.Bind("Custom", "Ipv4 or Hostname", "127.0.0.1");
-            Port = Config.Bind("Custom", "Port", (ushort) 22023);
-            var defaultRegions = ServerManager.DefaultRegions.ToList();
-            var ip = Ip.Value;
-            if (Uri.CheckHostName(Ip.Value).ToString() == "Dns")
-                foreach (var address in Dns.GetHostAddresses(Ip.Value))
-                {
-                    if (address.AddressFamily != AddressFamily.InterNetwork)
-                        continue;
-                    ip = address.ToString();
-                    break;
-                }
-
-            ServerManager.DefaultRegions = defaultRegions.ToArray();
-
-            SceneManager.add_sceneLoaded((Action<Scene, LoadSceneMode>) ((scene, loadSceneMode) =>
-            {
-                try { ModManager.Instance.ShowModStamp(); }
-                catch { }
-            }));
+            DeadSeeGhosts = Config.Bind("Settings", "Dead See Other Ghosts", true, "Whether you see other dead player's ghosts while your dead");
 
             _harmony.PatchAll();
             SubmergedCompatibility.Initialize();
+
+            ServerManager.DefaultRegions = new Il2CppReferenceArray<IRegionInfo>(new IRegionInfo[0]);
         }
 
         public static AudioClip CreateAudioClip(string resourceName)

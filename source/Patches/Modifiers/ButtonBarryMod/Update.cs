@@ -28,7 +28,7 @@ namespace TownOfUs.Modifiers.ButtonBarryMod
             if (role.ButtonButton == null)
             {
                 role.ButtonButton = Object.Instantiate(__instance.KillButton, __instance.transform.parent);
-                role.ButtonButton.GetComponentsInChildren<TextMeshPro>()[0].text = "";
+                foreach (var text in role.ButtonButton.GetComponentsInChildren<TextMeshPro>()) text.text = "";
                 role.ButtonButton.graphic.enabled = true;
                 role.ButtonButton.graphic.sprite = Button;
             }

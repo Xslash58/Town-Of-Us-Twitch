@@ -33,8 +33,6 @@ namespace TownOfUs.CustomOption
         protected internal CustomOptionType Type { get; set; }
         public object DefaultValue { get; set; }
 
-        public static bool LobbyTextScroller { get; set; } = true;
-
         public override string ToString()
         {
             return Format(Value);

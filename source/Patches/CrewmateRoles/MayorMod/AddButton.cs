@@ -61,6 +61,12 @@ namespace TownOfUs.CrewmateRoles.MayorMod
             else if (PlayerControl.LocalPlayer.Is(RoleEnum.Doomsayer))
             {
                 var doomsayer = Role.GetRole<Doomsayer>(PlayerControl.LocalPlayer);
+                var roleText = doomsayer.RoleGuess[voteArea.TargetPlayerId];
+                if (roleText != null)
+                {
+                    roleText.gameObject.SetActive(false);
+                    voteArea.NameText.transform.localPosition += new Vector3(-0.2f, -0.1f, 0f);
+                }
                 var (cycleBack, cycleForward, guess, guessText) = doomsayer.Buttons[voteArea.TargetPlayerId];
                 if (cycleBack == null || cycleForward == null) return;
                 cycleBack.SetActive(false);
@@ -105,6 +111,7 @@ namespace TownOfUs.CrewmateRoles.MayorMod
 
             if (PlayerControl.LocalPlayer.Data.IsDead) return;
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Mayor)) return;
+            if (PlayerControl.LocalPlayer.IsJailed()) return;
             var mayorrole = Role.GetRole<Mayor>(PlayerControl.LocalPlayer);
             if (mayorrole.Revealed) return;
             for (var i = 0; i < __instance.playerStates.Length; i++)

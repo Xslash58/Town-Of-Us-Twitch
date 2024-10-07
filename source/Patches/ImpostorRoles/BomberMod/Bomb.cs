@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using UnityEngine;
 using Object = UnityEngine.Object;
+using System.Collections;
 
 namespace TownOfUs.ImpostorRoles.BomberMod
 {
@@ -30,6 +31,21 @@ namespace TownOfUs.ImpostorRoles.BomberMod
             var BombScript = new Bomb();
             BombScript.transform = BombPref.transform;
             return BombScript;
+        }
+    }
+
+    public class BombTeammate
+    {
+        public static Bomb TempBomb = null;
+
+        public static IEnumerator BombShowTeammate(Vector3 location)
+        {
+            TempBomb = BombExtentions.CreateBomb(location);
+
+            yield return (object)new WaitForSeconds(CustomGameOptions.DetonateDelay);
+
+            try { BombExtentions.ClearBomb(TempBomb); }
+            catch { }
         }
     }
 }

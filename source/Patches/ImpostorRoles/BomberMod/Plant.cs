@@ -27,6 +27,8 @@ namespace TownOfUs.ImpostorRoles.BomberMod
                 if (!__instance.isActiveAndEnabled) return false;
                 if (role.PlantButton.graphic.sprite == PlantSprite)
                 {
+                    var abilityUsed = Utils.AbilityUsed(PlayerControl.LocalPlayer);
+                    if (!abilityUsed) return false;
                     role.Detonated = false;
                     var pos = PlayerControl.LocalPlayer.transform.position;
                     pos.z += 0.001f;
@@ -44,6 +46,7 @@ namespace TownOfUs.ImpostorRoles.BomberMod
                     else PlayerControl.LocalPlayer.SetKillTimer(GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown + CustomGameOptions.DetonateDelay);
                     DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(null);
                     role.Bomb = BombExtentions.CreateBomb(pos);
+                    if (CustomGameOptions.AllImpsSeeBomb) Utils.Rpc(CustomRPC.Plant, pos.x, pos.y, pos.z);
                     return false;
                 }
                 else return false;

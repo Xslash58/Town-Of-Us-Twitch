@@ -26,24 +26,6 @@ namespace TownOfUs.Extensions
             return result;
         }
 
-        public static KeyValuePair<byte, int> MaxPair(this byte[] self, out bool tie)
-        {
-            tie = true;
-            var result = new KeyValuePair<byte, int>(byte.MaxValue, int.MinValue);
-            for (byte i = 0; i < self.Length; i++)
-                if (self[i] > result.Value)
-                {
-                    result = new KeyValuePair<byte, int>(i, self[i]);
-                    tie = false;
-                }
-                else if (self[i] == result.Value)
-                {
-                    tie = true;
-                }
-
-            return result;
-        }
-
         public static VisualAppearance GetDefaultAppearance(this PlayerControl player)
         {
             return new VisualAppearance();
@@ -67,23 +49,17 @@ namespace TownOfUs.Extensions
             else
                 return player.GetDefaultAppearance();
         }
-        public static bool IsImpostor(this GameData.PlayerInfo playerinfo)
+        public static bool IsImpostor(this NetworkedPlayerInfo playerinfo)
         {
             return playerinfo?.Role?.TeamType == RoleTeamTypes.Impostor;
         }
 
-        public static void SetImpostor(this GameData.PlayerInfo playerinfo, bool impostor)
-        {
-            if (playerinfo.Role != null)
-                playerinfo.Role.TeamType = impostor ? RoleTeamTypes.Impostor : RoleTeamTypes.Crewmate;
-        }
-
-        public static GameData.PlayerOutfit GetDefaultOutfit(this PlayerControl playerControl)
+        public static NetworkedPlayerInfo.PlayerOutfit GetDefaultOutfit(this PlayerControl playerControl)
         {
             return playerControl.Data.DefaultOutfit;
         }
 
-        public static void SetOutfit(this PlayerControl playerControl, CustomPlayerOutfitType CustomOutfitType, GameData.PlayerOutfit outfit)
+        public static void SetOutfit(this PlayerControl playerControl, CustomPlayerOutfitType CustomOutfitType, NetworkedPlayerInfo.PlayerOutfit outfit)
         {
             playerControl.Data.SetOutfit((PlayerOutfitType)CustomOutfitType, outfit);
             playerControl.SetOutfit(CustomOutfitType);

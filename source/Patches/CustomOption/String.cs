@@ -1,3 +1,5 @@
+using System;
+
 namespace TownOfUs.CustomOption
 {
     public class CustomStringOption : CustomOption
@@ -7,19 +9,19 @@ namespace TownOfUs.CustomOption
             0)
         {
             Values = values;
-            Format = value => Values[(int) value];
+            Format = value => Values[(int)value];
         }
 
         protected string[] Values { get; set; }
 
         protected internal int Get()
         {
-            return (int) Value;
+            return (int)Value;
         }
 
         protected internal void Increase()
         {
-            if (Get() >= Values.Length)
+            if (Get() >= Values.Length - 1)
                 Set(0);
             else
                 Set(Get() + 1);
@@ -35,9 +37,8 @@ namespace TownOfUs.CustomOption
 
         public override void OptionCreated()
         {
+            base.OptionCreated();
             var str = Setting.Cast<StringOption>();
-
-            str.TitleText.text = Name;
             str.Value = str.oldValue = Get();
             str.ValueText.text = ToString();
         }

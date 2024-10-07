@@ -4,6 +4,7 @@ using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
 using TMPro;
 using TownOfUs.Extensions;
+using TownOfUs.Patches;
 using TownOfUs.Roles;
 using TownOfUs.Roles.Modifiers;
 using UnityEngine;
@@ -24,6 +25,7 @@ namespace TownOfUs.Modifiers.AssassinMod
         {
             if (voteArea.AmDead) return true;
             var player = Utils.PlayerById(voteArea.TargetPlayerId);
+            if (player.IsJailed()) return true;
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Vampire))
             {
                 if (
@@ -172,7 +174,9 @@ namespace TownOfUs.Modifiers.AssassinMod
                 if (playerModifier != null)
                     toDie = (playerRole.Name == currentGuess || playerModifier.Name == currentGuess) ? playerRole.Player : role.Player;
 
-                if (!toDie.Is(RoleEnum.Pestilence) || PlayerControl.LocalPlayer.Is(RoleEnum.Pestilence))
+                var fortified = toDie.IsFortified() && PlayerControl.LocalPlayer != toDie;
+
+                if ((!toDie.Is(RoleEnum.Pestilence) || PlayerControl.LocalPlayer.Is(RoleEnum.Pestilence)) && !fortified)
                 {
                     if (PlayerControl.LocalPlayer.Is(ModifierEnum.DoubleShot) && toDie == PlayerControl.LocalPlayer)
                     {
@@ -207,6 +211,12 @@ namespace TownOfUs.Modifiers.AssassinMod
                         }
                     }
                 }
+                else
+                {
+                    ShowHideButtons.HideSingle(role, targetId, toDie == role.Player);
+                    Coroutines.Start(Utils.FlashCoroutine(Colors.Warden));
+                    if (toDie.IsFortified()) Utils.Rpc(CustomRPC.Fortify, (byte)1, toDie.GetWarden().Player.PlayerId);
+                }
             }
 
             return Listener;
@@ -225,6 +235,7 @@ namespace TownOfUs.Modifiers.AssassinMod
             if (PlayerControl.LocalPlayer.Data.IsDead) return;
             if (!PlayerControl.LocalPlayer.Is(AbilityEnum.Assassin)) return;
             if (PlayerControl.LocalPlayer.Is(Faction.NeutralBenign)) return;
+            if (PlayerControl.LocalPlayer.IsJailed()) return;
 
             var assassinRole = Ability.GetAbility<Assassin>(PlayerControl.LocalPlayer);
             if (assassinRole.RemainingKills <= 0) return;

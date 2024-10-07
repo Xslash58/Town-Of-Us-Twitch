@@ -22,9 +22,12 @@ namespace TownOfUs.ImpostorRoles.MorphlingMod
             if (__instance == role.MorphButton)
             {
                 if (!__instance.isActiveAndEnabled) return false;
+                if (role.Player.inVent) return false;
                 if (role.MorphButton.graphic.sprite == SampleSprite)
                 {
                     if (target == null) return false;
+                    var abilityUsed = Utils.AbilityUsed(PlayerControl.LocalPlayer);
+                    if (!abilityUsed) return false;
                     role.SampledPlayer = target;
                     role.MorphButton.graphic.sprite = MorphSprite;
                     role.MorphButton.SetTarget(null);
@@ -36,10 +39,12 @@ namespace TownOfUs.ImpostorRoles.MorphlingMod
                 {
                     if (__instance.isCoolingDown) return false;
                     if (role.MorphTimer() != 0) return false;
+                    var abilityUsed = Utils.AbilityUsed(PlayerControl.LocalPlayer);
+                    if (!abilityUsed) return false;
                     Utils.Rpc(CustomRPC.Morph, PlayerControl.LocalPlayer.PlayerId, role.SampledPlayer.PlayerId);
                     role.TimeRemaining = CustomGameOptions.MorphlingDuration;
                     role.MorphedPlayer = role.SampledPlayer;
-                    Utils.Morph(role.Player, role.SampledPlayer, true);
+                    Utils.Morph(role.Player, role.SampledPlayer);
                 }
 
                 return false;

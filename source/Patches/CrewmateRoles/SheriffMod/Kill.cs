@@ -28,17 +28,11 @@ namespace TownOfUs.CrewmateRoles.SheriffMod
             if (!flag3) return false;
 
             var flag4 = role.ClosestPlayer.Data.IsImpostor() ||
-                        role.ClosestPlayer.Is(RoleEnum.Doomsayer) && CustomGameOptions.SheriffKillsDoomsayer ||
-                        role.ClosestPlayer.Is(RoleEnum.Vampire) && CustomGameOptions.SheriffKillsVampire ||
-                        role.ClosestPlayer.Is(RoleEnum.Jester) && CustomGameOptions.SheriffKillsJester ||
-                        role.ClosestPlayer.Is(RoleEnum.Glitch) && CustomGameOptions.SheriffKillsGlitch ||
-                        role.ClosestPlayer.Is(RoleEnum.Juggernaut) && CustomGameOptions.SheriffKillsJuggernaut ||
-                        role.ClosestPlayer.Is(RoleEnum.Executioner) && CustomGameOptions.SheriffKillsExecutioner ||
-                        role.ClosestPlayer.Is(RoleEnum.Arsonist) && CustomGameOptions.SheriffKillsArsonist ||
-                        role.ClosestPlayer.Is(RoleEnum.Werewolf) && CustomGameOptions.SheriffKillsWerewolf ||
-                        role.ClosestPlayer.Is(RoleEnum.Plaguebearer) && CustomGameOptions.SheriffKillsPlaguebearer ||
-                        role.ClosestPlayer.Is(RoleEnum.Stalker) && CustomGameOptions.SheriffKillsStalker;
+                        (role.ClosestPlayer.Is(Faction.NeutralEvil) && CustomGameOptions.SheriffKillsNE) ||
+                        (role.ClosestPlayer.Is(Faction.NeutralKilling) && CustomGameOptions.SheriffKillsNK);
 
+            var abilityUsed = Utils.AbilityUsed(PlayerControl.LocalPlayer);
+            if (!abilityUsed) return false;
             if (role.ClosestPlayer.Is(RoleEnum.Pestilence))
             {
                 Utils.RpcMurderPlayer(role.ClosestPlayer, PlayerControl.LocalPlayer);
@@ -47,11 +41,6 @@ namespace TownOfUs.CrewmateRoles.SheriffMod
             if (role.ClosestPlayer.IsInfected() || role.Player.IsInfected())
             {
                 foreach (var pb in Role.GetRoles(RoleEnum.Plaguebearer)) ((Plaguebearer)pb).RpcSpreadInfection(role.ClosestPlayer, role.Player);
-            }
-            foreach (Role hunterRole in Role.GetRoles(RoleEnum.Hunter))
-            {
-                Hunter hunter = (Hunter)hunterRole;
-                hunter.CatchPlayer(role.Player);
             }
             if (role.ClosestPlayer.IsOnAlert())
             {
@@ -113,15 +102,6 @@ namespace TownOfUs.CrewmateRoles.SheriffMod
                 }
                 role.LastKilled.AddSeconds(CustomGameOptions.ProtectKCReset);
                 return false;
-            }
-
-            if (role.ClosestPlayer.Is(RoleEnum.Necromancer) || role.ClosestPlayer.Is(RoleEnum.Whisperer))
-            {
-                foreach (var player in PlayerControl.AllPlayerControls)
-                {
-                    if (player.Data.IsImpostor() && !player.Is(RoleEnum.Necromancer)
-                        && !player.Is(RoleEnum.Whisperer)) Utils.RpcMurderPlayer(player, player);
-                }
             }
 
             if (!flag4)

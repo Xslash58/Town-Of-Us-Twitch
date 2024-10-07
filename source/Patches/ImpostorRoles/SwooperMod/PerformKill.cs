@@ -16,8 +16,11 @@ namespace TownOfUs.ImpostorRoles.SwooperMod
             if (__instance == role.SwoopButton)
             {
                 if (__instance.isCoolingDown) return false;
+                if (role.Player.inVent) return false;
                 if (!__instance.isActiveAndEnabled) return false;
                 if (role.SwoopTimer() != 0) return false;
+                var abilityUsed = Utils.AbilityUsed(PlayerControl.LocalPlayer);
+                if (!abilityUsed) return false;
 
                 Utils.Rpc(CustomRPC.Swoop, PlayerControl.LocalPlayer.PlayerId);
                 role.TimeRemaining = CustomGameOptions.SwoopDuration;

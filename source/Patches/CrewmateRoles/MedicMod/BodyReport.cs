@@ -7,7 +7,7 @@ namespace TownOfUs.CrewmateRoles.MedicMod
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CmdReportDeadBody))]
     internal class BodyReportPatch
     {
-        private static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] GameData.PlayerInfo info)
+        private static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] NetworkedPlayerInfo info)
         {
             //System.Console.WriteLine("Report Body!");
             if (info == null) return;

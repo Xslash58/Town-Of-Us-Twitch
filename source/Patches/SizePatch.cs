@@ -14,7 +14,7 @@ namespace TownOfUs.Patches
         {
             foreach (var player in PlayerControl.AllPlayerControls.ToArray())
             {
-                if (!(player.Data.IsDead || player.Data.Disconnected))
+                if (player.Data != null && !(player.Data.IsDead || player.Data.Disconnected))
                     player.transform.localScale = player.GetAppearance().SizeFactor;
                 else
                     player.transform.localScale = new Vector3(0.7f, 0.7f, 1.0f);

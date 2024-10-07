@@ -13,10 +13,15 @@ namespace TownOfUs.CrewmateRoles.AltruistMod
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
             if (PlayerControl.LocalPlayer == null) return;
             if (PlayerControl.LocalPlayer.Data == null) return;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return;
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Altruist)) return;
 
             var role = Role.GetRole<Altruist>(PlayerControl.LocalPlayer);
+
+            var killButton = __instance.KillButton;
+
+            killButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
+                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
 
             var data = PlayerControl.LocalPlayer.Data;
             var isDead = data.IsDead;
@@ -28,7 +33,6 @@ namespace TownOfUs.CrewmateRoles.AltruistMod
             var allocs = Physics2D.OverlapCircleAll(truePosition, maxDistance,
                 LayerMask.GetMask(new[] { "Players", "Ghost" }));
 
-            var killButton = __instance.KillButton;
             DeadBody closestBody = null;
             var closestDistance = float.MaxValue;
 
@@ -36,8 +40,6 @@ namespace TownOfUs.CrewmateRoles.AltruistMod
             {
                 if (!flag || isDead || collider2D.tag != "DeadBody") continue;
                 var component = collider2D.GetComponent<DeadBody>();
-
-
                 if (!(Vector2.Distance(truePosition, component.TruePosition) <=
                       maxDistance)) continue;
 
@@ -46,10 +48,6 @@ namespace TownOfUs.CrewmateRoles.AltruistMod
                 closestBody = component;
                 closestDistance = distance;
             }
-
-            killButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
-                    && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
 
             KillButtonTarget.SetTarget(killButton, closestBody, role);
             __instance.KillButton.SetCoolDown(0f, 1f);

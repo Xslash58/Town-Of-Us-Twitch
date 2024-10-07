@@ -13,20 +13,20 @@ namespace TownOfUs.CrewmateRoles.HunterMod
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Hunter)) return true;
             if (!PlayerControl.LocalPlayer.CanMove) return false;
             if (PlayerControl.LocalPlayer.Data.IsDead) return false;
+            if (__instance.isCoolingDown) return false;
+            if (!__instance.isActiveAndEnabled) return false;
             var role = Role.GetRole<Hunter>(PlayerControl.LocalPlayer);
             if (__instance == role.StalkButton)
             {
                 if (role.ClosestStalkPlayer == null) return false;
                 if (!role.StalkUsable) return false;
-                if (__instance.isCoolingDown) return false;
-                if (!__instance.isActiveAndEnabled) return false;
                 if (role.StalkTimer() != 0) return false;
                 var stalkInteract = Utils.Interact(PlayerControl.LocalPlayer, role.ClosestStalkPlayer, false);
                 if (stalkInteract[4] == true)
                 {
                     role.StalkDuration = CustomGameOptions.HunterStalkDuration;
-                    role.UsesLeft--;
                     role.StalkedPlayer = role.ClosestStalkPlayer;
+                    role.UsesLeft--;
                     role.Stalk();
                     Utils.Rpc(CustomRPC.HunterStalk, PlayerControl.LocalPlayer.PlayerId, role.ClosestStalkPlayer.PlayerId);
                 }

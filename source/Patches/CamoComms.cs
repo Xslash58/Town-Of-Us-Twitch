@@ -26,7 +26,7 @@ namespace TownOfUs
                             if (comms1.IsActive)
                             {
                                 CommsEnabled = true;
-                                Utils.Camouflage();
+                                Utils.GroupCamouflage();
                                 return;
                             }
 
@@ -37,7 +37,7 @@ namespace TownOfUs
                             if (comms2.IsActive)
                             {
                                 CommsEnabled = true;
-                                Utils.Camouflage();
+                                Utils.GroupCamouflage();
                                 return;
                             }
 

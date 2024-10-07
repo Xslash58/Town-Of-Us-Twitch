@@ -51,7 +51,7 @@ namespace TownOfUs.CrewmateRoles.VeteranMod
             else alertButton.SetCoolDown(0f, CustomGameOptions.AlertCd);
 
             var renderer = alertButton.graphic;
-            if (role.OnAlert || (!alertButton.isCoolingDown && role.ButtonUsable))
+            if (role.OnAlert || (!alertButton.isCoolingDown && role.ButtonUsable && PlayerControl.LocalPlayer.moveable))
             {
                 renderer.color = Palette.EnabledColor;
                 renderer.material.SetFloat("_Desat", 0f);

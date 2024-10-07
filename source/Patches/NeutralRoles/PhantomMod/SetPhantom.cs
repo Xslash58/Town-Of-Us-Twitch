@@ -25,7 +25,7 @@ namespace TownOfUs.NeutralRoles.PhantomMod
         public static void ExileControllerPostfix(ExileController __instance)
         {
             if (WillBePhantom == null) return;
-            var exiled = __instance.exiled?.Object;
+            var exiled = __instance.initData.networkedPlayer?.Object;
             if (!WillBePhantom.Data.IsDead && (exiled.Is(Faction.NeutralKilling) || exiled.Is(Faction.NeutralEvil) || exiled.Is(Faction.NeutralBenign)) && !exiled.IsLover()) WillBePhantom = exiled;
             if (exiled == WillBePhantom && exiled.Is(RoleEnum.Jester)) return;
             var doomRole = Role.AllRoles.FirstOrDefault(x => x.RoleType == RoleEnum.Doomsayer && ((Doomsayer)x).WonByGuessing && ((Doomsayer)x).Player == WillBePhantom);
@@ -34,6 +34,8 @@ namespace TownOfUs.NeutralRoles.PhantomMod
             if (exeRole != null) return;
             var jestRole = Role.AllRoles.FirstOrDefault(x => x.RoleType == RoleEnum.Jester && ((Jester)x).VotedOut && ((Jester)x).Player == WillBePhantom);
             if (jestRole != null) return;
+            var scRole = Role.AllRoles.FirstOrDefault(x => x.RoleType == RoleEnum.SoulCollector && ((SoulCollector)x).CollectedSouls && ((SoulCollector)x).Player == WillBePhantom);
+            if (scRole != null) return;
             if (WillBePhantom.Data.Disconnected) return;
             if (!WillBePhantom.Data.IsDead && WillBePhantom != exiled) return;
 
@@ -93,7 +95,6 @@ namespace TownOfUs.NeutralRoles.PhantomMod
 
             PlayerControl.LocalPlayer.transform.position = pos;
             PlayerControl.LocalPlayer.NetTransform.SnapTo(pos);
-            PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(pos);
             PlayerControl.LocalPlayer.MyPhysics.RpcEnterVent(startingVent.Id);
         }
 

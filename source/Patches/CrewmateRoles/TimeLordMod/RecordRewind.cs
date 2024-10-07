@@ -49,10 +49,11 @@ namespace TownOfUs.CrewmateRoles.TimeLordMod
             if (PlayerControl.LocalPlayer.Data.IsDead && !isDead)
             {
                 isDead = true;
-                deadTime = TempData.LastDeathReason == DeathReason.Exile ||
+                deadTime = Time.time;
+                /*deadTime = TempData.LastDeathReason == DeathReason.Exile ||
                            PlayerControl.LocalPlayer.Is(RoleEnum.Altruist)
                     ? 0
-                    : Time.time;
+                    : Time.time;*/
             }
             else if (!PlayerControl.LocalPlayer.Data.IsDead && isDead)
             {

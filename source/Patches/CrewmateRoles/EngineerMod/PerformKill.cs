@@ -8,7 +8,6 @@ namespace TownOfUs.CrewmateRoles.EngineerMod
     {
         public static bool Prefix(KillButton __instance)
         {
-            if (CustomGameOptions.GameMode == GameMode.Cultist) return false;
             if (__instance != DestroyableSingleton<HudManager>.Instance.KillButton) return true;
             var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Engineer);
             if (!flag) return true;
@@ -21,6 +20,8 @@ namespace TownOfUs.CrewmateRoles.EngineerMod
             if (system == null) return false;
             var sabActive = system.AnyActive;
             if (!sabActive) return false;
+            var abilityUsed = Utils.AbilityUsed(PlayerControl.LocalPlayer);
+            if (!abilityUsed) return false;
             role.UsesLeft -= 1;
             Utils.Rpc(CustomRPC.EngineerFix, PlayerControl.LocalPlayer.NetId);
             switch (GameOptionsManager.Instance.currentNormalGameOptions.MapId)

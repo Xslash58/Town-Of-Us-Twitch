@@ -24,11 +24,12 @@ namespace TownOfUs.ImpostorRoles.MorphlingMod
                 role.MorphButton.graphic.enabled = true;
                 role.MorphButton.graphic.sprite = SampleSprite;
                 role.MorphButton.gameObject.SetActive(false);
-
             }
 
             if (role.MorphButton.graphic.sprite != SampleSprite && role.MorphButton.graphic.sprite != MorphSprite)
                 role.MorphButton.graphic.sprite = SampleSprite;
+
+            if (PlayerControl.LocalPlayer.Data.IsDead) role.MorphButton.SetTarget(null);
 
             role.MorphButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
                     && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
@@ -36,19 +37,29 @@ namespace TownOfUs.ImpostorRoles.MorphlingMod
             if (role.MorphButton.graphic.sprite == SampleSprite)
             {
                 role.MorphButton.SetCoolDown(0f, 1f);
-                Utils.SetTarget(ref role.ClosestPlayer, role.MorphButton);
+                if (PlayerControl.LocalPlayer.moveable) Utils.SetTarget(ref role.ClosestPlayer, role.MorphButton);
+                else role.MorphButton.SetTarget(null);
             }
             else
             {
                 if (role.Morphed)
                 {
-                    role.MorphButton.SetCoolDown(role.TimeRemaining, CustomGameOptions.MorphlingDuration);
-                    return;
+                    role.MorphButton.SetCoolDown(role.TimeRemaining, CustomGameOptions.MorphlingDuration) ;
+                    role.MorphButton.graphic.color = Palette.EnabledColor;
+                    role.MorphButton.graphic.material.SetFloat("_Desat", 0f);
                 }
-
-                role.MorphButton.SetCoolDown(role.MorphTimer(), CustomGameOptions.MorphlingCd);
-                role.MorphButton.graphic.color = Palette.EnabledColor;
-                role.MorphButton.graphic.material.SetFloat("_Desat", 0f);
+                else if (PlayerControl.LocalPlayer.moveable && role.MorphTimer() == 0f)
+                {
+                    role.MorphButton.SetCoolDown(role.MorphTimer(), CustomGameOptions.MorphlingCd);
+                    role.MorphButton.graphic.color = Palette.EnabledColor;
+                    role.MorphButton.graphic.material.SetFloat("_Desat", 0f);
+                }
+                else
+                {
+                    role.MorphButton.SetCoolDown(role.MorphTimer(), CustomGameOptions.MorphlingCd);
+                    role.MorphButton.graphic.color = Palette.DisabledClear;
+                    role.MorphButton.graphic.material.SetFloat("_Desat", 1f);
+                }
             }
         }
     }

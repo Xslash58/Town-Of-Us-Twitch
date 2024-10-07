@@ -3,6 +3,7 @@ using System;
 using TownOfUs.Patches;
 using TownOfUs.CustomOption;
 using AmongUs.GameOptions;
+using BepInEx.Unity.IL2CPP;
 
 namespace TownOfUs
 {
@@ -14,10 +15,11 @@ namespace TownOfUs
         public static int commonTasks;
         public static int shortTasks;
         public static int longTasks;
+        public static bool LevelImpLoaded => IL2CPPChainloader.Instance.Plugins.TryGetValue("com.DigiWorm.LevelImposter", out _);
 
         [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.BeginGame))]
         [HarmonyPrefix]
-        public static bool Prefix(GameStartManager __instance)
+        public static bool Prefix()
         {
             if (AmongUsClient.Instance.AmHost)
             {
@@ -35,9 +37,12 @@ namespace TownOfUs
                 GameOptionsManager.Instance.currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Scientist, 0, 0);
                 GameOptionsManager.Instance.currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Engineer, 0, 0);
                 GameOptionsManager.Instance.currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.GuardianAngel, 0, 0);
+                GameOptionsManager.Instance.currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Tracker, 0, 0);
+                GameOptionsManager.Instance.currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Noisemaker, 0, 0);
                 GameOptionsManager.Instance.currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Shapeshifter, 0, 0);
+                GameOptionsManager.Instance.currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Phantom, 0, 0);
                 Utils.Rpc(CustomRPC.SetSettings, map);
-                if (CustomGameOptions.AutoAdjustSettings) AdjustSettings(map);
+                AdjustSettings(map);
             }
             return true;
         }
@@ -48,12 +53,9 @@ namespace TownOfUs
         {
             if (__instance.AmHost)
             {
-                if (CustomGameOptions.AutoAdjustSettings)
-                {
-                    if (CustomGameOptions.SmallMapHalfVision && vision != 0) GameOptionsManager.Instance.currentNormalGameOptions.CrewLightMod = vision;
-                    if (GameOptionsManager.Instance.currentNormalGameOptions.MapId == 1) AdjustCooldowns(CustomGameOptions.SmallMapDecreasedCooldown);
-                    if (GameOptionsManager.Instance.currentNormalGameOptions.MapId >= 4) AdjustCooldowns(-CustomGameOptions.LargeMapIncreasedCooldown);
-                }
+                if (CustomGameOptions.SmallMapHalfVision && vision != 0) GameOptionsManager.Instance.currentNormalGameOptions.CrewLightMod = vision;
+                if (GameOptionsManager.Instance.currentNormalGameOptions.MapId == 1) AdjustCooldowns(CustomGameOptions.SmallMapDecreasedCooldown);
+                if (GameOptionsManager.Instance.currentNormalGameOptions.MapId >= 4) AdjustCooldowns(-CustomGameOptions.LargeMapIncreasedCooldown);
                 if (CustomGameOptions.RandomMapEnabled) GameOptionsManager.Instance.currentNormalGameOptions.MapId = previousMap;
                 if (!(commonTasks == 0 && shortTasks == 0 && longTasks == 0))
                 {
@@ -73,7 +75,8 @@ namespace TownOfUs
             totalWeight += CustomGameOptions.RandomMapPolus;
             totalWeight += CustomGameOptions.RandomMapAirship;
             totalWeight += CustomGameOptions.RandomMapFungle;
-            if (SubmergedCompatibility.Loaded) totalWeight += CustomGameOptions.RandomMapSubmerged;
+            totalWeight += CustomGameOptions.RandomMapSubmerged;
+            totalWeight += CustomGameOptions.RandomMapLevelImpostor;
 
             if (totalWeight == 0) return GameOptionsManager.Instance.currentNormalGameOptions.MapId;
 
@@ -89,6 +92,8 @@ namespace TownOfUs
             if (randomNumber < CustomGameOptions.RandomMapFungle) return 5;
             randomNumber -= CustomGameOptions.RandomMapFungle;
             if (SubmergedCompatibility.Loaded && randomNumber < CustomGameOptions.RandomMapSubmerged) return 6;
+            randomNumber -= CustomGameOptions.RandomMapSubmerged;
+            if (LevelImpLoaded && randomNumber < CustomGameOptions.RandomMapLevelImpostor) return 7;
 
             return GameOptionsManager.Instance.currentNormalGameOptions.MapId;
         }
@@ -138,13 +143,15 @@ namespace TownOfUs
             Generate.JuggKillCooldown.Set((float)Generate.JuggKillCooldown.Value + change, false);
             Generate.ObserveCooldown.Set((float)Generate.ObserveCooldown.Value + change, false);
             Generate.BiteCooldown.Set((float)Generate.BiteCooldown.Value + change, false);
-            Generate.StakeCooldown.Set((float)Generate.StakeCooldown.Value + change, false);
             Generate.ConfessCooldown.Set((float)Generate.ConfessCooldown.Value + change, false);
             Generate.ChargeUpDuration.Set((float)Generate.ChargeUpDuration.Value + change, false);
             Generate.AbilityCooldown.Set((float)Generate.AbilityCooldown.Value + change, false);
-            Generate.RadiateCooldown.Set((float)Generate.RadiateCooldown.Value + change, false);
-            Generate.ReviveCooldown.Set((float)Generate.ReviveCooldown.Value + change, false);
-            Generate.WhisperCooldown.Set((float)Generate.WhisperCooldown.Value + change, false);
+            Generate.HunterKillCd.Set((float)Generate.HunterKillCd.Value + change, false);
+            Generate.HunterStalkDuration.Set((float)Generate.HunterStalkDuration.Value + change, false);
+            Generate.CampaignCooldown.Set((float)Generate.CampaignCooldown.Value + change, false);
+            Generate.HypnotiseCooldown.Set((float)Generate.HypnotiseCooldown.Value + change, false);
+            Generate.JailCooldown.Set((float)Generate.JailCooldown.Value + change, false);
+            Generate.ReapCooldown.Set((float)Generate.ReapCooldown.Value + change, false);
             GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown += change;
             if (change % 5 != 0)
             {

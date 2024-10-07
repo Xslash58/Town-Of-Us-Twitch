@@ -98,7 +98,7 @@ namespace TownOfUs.CrewmateRoles.MayorMod
         {
             public static void Postfix(MeetingHud __instance,
                 [HarmonyArgument(0)] Il2CppStructArray<MeetingHud.VoterState> states,
-                [HarmonyArgument(1)] GameData.PlayerInfo exiled,
+                [HarmonyArgument(1)] NetworkedPlayerInfo exiled,
                 [HarmonyArgument(2)] bool tie)
             {
                 // __instance.exiledPlayer = __instance.wasTie ? null : __instance.exiledPlayer;

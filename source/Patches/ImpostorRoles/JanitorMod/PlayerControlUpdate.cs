@@ -28,7 +28,6 @@ namespace TownOfUs.ImpostorRoles.JanitorMod
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
             role.CleanButton.graphic.sprite = TownOfUs.JanitorClean;
 
-
             var data = PlayerControl.LocalPlayer.Data;
             var isDead = data.IsDead;
             var truePosition = PlayerControl.LocalPlayer.GetTruePosition();
@@ -38,6 +37,7 @@ namespace TownOfUs.ImpostorRoles.JanitorMod
                        PlayerControl.LocalPlayer.CanMove;
             var allocs = Physics2D.OverlapCircleAll(truePosition, maxDistance,
                 LayerMask.GetMask(new[] { "Players", "Ghost" }));
+
             var killButton = role.CleanButton;
             DeadBody closestBody = null;
             var closestDistance = float.MaxValue;

@@ -1,4 +1,6 @@
-﻿using HarmonyLib;
+﻿using AmongUs.GameOptions;
+using HarmonyLib;
+using System.Linq;
 using TownOfUs.Extensions;
 using TownOfUs.Roles;
 
@@ -10,11 +12,6 @@ namespace TownOfUs.CrewmateRoles.SheriffMod
         private static KillButton KillButton;
 
         public static void Postfix(HudManager __instance)
-        {
-            UpdateKillButton(__instance);
-        }
-
-        private static void UpdateKillButton(HudManager __instance)
         {
             KillButton = __instance.KillButton;
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
@@ -30,7 +27,10 @@ namespace TownOfUs.CrewmateRoles.SheriffMod
                     && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
                 KillButton.SetCoolDown(role.SheriffKillTimer(), CustomGameOptions.SheriffKillCd);
-                Utils.SetTarget(ref role.ClosestPlayer, KillButton);
+
+                if ((CamouflageUnCamouflage.IsCamoed && CustomGameOptions.CamoCommsKillAnyone) || PlayerControl.LocalPlayer.IsHypnotised()) Utils.SetTarget(ref role.ClosestPlayer, __instance.KillButton);
+                else if (role.Player.IsLover()) Utils.SetTarget(ref role.ClosestPlayer, __instance.KillButton, float.NaN, PlayerControl.AllPlayerControls.ToArray().Where(x => !x.IsLover()).ToList());
+                else Utils.SetTarget(ref role.ClosestPlayer, __instance.KillButton);
             }
             else
             {
@@ -40,7 +40,22 @@ namespace TownOfUs.CrewmateRoles.SheriffMod
                 __instance.KillButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
                     && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
+
+                if (GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek) return;
+                ImpKillTarget(KillButton);
             }
+        }
+
+        public static void ImpKillTarget(KillButton killButton)
+        {
+            PlayerControl target = null;
+
+            if (!PlayerControl.LocalPlayer.moveable) target = null;
+            else if ((CamouflageUnCamouflage.IsCamoed && CustomGameOptions.CamoCommsKillAnyone) || PlayerControl.LocalPlayer.IsHypnotised()) Utils.SetTarget(ref target, killButton);
+            else if (PlayerControl.LocalPlayer.IsLover() && CustomGameOptions.ImpLoverKillTeammate) Utils.SetTarget(ref target, killButton, float.NaN, PlayerControl.AllPlayerControls.ToArray().Where(x => !x.IsLover()).ToList());
+            else if (PlayerControl.LocalPlayer.IsLover()) Utils.SetTarget(ref target, killButton, float.NaN, PlayerControl.AllPlayerControls.ToArray().Where(x => !x.IsLover() && !x.Is(Faction.Impostors)).ToList());
+            else Utils.SetTarget(ref target, killButton, float.NaN, PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Is(Faction.Impostors)).ToList());
+            killButton.SetTarget(target);
         }
     }
 }

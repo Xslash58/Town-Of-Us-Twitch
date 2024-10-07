@@ -13,11 +13,6 @@ namespace TownOfUs.CrewmateRoles.DetectiveMod
         [HarmonyPatch(nameof(HudManager.Update))]
         public static void Postfix(HudManager __instance)
         {
-            UpdateExamineButton(__instance);
-        }
-
-        public static void UpdateExamineButton(HudManager __instance)
-        {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
             if (PlayerControl.LocalPlayer == null) return;
             if (PlayerControl.LocalPlayer.Data == null) return;
@@ -35,6 +30,8 @@ namespace TownOfUs.CrewmateRoles.DetectiveMod
             role.ExamineButton.graphic.sprite = ExamineSprite;
             role.ExamineButton.transform.localPosition = new Vector3(-2f, 0f, 0f);
 
+            if (PlayerControl.LocalPlayer.Data.IsDead) role.ExamineButton.SetTarget(null);
+
             __instance.KillButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
                     && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
@@ -44,18 +41,22 @@ namespace TownOfUs.CrewmateRoles.DetectiveMod
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
 
             role.ExamineButton.SetCoolDown(role.ExamineTimer(), CustomGameOptions.ExamineCd);
-            Utils.SetTarget(ref role.ClosestPlayer, role.ExamineButton, float.NaN);
 
             var renderer = role.ExamineButton.graphic;
             if (role.ClosestPlayer != null && role.InvestigatingScene != null)
             {
-                renderer.color = Palette.EnabledColor;
-                renderer.material.SetFloat("_Desat", 0f);
-            }
-            else
-            {
-                renderer.color = Palette.DisabledClear;
-                renderer.material.SetFloat("_Desat", 1f);
+                Utils.SetTarget(ref role.ClosestPlayer, role.ExamineButton, float.NaN);
+
+                if (role.ClosestPlayer != null && role.InvestigatingScene != null)
+                {
+                    renderer.color = Palette.EnabledColor;
+                    renderer.material.SetFloat("_Desat", 0f);
+                }
+                else
+                {
+                    renderer.color = Palette.DisabledClear;
+                    renderer.material.SetFloat("_Desat", 1f);
+                }
             }
 
             var data = PlayerControl.LocalPlayer.Data;

@@ -17,7 +17,10 @@ namespace TownOfUs.ImpostorRoles.VenererMod
             {
                 if (__instance.isCoolingDown) return false;
                 if (!__instance.isActiveAndEnabled) return false;
+                if (role.Player.inVent) return false;
                 if (role.AbilityTimer() != 0 || role.Kills < 1) return false;
+                var abilityUsed = Utils.AbilityUsed(PlayerControl.LocalPlayer);
+                if (!abilityUsed) return false;
 
                 Utils.Rpc(CustomRPC.Camouflage, PlayerControl.LocalPlayer.PlayerId, role.Kills);
                 role.TimeRemaining = CustomGameOptions.AbilityDuration;

@@ -25,6 +25,8 @@ namespace TownOfUs.ImpostorRoles.MinerMod
                 if (!role.CanPlace) return false;
                 if (role.MineTimer() != 0) return false;
                 if (SubmergedCompatibility.GetPlayerElevator(PlayerControl.LocalPlayer).Item1) return false;
+                var abilityUsed = Utils.AbilityUsed(PlayerControl.LocalPlayer);
+                if (!abilityUsed) return false;
                 var position = PlayerControl.LocalPlayer.transform.position;
                 var id = GetAvailableId();
                 Utils.Rpc(CustomRPC.Mine, id, PlayerControl.LocalPlayer.PlayerId, position, position.z + 0.001f);

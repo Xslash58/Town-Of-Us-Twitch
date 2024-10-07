@@ -1,8 +1,9 @@
 ﻿using System;
 using HarmonyLib;
+using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
 using TMPro;
-using TownOfUs.Extensions;
+using TownOfUs.Patches;
 using TownOfUs.Roles;
 using TownOfUs.Roles.Modifiers;
 using UnityEngine;
@@ -23,23 +24,12 @@ namespace TownOfUs.CrewmateRoles.VigilanteMod
         {
             if (voteArea.AmDead) return true;
             var player = Utils.PlayerById(voteArea.TargetPlayerId);
-            if (!PlayerControl.LocalPlayer.Is(Faction.Impostors))
-            {
-                if (
+            if (player.IsJailed()) return true;
+            if (
                     player == null ||
                     player.Data.IsDead ||
                     player.Data.Disconnected
                 ) return true;
-            }
-            else
-            {
-                if (
-                    player == null ||
-                    player.Data.IsImpostor() ||
-                    player.Data.IsDead ||
-                    player.Data.Disconnected
-                ) return true;
-            }
             var role = Role.GetRole(player);
             return role != null && role.Criteria();
         }
@@ -161,16 +151,10 @@ namespace TownOfUs.CrewmateRoles.VigilanteMod
                 var toDie = playerRole.Name == currentGuess ? playerRole.Player : role.Player;
                 if (playerModifier != null)
                     toDie = (playerRole.Name == currentGuess || playerModifier.Name == currentGuess) ? playerRole.Player : role.Player;
-                
-                if (toDie.Is(RoleEnum.Necromancer) || toDie.Is(RoleEnum.Whisperer))
-                {
-                    foreach (var player in PlayerControl.AllPlayerControls)
-                    {
-                        if (player.Data.IsImpostor()) Utils.RpcMurderPlayer(player, player);
-                    }
-                }
 
-                if (!toDie.Is(RoleEnum.Pestilence))
+                var fortified = toDie.IsFortified() && PlayerControl.LocalPlayer != toDie;
+
+                if (!toDie.Is(RoleEnum.Pestilence) && !fortified)
                 {
                     VigilanteKill.RpcMurderPlayer(toDie, PlayerControl.LocalPlayer);
                     role.RemainingKills--;
@@ -180,6 +164,12 @@ namespace TownOfUs.CrewmateRoles.VigilanteMod
                         var lover = ((Lover)playerModifier).OtherLover.Player;
                         if (!lover.Is(RoleEnum.Pestilence)) ShowHideButtonsVigi.HideSingle(role, lover.PlayerId, false);
                     }
+                }
+                else
+                {
+                    ShowHideButtonsVigi.HideSingle(role, targetId, toDie == role.Player);
+                    Coroutines.Start(Utils.FlashCoroutine(Colors.Warden));
+                    if (toDie.IsFortified()) Utils.Rpc(CustomRPC.Fortify, (byte)1, toDie.GetWarden().Player.PlayerId);
                 }
             }
 
@@ -198,6 +188,7 @@ namespace TownOfUs.CrewmateRoles.VigilanteMod
 
             if (PlayerControl.LocalPlayer.Data.IsDead) return;
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Vigilante)) return;
+            if (PlayerControl.LocalPlayer.IsJailed()) return;
 
             var retributionistRole = Role.GetRole<Vigilante>(PlayerControl.LocalPlayer);
             if (retributionistRole.RemainingKills <= 0) return;

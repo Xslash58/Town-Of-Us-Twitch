@@ -22,6 +22,14 @@ namespace TownOfUs.NeutralRoles.DoomsayerMod
                 guess.GetComponent<PassiveButton>().OnClick = new Button.ButtonClickedEvent();
             }
         }
+        public static void HideTextDoom(Doomsayer role)
+        {
+            foreach (var (_, guessText) in role.RoleGuess)
+            {
+                if (!guessText.isActiveAndEnabled) continue;
+                guessText.gameObject.SetActive(false);
+            }
+        }
 
         public static void HideSingle(
             Doomsayer role,
@@ -57,7 +65,11 @@ namespace TownOfUs.NeutralRoles.DoomsayerMod
         {
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Doomsayer)) return;
             var doomsayer = Role.GetRole<Doomsayer>(PlayerControl.LocalPlayer);
-            if (!CustomGameOptions.DoomsayerAfterVoting) HideButtonsDoom(doomsayer);
+            if (!CustomGameOptions.DoomsayerAfterVoting)
+            {
+                HideButtonsDoom(doomsayer);
+                HideTextDoom(doomsayer);
+            }
         }
     }
 }

@@ -74,8 +74,16 @@ namespace TownOfUs.ImpostorRoles.UndertakerMod
             else
             {
                 role.DragDropButton.SetCoolDown(0f, 1f);
-                role.DragDropButton.graphic.color = Palette.EnabledColor;
-                role.DragDropButton.graphic.material.SetFloat("_Desat", 0f);
+                if (PlayerControl.LocalPlayer.moveable)
+                {
+                    role.DragDropButton.graphic.color = Palette.EnabledColor;
+                    role.DragDropButton.graphic.material.SetFloat("_Desat", 0f);
+                }
+                else
+                {
+                    role.DragDropButton.graphic.color = Palette.DisabledClear;
+                    role.DragDropButton.graphic.material.SetFloat("_Desat", 1f);
+                }
             }
         }
     }

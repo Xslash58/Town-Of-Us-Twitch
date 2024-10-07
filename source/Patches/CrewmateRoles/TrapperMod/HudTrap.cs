@@ -50,15 +50,19 @@ namespace TownOfUs.CrewmateRoles.TrapperMod
             else trapButton.SetCoolDown(0f, CustomGameOptions.TrapCooldown);
 
             var renderer = trapButton.graphic;
-            if (!trapButton.isCoolingDown && trapButton.gameObject.active && role.ButtonUsable)
+            if (!trapButton.isCoolingDown && role.ButtonUsable && PlayerControl.LocalPlayer.moveable)
             {
                 renderer.color = Palette.EnabledColor;
                 renderer.material.SetFloat("_Desat", 0f);
+                role.UsesText.color = Palette.EnabledColor;
+                role.UsesText.material.SetFloat("_Desat", 0f);
                 return;
             }
 
             renderer.color = Palette.DisabledClear;
             renderer.material.SetFloat("_Desat", 1f);
+            role.UsesText.color = Palette.DisabledClear;
+            role.UsesText.material.SetFloat("_Desat", 1f);
         }
     }
 }

@@ -2,10 +2,8 @@
 using HarmonyLib;
 using TownOfUs.Roles;
 using UnityEngine;
-using TownOfUs.CrewmateRoles.MedicMod;
 using Reactor.Utilities;
 using AmongUs.GameOptions;
-using System.Collections.Generic;
 using TownOfUs.Extensions;
 
 namespace TownOfUs.CrewmateRoles.DetectiveMod
@@ -67,6 +65,10 @@ namespace TownOfUs.CrewmateRoles.DetectiveMod
                 if (Vector2.Distance(role.CurrentTarget.gameObject.transform.position,
                     PlayerControl.LocalPlayer.GetTruePosition()) > maxDistance) return false;
                 var player = role.CurrentTarget.DeadPlayer;
+
+                var abilityUsed = Utils.AbilityUsed(PlayerControl.LocalPlayer);
+                if (!abilityUsed) return false;
+
                 if (player.IsInfected() || role.Player.IsInfected())
                 {
                     foreach (var pb in Role.GetRoles(RoleEnum.Plaguebearer)) ((Plaguebearer)pb).RpcSpreadInfection(player, role.Player);

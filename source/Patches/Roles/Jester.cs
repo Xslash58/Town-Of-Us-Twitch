@@ -26,7 +26,7 @@ namespace TownOfUs.Roles
             __instance.teamToShow = jestTeam;
         }
 
-        internal override bool NeutralWin(LogicGameFlowNormal __instance)
+        internal override bool GameEnd(LogicGameFlowNormal __instance)
         {
             if (!VotedOut || !Player.Data.IsDead && !Player.Data.Disconnected) return true;
             if (!CustomGameOptions.NeutralEvilWinEndsGame) return true;

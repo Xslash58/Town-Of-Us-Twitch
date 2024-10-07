@@ -36,7 +36,7 @@ namespace TownOfUs.CrewmateRoles.ProsecutorMod
             {
                 if (!PlayerControl.LocalPlayer.Is(RoleEnum.Prosecutor)) return;
                 var prosRole = Role.GetRole<Prosecutor>(PlayerControl.LocalPlayer);
-                GenButton(prosRole, __instance);
+                if (!PlayerControl.LocalPlayer.IsJailed()) GenButton(prosRole, __instance);
             }
         }
 

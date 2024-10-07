@@ -14,9 +14,9 @@ namespace TownOfUs.NeutralRoles.PlaguebearerMod
             if (!flag) return true;
             if (PlayerControl.LocalPlayer.Data.IsDead) return false;
             if (!PlayerControl.LocalPlayer.CanMove) return false;
+            if (!__instance.isActiveAndEnabled || __instance.isCoolingDown) return false;
             var role = Role.GetRole<Plaguebearer>(PlayerControl.LocalPlayer);
             if (role.InfectTimer() != 0) return false;
-
             if (role.ClosestPlayer == null) return false;
             if (role.InfectedPlayers.Contains(role.ClosestPlayer.PlayerId)) return false;
             var distBetweenPlayers = Utils.GetDistBetweenPlayers(PlayerControl.LocalPlayer, role.ClosestPlayer);

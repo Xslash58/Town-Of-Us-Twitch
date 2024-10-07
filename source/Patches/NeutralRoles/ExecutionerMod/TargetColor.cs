@@ -1,6 +1,7 @@
 using HarmonyLib;
 using TownOfUs.Extensions;
 using TownOfUs.Roles;
+using TownOfUs.Roles.Modifiers;
 using UnityEngine;
 
 namespace TownOfUs.NeutralRoles.ExecutionerMod
@@ -35,7 +36,15 @@ namespace TownOfUs.NeutralRoles.ExecutionerMod
 
             if (MeetingHud.Instance != null) UpdateMeeting(MeetingHud.Instance, role);
 
-            if (role.target && role.target.nameText()) role.target.nameText().color = Color.black;
+            if (!PlayerControl.LocalPlayer.IsHypnotised())
+            {
+                if (role.target && role.target.nameText())
+                {
+                    var colour = Color.black;
+                    if (role.target.Is(ModifierEnum.Shy)) colour.a = Modifier.GetModifier<Shy>(role.target).Opacity;
+                    role.target.nameText().color = colour;
+                }
+            }
 
             if (!role.target.Data.IsDead && !role.target.Data.Disconnected && !role.target.Is(RoleEnum.Vampire)) return;
             if (role.TargetVotedOut) return;

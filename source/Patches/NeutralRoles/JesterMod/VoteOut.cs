@@ -6,12 +6,12 @@ using TownOfUs.Roles;
 
 namespace TownOfUs.NeutralRoles.JesterMod
 {
-    [HarmonyPatch(typeof(ExileController), nameof(ExileController.Begin))]
+    [HarmonyPatch(typeof(ExileController), nameof(ExileController.BeginForGameplay))]
     internal class MeetingExiledEnd
     {
         private static void Postfix(ExileController __instance)
         {
-            var exiled = __instance.exiled;
+            var exiled = __instance.initData.networkedPlayer;
             if (exiled == null) return;
             var player = exiled.Object;
 
@@ -27,7 +27,7 @@ namespace TownOfUs.NeutralRoles.JesterMod
                 role.PauseEndCrit = true;
 
                 byte[] toKill = MeetingHud.Instance.playerStates.Where(x => !Utils.PlayerById(x.TargetPlayerId).Is(RoleEnum.Pestilence) && x.VotedFor == player.PlayerId).Select(x => x.TargetPlayerId).ToArray();
-                var pk = new PunishmentKill((x) =>
+                var pk = new PlayerMenu((x) =>
                 {
                     Utils.RpcMultiMurderPlayer(player, x);
                     role.PauseEndCrit = false;

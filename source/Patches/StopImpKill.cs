@@ -2,7 +2,10 @@ using HarmonyLib;
 using TownOfUs.Extensions;
 using AmongUs.GameOptions;
 using TownOfUs.Modifiers.UnderdogMod;
+using TownOfUs.CrewmateRoles.SheriffMod;
 using TownOfUs.Roles;
+using Reactor.Utilities;
+using static TownOfUs.Roles.Glitch;
 
 namespace TownOfUs
 {
@@ -20,6 +23,14 @@ namespace TownOfUs
             if (GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek)
             {
                 if (!target.inVent) Utils.RpcMurderPlayer(PlayerControl.LocalPlayer, target);
+                return false;
+            }
+            HUDKill.ImpKillTarget(__instance);
+            target = __instance.currentTarget;
+            if (target == null) return false;
+            if (PlayerControl.LocalPlayer.Is(RoleEnum.Warlock) && PlayerControl.LocalPlayer.IsHacked())
+            {
+                Coroutines.Start(AbilityCoroutine.Hack(PlayerControl.LocalPlayer));
                 return false;
             }
             var interact = Utils.Interact(PlayerControl.LocalPlayer, target, true);

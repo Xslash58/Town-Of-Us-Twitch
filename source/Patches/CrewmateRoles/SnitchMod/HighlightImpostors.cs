@@ -1,6 +1,7 @@
 using HarmonyLib;
 using TownOfUs.Extensions;
 using TownOfUs.Roles;
+using TownOfUs.Roles.Modifiers;
 
 namespace TownOfUs.CrewmateRoles.SnitchMod
 {
@@ -32,13 +33,30 @@ namespace TownOfUs.CrewmateRoles.SnitchMod
             if (!role.TasksDone) return;
             if (MeetingHud.Instance && CustomGameOptions.SnitchSeesImpInMeeting) UpdateMeeting(MeetingHud.Instance);
 
-            foreach (var player in PlayerControl.AllPlayerControls)
+            if (!PlayerControl.LocalPlayer.IsHypnotised())
             {
-                if (player.Data.IsImpostor() && !player.Is(RoleEnum.Traitor)) player.nameText().color = Palette.ImpostorRed;
-                else if (player.Is(RoleEnum.Traitor) && CustomGameOptions.SnitchSeesTraitor) player.nameText().color = Palette.ImpostorRed;
-                var playerRole = Role.GetRole(player);
-                if (playerRole.Faction == Faction.NeutralKilling && CustomGameOptions.SnitchSeesNeutrals)
-                    player.nameText().color = playerRole.Color;
+                foreach (var player in PlayerControl.AllPlayerControls)
+                {
+                    if (player.Data.IsImpostor() && !player.Is(RoleEnum.Traitor))
+                    {
+                        var colour = Palette.ImpostorRed;
+                        if (player.Is(ModifierEnum.Shy)) colour.a = Modifier.GetModifier<Shy>(player).Opacity;
+                        player.nameText().color = colour;
+                    }
+                    else if (player.Is(RoleEnum.Traitor) && CustomGameOptions.SnitchSeesTraitor)
+                    {
+                        var colour = Palette.ImpostorRed;
+                        if (player.Is(ModifierEnum.Shy)) colour.a = Modifier.GetModifier<Shy>(player).Opacity;
+                        player.nameText().color = colour;
+                    }
+                    var playerRole = Role.GetRole(player);
+                    if (playerRole.Faction == Faction.NeutralKilling && CustomGameOptions.SnitchSeesNeutrals)
+                    {
+                        var colour = playerRole.Color;
+                        if (player.Is(ModifierEnum.Shy)) colour.a = Modifier.GetModifier<Shy>(player).Opacity;
+                        player.nameText().color = colour;
+                    }
+                }
             }
         }
     }

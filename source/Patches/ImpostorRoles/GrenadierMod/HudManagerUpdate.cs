@@ -51,6 +51,8 @@ namespace TownOfUs.ImpostorRoles.GrenadierMod
             if (role.Flashed)
             {
                 role.FlashButton.SetCoolDown(role.TimeRemaining, CustomGameOptions.GrenadeDuration);
+                role.FlashButton.graphic.color = Palette.EnabledColor;
+                role.FlashButton.graphic.material.SetFloat("_Desat", 0f);
                 return;
             }
 
@@ -59,7 +61,7 @@ namespace TownOfUs.ImpostorRoles.GrenadierMod
             var system = ShipStatus.Instance.Systems[SystemTypes.Sabotage].Cast<SabotageSystemType>();
             var sabActive = system.AnyActive;
 
-            if (sabActive)
+            if (sabActive || !PlayerControl.LocalPlayer.moveable || role.FlashTimer() > 0f)
             {
                 role.FlashButton.graphic.color = Palette.DisabledClear;
                 role.FlashButton.graphic.material.SetFloat("_Desat", 1f);

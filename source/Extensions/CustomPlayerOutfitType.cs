@@ -7,7 +7,6 @@
         Morph,
         Camouflage,
         Swooper,
-        Aurial,
         PlayerNameOnly
 
     }

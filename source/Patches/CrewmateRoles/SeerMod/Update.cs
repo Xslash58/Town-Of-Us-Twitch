@@ -1,6 +1,7 @@
 using HarmonyLib;
 using TownOfUs.Extensions;
 using TownOfUs.Roles;
+using TownOfUs.Roles.Modifiers;
 using UnityEngine;
 
 namespace TownOfUs.CrewmateRoles.SeerMod
@@ -20,8 +21,8 @@ namespace TownOfUs.CrewmateRoles.SeerMod
                     switch (roleType)
                     {
                         default:
-                            if ((player.Is(Faction.Crewmates) && !(player.Is(RoleEnum.Sheriff) || player.Is(RoleEnum.Veteran) || player.Is(RoleEnum.Vigilante) || player.Is(RoleEnum.Hunter) || player.Is(RoleEnum.VampireHunter))) ||
-                            ((player.Is(RoleEnum.Sheriff) || player.Is(RoleEnum.Veteran) || player.Is(RoleEnum.Vigilante) || player.Is(RoleEnum.Hunter) || player.Is(RoleEnum.VampireHunter)) && !CustomGameOptions.CrewKillingRed) ||
+                            if ((player.Is(Faction.Crewmates) && !(player.Is(RoleEnum.Sheriff) || player.Is(RoleEnum.Veteran) || player.Is(RoleEnum.Vigilante) || player.Is(RoleEnum.Hunter) || player.Is(RoleEnum.Jailor))) ||
+                            ((player.Is(RoleEnum.Sheriff) || player.Is(RoleEnum.Veteran) || player.Is(RoleEnum.Vigilante) || player.Is(RoleEnum.Hunter) || player.Is(RoleEnum.Jailor)) && !CustomGameOptions.CrewKillingRed) ||
                             (player.Is(Faction.NeutralBenign) && !CustomGameOptions.NeutBenignRed) ||
                             (player.Is(Faction.NeutralEvil) && !CustomGameOptions.NeutEvilRed) ||
                             (player.Is(Faction.NeutralKilling) && !CustomGameOptions.NeutKillingRed))
@@ -34,8 +35,8 @@ namespace TownOfUs.CrewmateRoles.SeerMod
                                 {
                                     var traitor = (Traitor)role;
                                     if ((traitor.formerRole == RoleEnum.Sheriff || traitor.formerRole == RoleEnum.Vigilante ||
-                                        traitor.formerRole == RoleEnum.Veteran || traitor.formerRole == RoleEnum.VampireHunter)
-                                    && CustomGameOptions.CrewKillingRed) state.NameText.color = Color.red;
+                                        traitor.formerRole == RoleEnum.Veteran || traitor.formerRole == RoleEnum.Hunter ||
+                                        traitor.formerRole == RoleEnum.Jailor) && CustomGameOptions.CrewKillingRed) state.NameText.color = Color.red;
                                     else state.NameText.color = Color.green;
                                 }
                             }
@@ -62,37 +63,41 @@ namespace TownOfUs.CrewmateRoles.SeerMod
             var seer = Role.GetRole<Seer>(PlayerControl.LocalPlayer);
             if (MeetingHud.Instance != null) UpdateMeeting(MeetingHud.Instance, seer);
 
-            foreach (var player in PlayerControl.AllPlayerControls)
+            if (!PlayerControl.LocalPlayer.IsHypnotised())
             {
-                if (!seer.Investigated.Contains(player.PlayerId)) continue;
-                var roleType = Utils.GetRole(player);
-                switch (roleType)
+                foreach (var player in PlayerControl.AllPlayerControls)
                 {
-                    default:
-                        if ((player.Is(Faction.Crewmates) && !(player.Is(RoleEnum.Sheriff) || player.Is(RoleEnum.Veteran) || player.Is(RoleEnum.Vigilante) || player.Is(RoleEnum.Hunter) || player.Is(RoleEnum.VampireHunter))) ||
-                            ((player.Is(RoleEnum.Sheriff) || player.Is(RoleEnum.Veteran) || player.Is(RoleEnum.Vigilante) || player.Is(RoleEnum.Hunter) || player.Is(RoleEnum.VampireHunter)) && !CustomGameOptions.CrewKillingRed) ||
-                            (player.Is(Faction.NeutralBenign) && !CustomGameOptions.NeutBenignRed) ||
-                            (player.Is(Faction.NeutralEvil) && !CustomGameOptions.NeutEvilRed) ||
-                            (player.Is(Faction.NeutralKilling) && !CustomGameOptions.NeutKillingRed))
-                        {
-                            player.nameText().color = Color.green;
-                        }
-                        else if (player.Is(RoleEnum.Traitor) && CustomGameOptions.TraitorColourSwap)
-                        {
-                            foreach (var role in Role.GetRoles(RoleEnum.Traitor))
+                    if (!seer.Investigated.Contains(player.PlayerId)) continue;
+                    var roleType = Utils.GetRole(player);
+                    switch (roleType)
+                    {
+                        default:
+                            var colour = Color.red;
+                            if ((player.Is(Faction.Crewmates) && !(player.Is(RoleEnum.Sheriff) || player.Is(RoleEnum.Veteran) || player.Is(RoleEnum.Vigilante) || player.Is(RoleEnum.Hunter) || player.Is(RoleEnum.Jailor))) ||
+                                ((player.Is(RoleEnum.Sheriff) || player.Is(RoleEnum.Veteran) || player.Is(RoleEnum.Vigilante) || player.Is(RoleEnum.Hunter) || player.Is(RoleEnum.Jailor)) && !CustomGameOptions.CrewKillingRed) ||
+                                (player.Is(Faction.NeutralBenign) && !CustomGameOptions.NeutBenignRed) ||
+                                (player.Is(Faction.NeutralEvil) && !CustomGameOptions.NeutEvilRed) ||
+                                (player.Is(Faction.NeutralKilling) && !CustomGameOptions.NeutKillingRed))
                             {
-                                var traitor = (Traitor)role;
-                                if ((traitor.formerRole == RoleEnum.Sheriff || traitor.formerRole == RoleEnum.Vigilante ||
-                                    traitor.formerRole == RoleEnum.Veteran || traitor.formerRole == RoleEnum.VampireHunter || traitor.formerRole == RoleEnum.Hunter)
-                                    && CustomGameOptions.CrewKillingRed) player.nameText().color = Color.red;
-                                else player.nameText().color = Color.green;
+                                colour = Color.green;
                             }
-                        }
-                        else
-                        {
-                            player.nameText().color = Color.red;
-                        }
-                        break;
+                            else if (player.Is(RoleEnum.Traitor) && CustomGameOptions.TraitorColourSwap)
+                            {
+                                foreach (var role in Role.GetRoles(RoleEnum.Traitor))
+                                {
+                                    var traitor = (Traitor)role;
+                                    if ((traitor.formerRole == RoleEnum.Sheriff || traitor.formerRole == RoleEnum.Vigilante ||
+                                        traitor.formerRole == RoleEnum.Veteran || traitor.formerRole == RoleEnum.Hunter ||
+                                        traitor.formerRole == RoleEnum.Jailor) && CustomGameOptions.CrewKillingRed) colour = Color.red;
+                                    else colour = Color.green;
+                                }
+                            }
+
+                            if (player.Is(ModifierEnum.Shy)) colour.a = Modifier.GetModifier<Shy>(player).Opacity;
+                            player.nameText().color = colour;
+
+                            break;
+                    }
                 }
             }
         }

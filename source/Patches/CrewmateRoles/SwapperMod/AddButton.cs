@@ -26,7 +26,6 @@ namespace TownOfUs.CrewmateRoles.SwapperMod
 
             var confirmButton = MeetingHud.Instance.playerStates[index].Buttons.transform.GetChild(0).gameObject;
 
-
             var newButton = Object.Instantiate(confirmButton, MeetingHud.Instance.playerStates[index].transform);
             var renderer = newButton.GetComponent<SpriteRenderer>();
             var passive = newButton.GetComponent<PassiveButton>();
@@ -99,9 +98,10 @@ namespace TownOfUs.CrewmateRoles.SwapperMod
 
             if (PlayerControl.LocalPlayer.Data.IsDead) return;
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Swapper)) return;
+            if (PlayerControl.LocalPlayer.IsJailed()) return;
             var swapperrole = Role.GetRole<Swapper>(PlayerControl.LocalPlayer);
             for (var i = 0; i < __instance.playerStates.Length; i++)
-                GenButton(swapperrole, i, __instance.playerStates[i].AmDead);
+                GenButton(swapperrole, i, __instance.playerStates[i].AmDead || Utils.PlayerById(__instance.playerStates[i].TargetPlayerId).IsJailed());
         }
     }
 }

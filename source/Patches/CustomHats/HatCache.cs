@@ -5,8 +5,6 @@ namespace TownOfUs.Patches.CustomHats
 {
     public static class HatCache
     {
-        public static Dictionary<string, Sprite> hatViewDatas= new Dictionary<string, Sprite>();
-
-        
+        public static Dictionary<string, Sprite> hatViewDatas = new Dictionary<string, Sprite>();
     }
 }

@@ -6,7 +6,7 @@ using TownOfUs.Patches;
 using TownOfUs.Roles;
 using TownOfUs.CrewmateRoles.AltruistMod;
 
-namespace TownOfUs.NeutraleRoles.ExecutionerMod
+namespace TownOfUs.NeutralRoles.ExecutionerMod
 {
     [HarmonyPatch(typeof(AirshipExileController), nameof(AirshipExileController.WrapUpAndSpawn))]
     public static class AirshipExileController_WrapUpAndSpawn
@@ -19,7 +19,7 @@ namespace TownOfUs.NeutraleRoles.ExecutionerMod
     {
         public static void ExileControllerPostfix(ExileController __instance)
         {
-            var exiled = __instance.exiled;
+            var exiled = __instance.initData.networkedPlayer;
             if (exiled == null) return;
             var player = exiled.Object;
 

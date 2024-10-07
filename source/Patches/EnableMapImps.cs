@@ -4,23 +4,12 @@ using UnityEngine;
 
 namespace TownOfUs
 {
-    [HarmonyPatch(typeof(GameSettingMenu), nameof(GameSettingMenu.InitializeOptions))]
+    [HarmonyPatch(typeof(GameOptionsMenu), nameof(GameOptionsMenu.Initialize))]
     public class EnableMapImps
     {
-        private static void Prefix(ref GameSettingMenu __instance)
+        private static void Prefix(ref GameOptionsMenu __instance)
         {
             __instance.HideForOnline = new Il2CppReferenceArray<Transform>(0);
-        }
-    }
-
-    [HarmonyPatch(typeof(ImpostorRole), nameof(ImpostorRole.CanUse))]
-    public class ImpTasks
-    {
-        private static bool Prefix(ImpostorRole __instance, ref IUsable usable, ref bool __result)
-        {
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.CultistSnitch)) return true;
-            __result = true;
-            return false;
         }
     }
 }

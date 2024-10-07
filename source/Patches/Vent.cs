@@ -4,6 +4,7 @@ using TownOfUs.Roles;
 using UnityEngine;
 using AmongUs.GameOptions;
 using TownOfUs.Patches;
+using System.Linq;
 
 namespace TownOfUs
 {
@@ -16,8 +17,8 @@ namespace TownOfUs
             if(__instance.ImpostorVentButton == null || __instance.ImpostorVentButton.gameObject == null || __instance.ImpostorVentButton.IsNullOrDestroyed())
                 return;
 
-            bool active = PlayerControl.LocalPlayer != null && VentPatches.CanVent(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer._cachedData) && !MeetingHud.Instance;
-            if(active != __instance.ImpostorVentButton.gameObject.active)
+            bool active = PlayerControl.LocalPlayer != null && VentPatches.CanVent(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.CachedPlayerData) && !MeetingHud.Instance;
+            if (active != __instance.ImpostorVentButton.gameObject.active)
             __instance.ImpostorVentButton.gameObject.SetActive(active);
         }
     }
@@ -25,18 +26,24 @@ namespace TownOfUs
     [HarmonyPatch(typeof(Vent), nameof(Vent.CanUse))]
     public static class VentPatches
     {
-        public static bool CanVent(PlayerControl player, GameData.PlayerInfo playerInfo)
+        public static bool CanVent(PlayerControl player, NetworkedPlayerInfo playerInfo)
         {
             if (GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek) return false;
 
             if (player.inVent)
+            {
+                if (PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 2 && !player.Is(RoleEnum.Haunter) && !player.Is(RoleEnum.Phantom))
+                {
+                    player.MyPhysics.RpcExitVent(Vent.currentVent.Id);
+                    player.MyPhysics.ExitAllVents();
+                }
                 return true;
+            }
 
             if (playerInfo.IsDead)
                 return false;
 
-            if (CustomGameOptions.GameMode == GameMode.Cultist && !player.Is(RoleEnum.Engineer)) return false;
-            else if (CustomGameOptions.GameMode == GameMode.Cultist && player.Is(RoleEnum.Engineer)) return true;
+            if (PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 2) return false;
 
             if (player.Is(RoleEnum.Morphling) && !CustomGameOptions.MorphlingVent
                 || player.Is(RoleEnum.Swooper) && !CustomGameOptions.SwooperVent
@@ -55,7 +62,7 @@ namespace TownOfUs
 
             if (player.Is(RoleEnum.Werewolf) && CustomGameOptions.WerewolfVent)
             {
-                var role = Role.GetRole<Werewolf>(PlayerControl.LocalPlayer);
+                var role = Role.GetRole<Werewolf>(player);
                 if (role.Rampaged) return true;
             }
 
@@ -63,7 +70,7 @@ namespace TownOfUs
         }
 
         public static void Postfix(Vent __instance,
-            [HarmonyArgument(0)] GameData.PlayerInfo playerInfo,
+            [HarmonyArgument(0)] NetworkedPlayerInfo playerInfo,
             [HarmonyArgument(1)] ref bool canUse,
             [HarmonyArgument(2)] ref bool couldUse,
             ref float __result)

@@ -4,6 +4,8 @@ using System;
 using Object = UnityEngine.Object;
 using AmongUs.GameOptions;
 using TownOfUs.Roles;
+using TownOfUs.CrewmateRoles.HaunterMod;
+using TownOfUs.NeutralRoles.PhantomMod;
 
 namespace TownOfUs.Patches
 {
@@ -21,9 +23,11 @@ namespace TownOfUs.Patches
                 ZoomButton = Object.Instantiate(__instance.MapButton.gameObject, __instance.MapButton.transform.parent);
                 ZoomButton.GetComponent<PassiveButton>().OnClick = new();
                 ZoomButton.GetComponent<PassiveButton>().OnClick.AddListener(new Action(Zoom));
+                ZoomButton.name = "Zoom";
             }
 
-            Pos = __instance.MapButton.transform.localPosition + new Vector3(0.02f, -0.66f, 0f);
+            Pos = __instance.MapButton.transform.localPosition + new Vector3(0f, -0.8f, 0f);
+            if (SubmergedCompatibility.Loaded && GameOptionsManager.Instance.currentNormalGameOptions.MapId == 6) Pos = __instance.SettingsButton.transform.localPosition + new Vector3(0f, -0.8f, 0f);
             var dead = false;
             if (Utils.ShowDeadBodies)
             {
@@ -37,12 +41,16 @@ namespace TownOfUs.Patches
                     var phantom = Role.GetRole<Phantom>(PlayerControl.LocalPlayer);
                     if (phantom.Caught) dead = true;
                 }
+                else if (PlayerControl.LocalPlayer == SetHaunter.WillBeHaunter || PlayerControl.LocalPlayer == SetPhantom.WillBePhantom) dead = false;
+                // this works because if they are already haunter/phantom the code before it will run
                 else dead = true;
             }
             ZoomButton.SetActive(!MeetingHud.Instance && dead && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started
-                && GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.Normal);
+                && GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.Normal && HauntMenuMinigame.Instance == null);
             ZoomButton.transform.localPosition = Pos;
-            ZoomButton.GetComponent<SpriteRenderer>().sprite = Zooming ? TownOfUs.ZoomPlusButton : TownOfUs.ZoomMinusButton;
+            ZoomButton.transform.Find("Background").localPosition = Vector3.zero;
+            ZoomButton.transform.Find("Inactive").GetComponent<SpriteRenderer>().sprite = Zooming ? TownOfUs.ZoomPlusButton : TownOfUs.ZoomMinusButton;
+            ZoomButton.transform.Find("Active").GetComponent<SpriteRenderer>().sprite = Zooming ? TownOfUs.ZoomPlusActiveButton : TownOfUs.ZoomMinusActiveButton;
         }
 
         public static void Zoom()

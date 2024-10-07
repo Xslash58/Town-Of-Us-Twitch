@@ -50,28 +50,10 @@ namespace TownOfUs.Roles
         {
             Enabled = true;
             TimeRemaining -= Time.deltaTime;
+            Utils.Swoop(Player);
             if (Player.Data.IsDead)
             {
                 TimeRemaining = 0f;
-            }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Aurial) && !Role.GetRole<Aurial>(PlayerControl.LocalPlayer).NormalVision) return;
-            var color = Color.clear;
-            if (PlayerControl.LocalPlayer.Data.IsImpostor() || PlayerControl.LocalPlayer.Data.IsDead) color.a = 0.1f;
-
-            if (Player.GetCustomOutfitType() != CustomPlayerOutfitType.Swooper)
-            {
-                Player.SetOutfit(CustomPlayerOutfitType.Swooper, new GameData.PlayerOutfit()
-                {
-                    ColorId = Player.CurrentOutfit.ColorId,
-                    HatId = "",
-                    SkinId = "",
-                    VisorId = "",
-                    PlayerName = " ",
-                    PetId = ""
-                });
-                Player.myRend().color = color;
-                Player.nameText().color = Color.clear;
-                Player.cosmetics.colorBlindText.color = Color.clear;
             }
         }
 
@@ -80,7 +62,6 @@ namespace TownOfUs.Roles
         {
             Enabled = false;
             LastSwooped = DateTime.UtcNow;
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Aurial) && !Role.GetRole<Aurial>(PlayerControl.LocalPlayer).NormalVision) return;
             Utils.Unmorph(Player);
             Player.myRend().color = Color.white;
         }

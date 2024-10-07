@@ -1,8 +1,10 @@
 ﻿using Reactor.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
+using TownOfUs.Extensions;
 
 namespace TownOfUs.Roles
 {
@@ -14,6 +16,7 @@ namespace TownOfUs.Roles
             ImpostorText = () => "Stalk The <color=#FF0000FF>Impostor</color>";
             TaskText = () => "Stalk and kill impostors, but not crewmates";
             Color = Patches.Colors.Hunter;
+            LastStalked = DateTime.UtcNow;
             LastKilled = DateTime.UtcNow;
             RoleType = RoleEnum.Hunter;
             AddToRoleHistory(RoleType);
@@ -43,6 +46,17 @@ namespace TownOfUs.Roles
         }
         public bool Stalking => StalkDuration > 0f;
         public bool StalkUsable => UsesLeft != 0;
+
+        internal override bool GameEnd(LogicGameFlowNormal __instance)
+        {
+            if (Player.Data.IsDead || Player.Data.Disconnected || !CustomGameOptions.CrewKillersContinue) return true;
+
+            if (PlayerControl.AllPlayerControls.ToArray().Count(x => !x.Data.IsDead && !x.Data.Disconnected && x.Data.IsImpostor()) > 0 &&
+                (UsesLeft > 0 || (StalkedPlayer != null && !StalkedPlayer.Data.IsDead && !StalkedPlayer.Data.Disconnected && StalkedPlayer.Data.IsImpostor()) ||
+                CaughtPlayers.Count(player => !player.Data.IsDead && !player.Data.Disconnected && player.Data.IsImpostor()) > 0)) return false;
+
+            return true;
+        }
 
         public float HunterKillTimer()
         {
@@ -77,16 +91,9 @@ namespace TownOfUs.Roles
             StalkedPlayer = null;
         }
 
-        public void CatchPlayer(PlayerControl stalked)
-        {
-            if (StalkedPlayer != stalked) return;
-            RpcCatchPlayer(stalked);
-            Utils.Rpc(CustomRPC.HunterCatchPlayer, Player.PlayerId, stalked.PlayerId);
-        }
-
         public void RpcCatchPlayer(PlayerControl stalked)
         {
-            if (PlayerControl.LocalPlayer.PlayerId == Player.PlayerId)
+            if (PlayerControl.LocalPlayer.PlayerId == Player.PlayerId && !PlayerControl.LocalPlayer.Data.IsDead)
             {
                 Coroutines.Start(Utils.FlashCoroutine(Patches.Colors.Hunter));
             }

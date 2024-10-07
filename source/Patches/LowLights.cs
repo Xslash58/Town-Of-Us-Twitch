@@ -9,7 +9,7 @@ namespace TownOfUs
     [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.CalculateLightRadius))]
     public static class LowLights
     {
-        public static bool Prefix(ShipStatus __instance, [HarmonyArgument(0)] GameData.PlayerInfo player,
+        public static bool Prefix(ShipStatus __instance, [HarmonyArgument(0)] NetworkedPlayerInfo player,
             ref float __result)
         {
             if (GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek)
@@ -62,17 +62,6 @@ namespace TownOfUs
             var t = switchSystem != null ? switchSystem.Value / 255f : 1;
 
             if (player._object.Is(ModifierEnum.Torch)) t = 1;
-
-            if (player._object.Is(RoleEnum.Mayor))
-            {
-                var role = Role.GetRole<Mayor>(player._object);
-                if (role.Revealed)
-                {
-                    __result = Mathf.Lerp(__instance.MinLightRadius, __instance.MaxLightRadius/2, t) *
-                       GameOptionsManager.Instance.currentNormalGameOptions.CrewLightMod;
-                    return false;
-                }
-            }
 
             __result = Mathf.Lerp(__instance.MinLightRadius, __instance.MaxLightRadius, t) *
                        GameOptionsManager.Instance.currentNormalGameOptions.CrewLightMod;

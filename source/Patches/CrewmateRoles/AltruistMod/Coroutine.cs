@@ -6,10 +6,11 @@ using Reactor.Utilities.Extensions;
 using TownOfUs.CrewmateRoles.MedicMod;
 using TownOfUs.Extensions;
 using TownOfUs.Roles;
+using TownOfUs.Patches;
 using UnityEngine;
-using Object = UnityEngine.Object;
 using TownOfUs.Roles.Modifiers;
 using AmongUs.GameOptions;
+using Reactor.Utilities;
 
 namespace TownOfUs.CrewmateRoles.AltruistMod
 {
@@ -20,10 +21,9 @@ namespace TownOfUs.CrewmateRoles.AltruistMod
 
         public static IEnumerator AltruistRevive(DeadBody target, Altruist role)
         {
-            var parentId = target.ParentId;
+            var parent = Utils.PlayerById(target.ParentId);
             var position = target.TruePosition;
-
-            var revived = new List<PlayerControl>();
+            var altruist = role.Player;
 
             if (AmongUsClient.Instance.AmHost) Utils.RpcMurderPlayer(role.Player, role.Player);
 
@@ -48,12 +48,20 @@ namespace TownOfUs.CrewmateRoles.AltruistMod
                 if (MeetingHud.Instance) yield break;
             }
 
+            if (!AmongUsClient.Instance.AmHost || parent.Data.Disconnected) yield break;
+
+            AltruistReviveEnd(altruist, parent, position.x, position.y + 0.3636f);
+            Utils.Rpc(CustomRPC.AltruistRevive, altruist.PlayerId, (byte)1, parent.PlayerId, position.x, position.y + 0.3636f);
+        }
+
+        public static void AltruistReviveEnd(PlayerControl altruist, PlayerControl player, float x, float y)
+        {
+            var revived = new List<PlayerControl>();
+
             foreach (DeadBody deadBody in GameObject.FindObjectsOfType<DeadBody>())
             {
-                if (deadBody.ParentId == role.Player.PlayerId) deadBody.gameObject.Destroy();
+                if (deadBody.ParentId == altruist.PlayerId) deadBody.gameObject.Destroy();
             }
-
-            var player = Utils.PlayerById(parentId);
 
             player.Revive();
             if (player.Is(Faction.Impostors)) RoleManager.Instance.SetRole(player, RoleTypes.Impostor);
@@ -61,13 +69,17 @@ namespace TownOfUs.CrewmateRoles.AltruistMod
             Murder.KilledPlayers.Remove(
                 Murder.KilledPlayers.FirstOrDefault(x => x.PlayerId == player.PlayerId));
             revived.Add(player);
-            player.NetTransform.SnapTo(new Vector2(position.x, position.y + 0.3636f));
+            player.transform.position = new Vector2(x, y);
+            if (PlayerControl.LocalPlayer == player) PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(new Vector2(x, y));
 
             if (Patches.SubmergedCompatibility.isSubmerged() && PlayerControl.LocalPlayer.PlayerId == player.PlayerId)
             {
                 Patches.SubmergedCompatibility.ChangeFloor(player.transform.position.y > -7);
             }
-            if (target != null) Object.Destroy(target.gameObject);
+            foreach (DeadBody deadBody in GameObject.FindObjectsOfType<DeadBody>())
+            {
+                if (deadBody.ParentId == player.PlayerId) deadBody.gameObject.Destroy();
+            }
 
             if (player.IsLover() && CustomGameOptions.BothLoversDie)
             {
@@ -84,6 +96,13 @@ namespace TownOfUs.CrewmateRoles.AltruistMod
                 {
                     if (deadBody.ParentId == lover.PlayerId)
                     {
+                        lover.transform.position = new Vector2(deadBody.TruePosition.x, deadBody.TruePosition.y + 0.3636f);
+                        if (PlayerControl.LocalPlayer == lover) PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(new Vector2(deadBody.TruePosition.x, deadBody.TruePosition.y + 0.3636f));
+
+                        if (Patches.SubmergedCompatibility.isSubmerged() && PlayerControl.LocalPlayer.PlayerId == lover.PlayerId)
+                        {
+                            Patches.SubmergedCompatibility.ChangeFloor(lover.transform.position.y > -7);
+                        }
                         deadBody.gameObject.Destroy();
                     }
                 }
@@ -99,7 +118,7 @@ namespace TownOfUs.CrewmateRoles.AltruistMod
                 {
                 }
 
-            if (PlayerControl.LocalPlayer.Data.IsImpostor() || PlayerControl.LocalPlayer.Is(Faction.NeutralKilling))
+            if ((PlayerControl.LocalPlayer.Data.IsImpostor() || PlayerControl.LocalPlayer.Is(Faction.NeutralKilling)) && !revived.Contains(PlayerControl.LocalPlayer))
             {
                 var gameObj = new GameObject();
                 var Arrow = gameObj.AddComponent<ArrowBehaviour>();
@@ -110,8 +129,10 @@ namespace TownOfUs.CrewmateRoles.AltruistMod
                 gameObj.layer = 5;
                 Revived.Add(player, Arrow);
                 //Target = player;
-                yield return Utils.FlashCoroutine(role.Color, 1f, 0.5f);
+                Coroutines.Start(Utils.FlashCoroutine(Colors.Altruist, 1f, 0.5f));
             }
+
+            foreach (var revive in revived) Utils.Unmorph(revive);
         }
     }
 }
