@@ -4,6 +4,7 @@ using System.Linq;
 using TownOfUs.Roles;
 using TownOfUs.Roles.Modifiers;
 using TownOfUs.Extensions;
+using TownOfUs.Patches.Roles;
 
 namespace TownOfUs
 {
@@ -37,6 +38,11 @@ namespace TownOfUs
             {
                 var exe = (Executioner)role;
                 losers.Add(exe.Player.GetDefaultOutfit().ColorId);
+            }
+            foreach (var role in Role.GetRoles(RoleEnum.Lawyer))
+            {
+                var lwyr = (Lawyer)role;
+                losers.Add(lwyr.Player.GetDefaultOutfit().ColorId);
             }
             foreach (var role in Role.GetRoles(RoleEnum.Jester))
             {
@@ -233,6 +239,17 @@ namespace TownOfUs
                         EndGameResult.CachedWinners.Add(glitchData);
                     }
                 }
+                if (type == RoleEnum.Stalker)
+                {
+                    var stalker = (Stalker)role;
+                    if (stalker.StalkerWins)
+                    {
+                        TempData.winners = new List<WinningPlayerData>();
+                        var stalkerData = new WinningPlayerData(stalker.Player.Data);
+                        if (PlayerControl.LocalPlayer != stalker.Player) stalkerData.IsYou = false;
+                        TempData.winners.Add(stalkerData);
+                    }
+                }
                 else if (type == RoleEnum.Juggernaut)
                 {
                     var juggernaut = (Juggernaut)role;
@@ -300,6 +317,18 @@ namespace TownOfUs
                     if (isImp) survWinData.IsImpostor = true;
                     if (PlayerControl.LocalPlayer != surv.Player) survWinData.IsYou = false;
                     EndGameResult.CachedWinners.Add(survWinData);
+                }
+            }
+            foreach (var role in Role.GetRoles(RoleEnum.Lawyer))
+            {
+                var lwyr = (Lawyer)role;
+                if (!lwyr.TargetVotedOut && !lwyr.Player.Data.IsDead)
+                {
+                    var isImp = TempData.winners[0].IsImpostor;
+                    var lwyrWinData = new WinningPlayerData(lwyr.Player.Data);
+                    if (isImp) lwyrWinData.IsImpostor = true;
+                    if (PlayerControl.LocalPlayer != lwyr.Player) lwyrWinData.IsYou = false;
+                    TempData.winners.Add(lwyrWinData);
                 }
             }
             foreach (var role in Role.GetRoles(RoleEnum.GuardianAngel))

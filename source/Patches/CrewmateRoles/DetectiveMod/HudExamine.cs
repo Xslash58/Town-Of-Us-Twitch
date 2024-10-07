@@ -42,7 +42,8 @@ namespace TownOfUs.CrewmateRoles.DetectiveMod
 
             role.ExamineButton.SetCoolDown(role.ExamineTimer(), CustomGameOptions.ExamineCd);
 
-            if (role.InvestigatedPlayers.Count > 0)
+            var renderer = role.ExamineButton.graphic;
+            if (role.ClosestPlayer != null && role.InvestigatingScene != null)
             {
                 Utils.SetTarget(ref role.ClosestPlayer, role.ExamineButton, float.NaN);
 

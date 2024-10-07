@@ -25,8 +25,8 @@ using Reactor.Networking.Extensions;
 using TownOfUs.CrewmateRoles.DetectiveMod;
 using TownOfUs.NeutralRoles.SoulCollectorMod;
 using static TownOfUs.Roles.Glitch;
-using UnityEngine.Rendering;
 using TownOfUs.Patches.NeutralRoles;
+using TownOfUs.Patches.Roles;
 
 namespace TownOfUs
 {
@@ -168,6 +168,29 @@ namespace TownOfUs
             return player.Is(ModifierEnum.Lover);
         }
 
+        public static bool IsOtherLover(this PlayerControl player, PlayerControl source)
+        {
+            return player.Is(ModifierEnum.Lover) && Modifier.GetModifier<Lover>(player).OtherLover.Player.PlayerId == source.PlayerId;
+        }
+
+        public static bool IsLegalCounsel(this PlayerControl player, PlayerControl source)
+        {
+            if (!CustomGameOptions.LawyerCanTalkDefendant) return false;
+            bool defendant = source.Is(RoleEnum.Lawyer) && Role.GetRole<Lawyer>(source).target.PlayerId == player.PlayerId;
+            bool lawyer = player.Is(RoleEnum.Lawyer) && Role.GetRole<Lawyer>(player).target.PlayerId == source.PlayerId;
+            return lawyer || defendant;
+        }
+
+        public static bool HasLegalCounsel(this PlayerControl player)
+        {
+            if (!CustomGameOptions.LawyerCanTalkDefendant) return false;
+            bool defendant = false;
+            foreach (var role in Role.GetRoles(RoleEnum.Lawyer))
+                if (((Lawyer)role).target != null && ((Lawyer)role).target.PlayerId == player.PlayerId)
+                    defendant = true;
+            return player.Is(RoleEnum.Lawyer) || defendant;
+        }
+        
         public static bool Is(this PlayerControl player, RoleEnum roleType)
         {
             return Role.GetRole(player)?.RoleType == roleType;
@@ -270,6 +293,14 @@ namespace TownOfUs
             {
                 var exeTarget = ((Executioner)role).target;
                 return exeTarget != null && player.PlayerId == exeTarget.PlayerId;
+            });
+        }
+        public static bool IsLawyerTarget(this PlayerControl player)
+        {
+            return Role.GetRoles(RoleEnum.Lawyer).Any(role =>
+            {
+                var lwyrTarget = ((Lawyer)role).target;
+                return lwyrTarget != null && player.PlayerId == lwyrTarget.PlayerId;
             });
         }
 
@@ -447,6 +478,11 @@ namespace TownOfUs
                         {
                             var glitch = Role.GetRole<Glitch>(player);
                             glitch.LastKill = DateTime.UtcNow;
+                        }
+                        if (player.Is(RoleEnum.Stalker))
+                        {
+                            var stalker = Role.GetRole<Stalker>(player);
+                            stalker.LastKilled = DateTime.UtcNow;
                         }
                         else if (player.Is(RoleEnum.Juggernaut))
                         {
@@ -757,9 +793,17 @@ namespace TownOfUs
                 if (PlayerControl.LocalPlayer.Is(RoleEnum.Detective))
                 {
                     var detective = Role.GetRole<Detective>(PlayerControl.LocalPlayer);
-                    if (PlayerControl.LocalPlayer != target && !PlayerControl.LocalPlayer.Data.IsDead)
+
+                    if (target.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+                    {
+                        detective.CurrentTarget = null;
+                        detective.InvestigatingScene = null;
+                        CrimeSceneExtensions.ClearCrimeScenes(detective.CrimeScenes);
+                    }
+                    else if (!PlayerControl.LocalPlayer.Data.IsDead)
                     {
                         var bodyPos = target.transform.position;
+                        bodyPos.z += 0.005f;
                         bodyPos.y -= 0.3f;
                         bodyPos.x -= 0.11f;
                         detective.CrimeScenes.Add(CrimeSceneExtensions.CreateCrimeScene(bodyPos, target));
@@ -871,6 +915,11 @@ namespace TownOfUs
                     BaitReport(killer, target);
                 }
 
+                if (target.Is(ModifierEnum.Freeze))
+                {
+                    FreezeKiller(killer, target);
+                }
+
                 if (target.Is(ModifierEnum.Aftermath))
                 {
                     Aftermath.ForceAbility(killer, target);
@@ -903,7 +952,7 @@ namespace TownOfUs
                     werewolf.LastKilled = DateTime.UtcNow.AddSeconds((CustomGameOptions.DiseasedMultiplier - 1f) * CustomGameOptions.RampageKillCd);
                     werewolf.Player.SetKillTimer(CustomGameOptions.RampageKillCd * CustomGameOptions.DiseasedMultiplier);
                     return;
-                }
+                }//TODO: STALKER
 
                 if (target.Is(ModifierEnum.Diseased) && killer.Is(RoleEnum.Vampire))
                 {
@@ -1004,6 +1053,27 @@ namespace TownOfUs
                     }
                 }
             }
+        }
+
+        public static void FreezeKiller(PlayerControl killer, PlayerControl target)
+        {
+            Coroutines.Start(FreezeKillerDelay(killer, target));
+        }
+
+        public static IEnumerator FreezeKillerDelay(PlayerControl killer, PlayerControl target)
+        {
+            var bodies = Object.FindObjectsOfType<DeadBody>();
+            var oldSpeed = killer.MyPhysics.Speed;
+
+            if(!CustomGameOptions.FreezeReport) 
+                foreach (var body in bodies) body.myCollider.enabled = false;
+            killer.MyPhysics.Speed = 0;
+            
+            yield return new WaitForSeconds(CustomGameOptions.FreezeTime);
+            
+            if (!CustomGameOptions.FreezeReport)
+                foreach (var body in bodies) if(body && body.myCollider) body.myCollider.enabled = true;
+            killer.MyPhysics.Speed = oldSpeed;
         }
 
         public static IEnumerator FlashCoroutine(Color color, float waitfor = 1f, float alpha = 0.3f)
@@ -1394,6 +1464,15 @@ namespace TownOfUs
                     blackmailer.Blackmailed?.myRend().material.SetFloat("_Outline", 0f);
                 }
             }
+            if (PlayerControl.LocalPlayer.Is(RoleEnum.Disorienter))
+            {
+                var disorienter = Role.GetRole<Disorienter>(PlayerControl.LocalPlayer);
+                disorienter.LastDisoriented = DateTime.UtcNow;
+                if (disorienter.Player.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+                {
+                    disorienter.Disoriented?.myRend().material.SetFloat("_Outline", 0f);
+                }
+            }
             foreach (var role in Role.GetRoles(RoleEnum.Blackmailer))
             {
                 var blackmailer = (Blackmailer)role;
@@ -1413,6 +1492,11 @@ namespace TownOfUs
                     hypno.UnHysteria();
                     hypno.Hysteria();
                 }
+            }
+            foreach (var role in Role.GetRoles(RoleEnum.Disorienter))
+            {
+                var disorienter = (Disorienter)role;
+                disorienter.Disoriented = null;
             }
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Bomber))
             {

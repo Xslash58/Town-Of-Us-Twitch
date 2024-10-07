@@ -8,7 +8,7 @@ using AmongUs.QuickChat;
 
 namespace TownOfUs.ImpostorRoles.BlackmailerMod
 {
-    public class BlackmailMeetingUpdate
+    public class DisorientMeetingUpdate
     {
         public static bool shookAlready = false;
         public static Sprite PrevXMark = null;

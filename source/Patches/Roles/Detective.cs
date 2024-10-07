@@ -14,6 +14,7 @@ namespace TownOfUs.Roles
         public CrimeScene InvestigatingScene;
         public List<byte> InvestigatedPlayers = new List<byte>();
         public List<GameObject> CrimeScenes = new List<GameObject>();
+        public PlayerControl LastKiller;
 
         public Detective(PlayerControl player) : base(player)
         {

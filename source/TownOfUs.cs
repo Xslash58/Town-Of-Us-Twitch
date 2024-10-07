@@ -30,7 +30,7 @@ namespace TownOfUs
     public class TownOfUs : BasePlugin
     {
         public const string Id = "com.slushiegoose.townofus";
-        public const string VersionString = "5.1.1";
+        public const string VersionString = "7.2.2";
         public static System.Version Version = System.Version.Parse(VersionString);
         public const string VersionTag = "<color=#ff33fc></color>";
 
@@ -42,6 +42,7 @@ namespace TownOfUs
         public static Sprite SwapperSwitchDisabled;
         public static Sprite Footprint;
         public static Sprite NormalKill;
+        public static Sprite RewindSprite;
         public static Sprite MedicSprite;
         public static Sprite SeerSprite;
         public static Sprite SampleSprite;
@@ -72,6 +73,7 @@ namespace TownOfUs
         public static Sprite BlackmailSprite;
         public static Sprite BlackmailLetterSprite;
         public static Sprite BlackmailOverlaySprite;
+        public static Sprite DisorientSprite;
         public static Sprite LighterSprite;
         public static Sprite DarkerSprite;
         public static Sprite InfectSprite;
@@ -121,6 +123,8 @@ namespace TownOfUs
         public static Sprite ZoomPlusActiveButton;
         public static Sprite ZoomMinusActiveButton;
 
+        public static AudioClip BeepClip;
+
         public static Vector3 ButtonPosition { get; private set; } = new Vector3(2.6f, 0.7f, -9f);
 
         private static DLoadImage _iCallLoadImage;
@@ -150,6 +154,7 @@ namespace TownOfUs
             SwapperSwitchDisabled = CreateSprite("TownOfUs.Resources.SwapperSwitchDisabled.png");
             Footprint = CreateSprite("TownOfUs.Resources.Footprint.png");
             NormalKill = CreateSprite("TownOfUs.Resources.NormalKill.png");
+            RewindSprite = CreateSprite("TownOfUs.Resources.Rewind.png");
             MedicSprite = CreateSprite("TownOfUs.Resources.Medic.png");
             SeerSprite = CreateSprite("TownOfUs.Resources.Seer.png");
             SampleSprite = CreateSprite("TownOfUs.Resources.Sample.png");
@@ -178,6 +183,7 @@ namespace TownOfUs
             VestSprite = CreateSprite("TownOfUs.Resources.Vest.png");
             ProtectSprite = CreateSprite("TownOfUs.Resources.Protect.png");
             BlackmailSprite = CreateSprite("TownOfUs.Resources.Blackmail.png");
+            DisorientSprite = CreateSprite("TownOfUs.Resources.Disorient.png");
             BlackmailLetterSprite = CreateSprite("TownOfUs.Resources.BlackmailLetter.png");
             BlackmailOverlaySprite = CreateSprite("TownOfUs.Resources.BlackmailOverlay.png");
             LighterSprite = CreateSprite("TownOfUs.Resources.Lighter.png");
@@ -229,7 +235,10 @@ namespace TownOfUs
             ZoomPlusActiveButton = CreateSprite("TownOfUs.Resources.PlusActive.png");
             ZoomMinusActiveButton = CreateSprite("TownOfUs.Resources.MinusActive.png");
 
+            BeepClip = CreateAudioClip("TownOfUs.Resources.Beep.wav");
+
             PalettePatch.Load();
+            ClassInjector.RegisterTypeInIl2Cpp<CrimeScene>();
             ClassInjector.RegisterTypeInIl2Cpp<RainbowBehaviour>();
             ClassInjector.RegisterTypeInIl2Cpp<CrimeScene>();
             ClassInjector.RegisterTypeInIl2Cpp<Soul>();
@@ -242,6 +251,25 @@ namespace TownOfUs
             SubmergedCompatibility.Initialize();
 
             ServerManager.DefaultRegions = new Il2CppReferenceArray<IRegionInfo>(new IRegionInfo[0]);
+        }
+
+        public static AudioClip CreateAudioClip(string resourceName)
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            using (var audioStream = assembly.GetManifestResourceStream(resourceName))
+            {
+                if (audioStream == null)
+                {
+                    Debug.LogError($"Resource not found: {resourceName}");
+                    return null;
+                }
+
+                var audioData = Audio.ReadFully(audioStream);
+
+                var audioClip = Audio.WavUtility.ToAudioClip(audioData, resourceName);
+                audioClip.DontDestroy();
+                return audioClip;
+            }
         }
 
         public static Sprite CreateSprite(string name)

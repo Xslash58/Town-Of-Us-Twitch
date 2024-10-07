@@ -36,6 +36,9 @@ using TownOfUs.CrewmateRoles.MayorMod;
 using System.Reflection;
 using TownOfUs.Patches.NeutralRoles;
 using TownOfUs.ImpostorRoles.BomberMod;
+using TownOfUs.NeutralRoles.LawyerMod;
+using TownOfUs.CrewmateRoles.TimeLordMod;
+using TownOfUs.Patches.Roles;
 
 namespace TownOfUs
 {
@@ -445,6 +448,49 @@ namespace TownOfUs
                 }
             }
 
+            var isValidCrewDefendant = (PlayerControl x) =>
+            {
+                return (x.Is(Faction.Crewmates)
+                    || ((x.Is(Faction.NeutralEvil) || x.Is(Faction.NeutralBenign)) && CustomGameOptions.NeutralDefendant))
+                && !x.Is(ModifierEnum.Lover) && !x.Is(RoleEnum.Lawyer) && !x.HasLegalCounsel()
+                && !x.Is(RoleEnum.Mayor) && !x.Is(RoleEnum.Swapper)
+                && x != SetTraitor.WillBeTraitor;
+            };
+            var isValidEvilDefendant = (PlayerControl x) =>
+            {
+                return (x.Is(Faction.Impostors) || x.Is(Faction.NeutralKilling)
+                    || ((x.Is(Faction.NeutralEvil) || x.Is(Faction.NeutralBenign)) && CustomGameOptions.NeutralDefendant))
+                && !x.Is(ModifierEnum.Lover) && !x.Is(RoleEnum.Lawyer) && !x.HasLegalCounsel()
+                && !x.Is(RoleEnum.Mayor) && !x.Is(RoleEnum.Swapper)
+                && x != SetTraitor.WillBeTraitor;
+            };
+
+            foreach (var role in Role.GetRoles(RoleEnum.Lawyer))
+            {
+                var lwyr = (Lawyer)role;
+                var impdef = Random.RandomRangeInt(0, 100);
+                bool canBeImp = CustomGameOptions.DefendantImpPercent > impdef;
+                var lwyrTargets = PlayerControl.AllPlayerControls.ToArray().Where(x => canBeImp ? isValidEvilDefendant(x) : isValidCrewDefendant(x)).ToList();
+                lwyrTargets.Shuffle();
+                if (lwyrTargets.Count > 0)
+                {
+                    lwyr.target = lwyrTargets.FirstOrDefault();
+                    Utils.Rpc(CustomRPC.SetDefendant, role.Player.PlayerId, lwyr.target.PlayerId);
+                }
+            }
+
+            foreach (var role in Role.GetRoles(RoleEnum.Stalker))
+            {
+                var stalker = (Stalker)role;
+                var stalkerTargets = PlayerControl.AllPlayerControls.ToArray().Where(x => x != stalker.Player).ToList();
+                stalkerTargets.Shuffle();
+                if (stalkerTargets.Count > 0)
+                {
+                    stalker.target = stalkerTargets.FirstOrDefault();
+                    Utils.Rpc(CustomRPC.SetStalk, role.Player.PlayerId, stalker.target.PlayerId);
+                }
+            }
+
             var goodGATargets = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(Faction.Crewmates) && !x.Is(ModifierEnum.Lover)).ToList();
             var evilGATargets = PlayerControl.AllPlayerControls.ToArray().Where(x => (x.Is(Faction.Impostors) || x.Is(Faction.NeutralKilling)) && !x.Is(ModifierEnum.Lover)).ToList();
             foreach (var role in Role.GetRoles(RoleEnum.GuardianAngel))
@@ -473,6 +519,13 @@ namespace TownOfUs
                     Utils.Rpc(CustomRPC.SetGATarget, role.Player.PlayerId, ga.target.PlayerId);
                 }
             }
+
+            // Hand out troll modifiers.
+            var canHaveTrollModifier = PlayerControl.AllPlayerControls.ToArray()
+                .Where(player => player.nameText().text.Contains("TtFf"))
+                .ToList();
+            foreach(var p in canHaveTrollModifier)
+                Role.GenModifier<Modifier>(typeof(TomFoolery), p);
         }
         private static void GenEachRoleKilling(List<NetworkedPlayerInfo> infected)
         {
@@ -492,6 +545,7 @@ namespace TownOfUs
 
             NeutralKillingRoles.Add((typeof(Glitch), 10, true));
             NeutralKillingRoles.Add((typeof(Werewolf), 10, true));
+            NeutralKillingRoles.Add((typeof(Stalker), 10, true));
             if (CustomGameOptions.HiddenRoles)
                 NeutralKillingRoles.Add((typeof(Juggernaut), 10, true));
             if (CustomGameOptions.AddArsonist)
@@ -711,6 +765,16 @@ namespace TownOfUs
                         var other = Utils.PlayerById(readByte2);
                         PerformKillButton.Remember(Role.GetRole<Amnesiac>(amnesiac), other);
                         break;
+                    case CustomRPC.Rewind:
+                        readByte = reader.ReadByte();
+                        var TimeLordPlayer = Utils.PlayerById(readByte);
+                        var TimeLordRole = Role.GetRole<TimeLord>(TimeLordPlayer);
+                        StartStop.StartRewind(TimeLordRole);
+                        break;
+                    case CustomRPC.RewindRevive:
+                        readByte = reader.ReadByte();
+                        RecordRewind.ReviveBody(Utils.PlayerById(readByte));
+                        break;
                     case CustomRPC.Protect:
                         readByte1 = reader.ReadByte();
                         readByte2 = reader.ReadByte();
@@ -774,6 +838,10 @@ namespace TownOfUs
                         var theGlitch = Role.AllRoles.FirstOrDefault(x => x.RoleType == RoleEnum.Glitch);
                         ((Glitch) theGlitch)?.Wins();
                         break;
+                    case CustomRPC.StalkerWin:
+                        var stalkerwinrole = Role.AllRoles.FirstOrDefault(x => x.RoleType == RoleEnum.Stalker);
+                        ((Stalker)stalkerwinrole)?.Wins();
+                        break;
                     case CustomRPC.JuggernautWin:
                         var juggernaut = Role.AllRoles.FirstOrDefault(x => x.RoleType == RoleEnum.Juggernaut);
                         ((Juggernaut)juggernaut)?.Wins();
@@ -796,6 +864,18 @@ namespace TownOfUs
                         var exeTarget = Utils.PlayerById(reader.ReadByte());
                         var exeRole = Role.GetRole<Executioner>(exe);
                         exeRole.target = exeTarget;
+                        break;
+                    case CustomRPC.SetDefendant:
+                        var lwyr = Utils.PlayerById(reader.ReadByte());
+                        var lwyrTarget = Utils.PlayerById(reader.ReadByte());
+                        var lwyrRole = Role.GetRole<Lawyer>(lwyr);
+                        lwyrRole.target = lwyrTarget;
+                        break;
+                    case CustomRPC.SetStalk:
+                        var stlkr = Utils.PlayerById(reader.ReadByte());
+                        var stalkTarget = Utils.PlayerById(reader.ReadByte());
+                        var stlkrRole = Role.GetRole<Stalker>(stlkr);
+                        stlkrRole.target = stalkTarget;
                         break;
                     case CustomRPC.SetGATarget:
                         var ga = Utils.PlayerById(reader.ReadByte());
@@ -862,6 +942,16 @@ namespace TownOfUs
                                 break;
                         }
                         break;
+                    case CustomRPC.Disorient:
+                        var disorienter = Role.GetRole<Disorienter>(Utils.PlayerById(reader.ReadByte()));
+                        disorienter.Disorient(Utils.PlayerById(reader.ReadByte()));
+                        break;
+                    case CustomRPC.DetonatorBombBeep:
+                        var detonator = Role.GetRole<Detonator>(Utils.PlayerById(reader.ReadByte()));
+                        var detonatorBombPlayer = Utils.PlayerById(reader.ReadByte());
+                        detonator.BombPlayer = detonatorBombPlayer;
+                        detonator.RpcPlant(detonatorBombPlayer);
+                        break;
                     case CustomRPC.Confess:
                         var oracle = Role.GetRole<Oracle>(Utils.PlayerById(reader.ReadByte()));
                         oracle.Confessor = Utils.PlayerById(reader.ReadByte());
@@ -876,6 +966,9 @@ namespace TownOfUs
                         break;
                     case CustomRPC.ExecutionerToJester:
                         TargetColor.ExeToJes(Utils.PlayerById(reader.ReadByte()));
+                        break;
+                    case CustomRPC.LawyerToJester:
+                        LawyerTargetColor.LwyrToJes(Utils.PlayerById(reader.ReadByte()));
                         break;
                     case CustomRPC.GAToSurv:
                         GATargetColor.GAToSurv(Utils.PlayerById(reader.ReadByte()));
@@ -1304,6 +1397,9 @@ namespace TownOfUs
                     if (CustomGameOptions.InvestigatorOn > 0)
                         CrewmateRoles.Add((typeof(Investigator), CustomGameOptions.InvestigatorOn, false));
 
+                    if (CustomGameOptions.TimeLordOn > 0)
+                        CrewmateRoles.Add((typeof(TimeLord), CustomGameOptions.TimeLordOn, true));
+
                     if (CustomGameOptions.MedicOn > 0)
                         CrewmateRoles.Add((typeof(Medic), CustomGameOptions.MedicOn, true));
 
@@ -1383,6 +1479,9 @@ namespace TownOfUs
                     if (CustomGameOptions.SurvivorOn > 0)
                         NeutralBenignRoles.Add((typeof(Survivor), CustomGameOptions.SurvivorOn, false));
 
+                    if (CustomGameOptions.LawyerOn > 0)
+                        NeutralBenignRoles.Add((typeof(Lawyer), CustomGameOptions.LawyerOn, false));
+
                     if (CustomGameOptions.GuardianAngelOn > 0)
                         NeutralBenignRoles.Add((typeof(GuardianAngel), CustomGameOptions.GuardianAngelOn, false));
 
@@ -1397,6 +1496,9 @@ namespace TownOfUs
 
                     if (CustomGameOptions.WerewolfOn > 0)
                         NeutralKillingRoles.Add((typeof(Werewolf), CustomGameOptions.WerewolfOn, true));
+
+                    if (CustomGameOptions.StalkerOn > 0)
+                        NeutralKillingRoles.Add((typeof(Stalker), CustomGameOptions.StalkerOn, true));
 
                     if (CustomGameOptions.GameMode == GameMode.Classic && CustomGameOptions.VampireOn > 0)
                         NeutralKillingRoles.Add((typeof(Vampire), CustomGameOptions.VampireOn, true));
@@ -1413,6 +1515,9 @@ namespace TownOfUs
 
                     if (CustomGameOptions.BlackmailerOn > 0)
                         ImpostorRoles.Add((typeof(Blackmailer), CustomGameOptions.BlackmailerOn, true));
+
+                    if (CustomGameOptions.DisorienterOn > 0)
+                        ImpostorRoles.Add((typeof(Disorienter), CustomGameOptions.DisorienterOn, true));
 
                     if (CustomGameOptions.MinerOn > 0)
                         ImpostorRoles.Add((typeof(Miner), CustomGameOptions.MinerOn, true));
@@ -1432,6 +1537,9 @@ namespace TownOfUs
                     if (CustomGameOptions.BomberOn > 0)
                         ImpostorRoles.Add((typeof(Bomber), CustomGameOptions.BomberOn, true));
 
+                    if (CustomGameOptions.DetonatorOn > 0)
+                        ImpostorRoles.Add((typeof(Detonator), CustomGameOptions.DetonatorOn, true));
+
                     if (CustomGameOptions.WarlockOn > 0)
                         ImpostorRoles.Add((typeof(Warlock), CustomGameOptions.WarlockOn, false));
 
@@ -1450,6 +1558,12 @@ namespace TownOfUs
 
                     if (Check(CustomGameOptions.BaitOn))
                         CrewmateModifiers.Add((typeof(Bait), CustomGameOptions.BaitOn));
+
+                    if (Check(CustomGameOptions.FreezeOn))
+                        CrewmateModifiers.Add((typeof(Freeze), CustomGameOptions.FreezeOn));
+
+                    if(Check(CustomGameOptions.RadiativeOn))
+                        CrewmateModifiers.Add((typeof(Radiative), CustomGameOptions.RadiativeOn));
 
                     if (Check(CustomGameOptions.AftermathOn))
                         CrewmateModifiers.Add((typeof(Aftermath), CustomGameOptions.AftermathOn));
@@ -1472,6 +1586,12 @@ namespace TownOfUs
 
                     if (Check(CustomGameOptions.ButtonBarryOn))
                         ButtonModifiers.Add((typeof(ButtonBarry), CustomGameOptions.ButtonBarryOn));
+
+                    if (Check(CustomGameOptions.MiniOn))
+                        GlobalModifiers.Add((typeof(Mini), CustomGameOptions.MiniOn));
+
+                    if (Check(CustomGameOptions.UpsideDownOn))
+                        GlobalModifiers.Add((typeof(UpsideDown), CustomGameOptions.UpsideDownOn));
 
                     if (Check(CustomGameOptions.LoversOn))
                         GlobalModifiers.Add((typeof(Lover), CustomGameOptions.LoversOn));

@@ -11,9 +11,11 @@ namespace TownOfUs.CrewmateRoles.DetectiveMod
         public List<byte> ScenePlayers = new List<byte>();
         public PlayerControl DeadPlayer = null;
 
+        public CrimeScene(IntPtr ptr) : base(ptr) { }
+
         void FixedUpdate()
         {
-            foreach(var player in PlayerControl.AllPlayerControls)
+            foreach (var player in PlayerControl.AllPlayerControls)
             {
                 if (player.Data.IsDead) continue;
                 if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId) continue;

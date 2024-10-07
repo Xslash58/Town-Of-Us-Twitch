@@ -10,6 +10,7 @@ using TownOfUs.CrewmateRoles.ImitatorMod;
 using AmongUs.GameOptions;
 using TownOfUs.Roles.Modifiers;
 using TownOfUs.ImpostorRoles.BomberMod;
+using TownOfUs.Patches.Roles;
 
 namespace TownOfUs.NeutralRoles.AmnesiacMod
 {
@@ -98,6 +99,7 @@ namespace TownOfUs.NeutralRoles.AmnesiacMod
                 case RoleEnum.Politician:
                 case RoleEnum.Warden:
                 case RoleEnum.Jailor:
+                case RoleEnum.TimeLord:
 
                     rememberImp = false;
                     rememberNeut = false;
@@ -106,6 +108,7 @@ namespace TownOfUs.NeutralRoles.AmnesiacMod
 
                 case RoleEnum.Jester:
                 case RoleEnum.Executioner:
+                case RoleEnum.Lawyer:
                 case RoleEnum.Arsonist:
                 case RoleEnum.Amnesiac:
                 case RoleEnum.Glitch:
@@ -115,6 +118,7 @@ namespace TownOfUs.NeutralRoles.AmnesiacMod
                 case RoleEnum.Plaguebearer:
                 case RoleEnum.Pestilence:
                 case RoleEnum.Werewolf:
+                case RoleEnum.Stalker:
                 case RoleEnum.Doomsayer:
                 case RoleEnum.Vampire:
                 case RoleEnum.SoulCollector:
@@ -128,7 +132,7 @@ namespace TownOfUs.NeutralRoles.AmnesiacMod
             newRole.Player = amnesiac;
 
             if ((role == RoleEnum.Glitch || role == RoleEnum.Juggernaut || role == RoleEnum.Pestilence ||
-                role == RoleEnum.Werewolf) && PlayerControl.LocalPlayer == other)
+                role == RoleEnum.Werewolf || role == RoleEnum.Stalker) && PlayerControl.LocalPlayer == other)
             {
                 HudManager.Instance.KillButton.buttonLabelText.gameObject.SetActive(false);
             }
@@ -199,7 +203,7 @@ namespace TownOfUs.NeutralRoles.AmnesiacMod
                     }
 
                     if (role == RoleEnum.Arsonist || role == RoleEnum.Glitch || role == RoleEnum.Plaguebearer ||
-                            role == RoleEnum.Pestilence || role == RoleEnum.Werewolf || role == RoleEnum.Juggernaut
+                            role == RoleEnum.Pestilence || role == RoleEnum.Werewolf || role == RoleEnum.Stalker || role == RoleEnum.Juggernaut
                              || role == RoleEnum.Vampire)
                     {
                         if (CustomGameOptions.AmneTurnNeutAssassin) new Assassin(amnesiac);
@@ -385,6 +389,14 @@ namespace TownOfUs.NeutralRoles.AmnesiacMod
                 oracleRole.LastConfessed = DateTime.UtcNow;
             }
 
+            else if (role == RoleEnum.TimeLord)
+            {
+                var timeLordRole = Role.GetRole<TimeLord>(amnesiac);
+                timeLordRole.StartRewind = DateTime.UtcNow.AddSeconds(-10.0f);
+                timeLordRole.FinishRewind = DateTime.UtcNow;
+                timeLordRole.UsesLeft = CustomGameOptions.RewindMaxUses;
+            }
+
             else if (role == RoleEnum.Arsonist)
             {
                 var arsoRole = Role.GetRole<Arsonist>(amnesiac);
@@ -485,6 +497,12 @@ namespace TownOfUs.NeutralRoles.AmnesiacMod
                 var wwRole = Role.GetRole<Werewolf>(amnesiac);
                 wwRole.LastRampaged = DateTime.UtcNow;
                 wwRole.LastKilled = DateTime.UtcNow;
+            }
+
+            else if (role == RoleEnum.Stalker)
+            {
+                var sRole = Role.GetRole<Stalker>(amnesiac);
+                sRole.LastKilled = DateTime.UtcNow;
             }
 
             else if (role == RoleEnum.Doomsayer)

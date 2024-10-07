@@ -33,10 +33,12 @@ namespace TownOfUs.Patches
         public readonly static Color Politician = new Color(0.4f, 0f, 0.6f, 1f);
         public readonly static Color Warden = new Color(0.6f, 0f, 1f, 1f);
         public readonly static Color Jailor = new Color(0.65f, 0.65f, 0.65f, 1f);
+        public readonly static Color TimeLord = new Color(0f, 0f, 1f, 1f);
 
         // Neutral Colors
         public readonly static Color Jester = new Color(1f, 0.75f, 0.8f, 1f);
         public readonly static Color Executioner = new Color(0.55f, 0.25f, 0.02f, 1f);
+        public readonly static Color Lawyer = new Color(0.93f, 0.7f, 0.55f, 1f);
         public readonly static Color Glitch = Color.green;
         public readonly static Color Arsonist = new Color(1f, 0.3f, 0f);
         public readonly static Color Phantom = new Color(0.4f, 0.16f, 0.38f, 1f);
@@ -47,6 +49,7 @@ namespace TownOfUs.Patches
         public readonly static Color Plaguebearer = new Color(0.9f, 1f, 0.7f, 1f);
         public readonly static Color Pestilence = new Color(0.3f, 0.3f, 0.3f, 1f);
         public readonly static Color Werewolf = new Color(0.66f, 0.4f, 0.16f, 1f);
+        public readonly static Color Stalker = new Color(0.25f, 0.25f, 0.25f, 1f);
         public readonly static Color Doomsayer = new Color(0f, 1f, 0.5f, 1f);
         public readonly static Color Vampire = new Color(0.15f, 0.15f, 0.15f, 1f);
         public readonly static Color SoulCollector = new Color(0.6f, 1f, 0.8f, 1f);
@@ -62,6 +65,9 @@ namespace TownOfUs.Patches
         public readonly static Color ButtonBarry = new Color(0.9f, 0f, 1f, 1f);
         public readonly static Color Flash = new Color(1f, 0.5f, 0.5f, 1f);
         public readonly static Color Giant = new Color(1f, 0.7f, 0.3f, 1f);
+        public readonly static Color Mini = new Color(0.6f, 0.5f, 1f, 1f);
+        public readonly static Color UpsideDown = new Color(0.1f, 0.14f, 0.5f, 1f);
+        public readonly static Color Radiative = new Color(0f, 0.9f, 0.2f, 1f);
         public readonly static Color Lovers = new Color(1f, 0.4f, 0.8f, 1f);
         public readonly static Color Sleuth = new Color(0.5f, 0.2f, 0.2f, 1f);
         public readonly static Color Tiebreaker = new Color(0.6f, 0.9f, 0.6f, 1f);

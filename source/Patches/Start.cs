@@ -3,6 +3,7 @@ using HarmonyLib;
 using Hazel;
 using TownOfUs.NeutralRoles.ExecutionerMod;
 using TownOfUs.NeutralRoles.GuardianAngelMod;
+using TownOfUs.NeutralRoles.LawyerMod;
 using TownOfUs.Roles;
 using TownOfUs.Roles.Modifiers;
 using UnityEngine;
@@ -116,11 +117,19 @@ namespace TownOfUs.Patches
                 blackmailer.LastBlackmailed = blackmailer.LastBlackmailed.AddSeconds(CustomGameOptions.InitialCooldowns - CustomGameOptions.BlackmailCd);
             }
 
+
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Hypnotist))
             {
                 var hypnotist = Role.GetRole<Hypnotist>(PlayerControl.LocalPlayer);
                 hypnotist.LastHypnotised = DateTime.UtcNow;
                 hypnotist.LastHypnotised = hypnotist.LastHypnotised.AddSeconds(CustomGameOptions.InitialCooldowns - CustomGameOptions.HypnotiseCd);
+            }
+
+            if (PlayerControl.LocalPlayer.Is(RoleEnum.Disorienter))
+            {
+                var disorienter = Role.GetRole<Disorienter>(PlayerControl.LocalPlayer);
+                disorienter.LastDisoriented = DateTime.UtcNow;
+                disorienter.LastDisoriented = disorienter.LastDisoriented.AddSeconds(CustomGameOptions.InitialCooldowns - CustomGameOptions.DisorientCd);
             }
 
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Escapist))
@@ -200,6 +209,20 @@ namespace TownOfUs.Patches
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
 
                     TargetColor.ExeToJes(exe.Player);
+                }
+            }
+
+            if (PlayerControl.LocalPlayer.Is(RoleEnum.Lawyer))
+            {
+                var lwyr = Role.GetRole<Lawyer>(PlayerControl.LocalPlayer);
+                if (lwyr.target == null)
+                {
+                    var writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId,
+                        (byte)CustomRPC.LawyerToJester, SendOption.Reliable, -1);
+                    writer.Write(lwyr.Player.PlayerId);
+                    AmongUsClient.Instance.FinishRpcImmediately(writer);
+
+                    LawyerTargetColor.LwyrToJes(lwyr.Player);
                 }
             }
 

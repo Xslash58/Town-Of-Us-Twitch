@@ -36,7 +36,11 @@ namespace TownOfUs.CrewmateRoles.DetectiveMod
                         Coroutines.Start(Utils.FlashCoroutine(Color.red));
                         var deadPlayer = role.InvestigatingScene.DeadPlayer;
                         if (DestroyableSingleton<HudManager>.Instance)
-                            DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, $"{role.ClosestPlayer.GetDefaultOutfit().PlayerName} was at the scene of {deadPlayer.GetDefaultOutfit().PlayerName}'s death!");
+                        {
+                            string msg = CustomGameOptions.PolishTranslations ? $"{role.ClosestPlayer.GetDefaultOutfit().PlayerName} byl na miejscu zbrodni {deadPlayer.GetDefaultOutfit().PlayerName}!"
+                                : $"{role.ClosestPlayer.GetDefaultOutfit().PlayerName} was at the scene of {deadPlayer.GetDefaultOutfit().PlayerName}'s death!";
+                            DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, msg, censor:false);
+                        }
                     }
                     else Coroutines.Start(Utils.FlashCoroutine(Color.green));
                 }
@@ -61,8 +65,10 @@ namespace TownOfUs.CrewmateRoles.DetectiveMod
                 if (Vector2.Distance(role.CurrentTarget.gameObject.transform.position,
                     PlayerControl.LocalPlayer.GetTruePosition()) > maxDistance) return false;
                 var player = role.CurrentTarget.DeadPlayer;
+
                 var abilityUsed = Utils.AbilityUsed(PlayerControl.LocalPlayer);
                 if (!abilityUsed) return false;
+
                 if (player.IsInfected() || role.Player.IsInfected())
                 {
                     foreach (var pb in Role.GetRoles(RoleEnum.Plaguebearer)) ((Plaguebearer)pb).RpcSpreadInfection(player, role.Player);

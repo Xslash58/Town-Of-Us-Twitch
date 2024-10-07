@@ -7,6 +7,8 @@ namespace TownOfUs
         SetCouple,
         SetAssassin,
         SetTarget,
+        SetDefendant,
+        SetStalk,
         SetGATarget,
 
         SetPhantom,
@@ -20,6 +22,7 @@ namespace TownOfUs
 
         LoveWin,
         GlitchWin,
+        StalkerWin,
         JuggernautWin,
         ArsonistWin,
         PhantomWin,
@@ -36,6 +39,8 @@ namespace TownOfUs
         SetSwaps,
         Protect,
         AttemptSound,
+        Rewind,
+        RewindRevive,
         Morph,
         Mine,
         Swoop,
@@ -70,12 +75,18 @@ namespace TownOfUs
         Bless,
         Camouflage,
         HunterStalk,
+
         AbilityTrigger,
         Elect,
         Fortify,
         Hypnotise,
         Jail,
         Collect,
+
+        HunterCatchPlayer,
+        Retribution,
+        Disorient,
+        DetonatorBombBeep,
 
         BypassKill,
         BypassMultiKill,
@@ -84,6 +95,7 @@ namespace TownOfUs
         SetHacked,
 
         ExecutionerToJester,
+        LawyerToJester,
         GAToSurv,
 
         Start,

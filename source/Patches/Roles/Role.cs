@@ -12,6 +12,7 @@ using Random = UnityEngine.Random;
 using TownOfUs.Extensions;
 using AmongUs.GameOptions;
 using TownOfUs.ImpostorRoles.TraitorMod;
+using TownOfUs.Patches.Roles;
 
 namespace TownOfUs.Roles
 {
@@ -293,6 +294,15 @@ namespace TownOfUs.Roles
                 if (Player == exe.target && PlayerControl.LocalPlayer.Data.IsDead && !exe.Player.Data.IsDead)
                 {
                     PlayerName += "<color=#8C4005FF> X</color>";
+                }
+            }
+
+            foreach (var role in GetRoles(RoleEnum.Lawyer))
+            {
+                var lwyr = (Lawyer)role;
+                if (Player == lwyr.target && PlayerControl.LocalPlayer.Data.IsDead && !lwyr.Player.Data.IsDead)
+                {
+                    PlayerName += "<color=#D2B48CFF> @</color>";
                 }
             }
 

@@ -36,12 +36,14 @@ namespace TownOfUs.CustomOption
         public static CustomNumberOption PoliticianOn;
         public static CustomNumberOption ProsecutorOn;
         public static CustomNumberOption SwapperOn;
+        public static CustomNumberOption TimeLordOn;
         public static CustomNumberOption TransporterOn;
 
         public static CustomHeaderOption NeutralBenignRoles;
         public static CustomNumberOption AmnesiacOn;
         public static CustomNumberOption GuardianAngelOn;
         public static CustomNumberOption SurvivorOn;
+        public static CustomNumberOption LawyerOn;
 
         public static CustomHeaderOption NeutralEvilRoles;
         public static CustomNumberOption DoomsayerOn;
@@ -56,6 +58,7 @@ namespace TownOfUs.CustomOption
         public static CustomNumberOption GlitchOn;
         public static CustomNumberOption VampireOn;
         public static CustomNumberOption WerewolfOn;
+        public static CustomNumberOption StalkerOn;
 
         public static CustomHeaderOption ImpostorConcealingRoles;
         public static CustomNumberOption EscapistOn;
@@ -66,12 +69,14 @@ namespace TownOfUs.CustomOption
 
         public static CustomHeaderOption ImpostorKillingRoles;
         public static CustomNumberOption BomberOn;
+        public static CustomNumberOption DetonatorOn;
         public static CustomNumberOption TraitorOn;
         public static CustomNumberOption WarlockOn;
 
         public static CustomHeaderOption ImpostorSupportRoles;
         public static CustomNumberOption BlackmailerOn;
         public static CustomNumberOption HypnotistOn;
+        public static CustomNumberOption DisorienterOn;
         public static CustomNumberOption JanitorOn;
         public static CustomNumberOption MinerOn;
         public static CustomNumberOption UndertakerOn;
@@ -79,6 +84,8 @@ namespace TownOfUs.CustomOption
         public static CustomHeaderOption CrewmateModifiers;
         public static CustomNumberOption AftermathOn;
         public static CustomNumberOption BaitOn;
+        public static CustomNumberOption FreezeOn;
+        public static CustomNumberOption RadiativeOn;
         public static CustomNumberOption DiseasedOn;
         public static CustomNumberOption FrostyOn;
         public static CustomNumberOption MultitaskerOn;
@@ -89,6 +96,8 @@ namespace TownOfUs.CustomOption
         public static CustomNumberOption FlashOn;
         public static CustomNumberOption GiantOn;
         public static CustomNumberOption LoversOn;
+        public static CustomNumberOption MiniOn;
+        public static CustomNumberOption UpsideDownOn;
         public static CustomNumberOption RadarOn;
         public static CustomNumberOption ShyOn;
         public static CustomNumberOption SixthSenseOn;
@@ -136,8 +145,13 @@ namespace TownOfUs.CustomOption
         public static CustomToggleOption ColdTempDeathValley;
         public static CustomToggleOption WifiChartCourseSwap;
 
+        public static CustomHeaderOption GlobalSettings;
+        public static CustomToggleOption HideHost;
+        public static CustomToggleOption PolishTranslations;
+
         public static CustomHeaderOption GameModeSettings;
         public static CustomStringOption GameMode;
+        public static CustomToggleOption HideNames;
 
         public static CustomHeaderOption ClassicSettings;
         public static CustomNumberOption MinNeutralBenignRoles;
@@ -185,6 +199,13 @@ namespace TownOfUs.CustomOption
         public static CustomNumberOption FootprintDuration;
         public static CustomToggleOption AnonymousFootPrint;
         public static CustomToggleOption VentFootprintVisible;
+
+        public static CustomHeaderOption TimeLord;
+        public static CustomToggleOption RewindRevive;
+        public static CustomNumberOption RewindDuration;
+        public static CustomNumberOption RewindCooldown;
+        public static CustomNumberOption RewindMaxUses;
+        public static CustomToggleOption TimeLordVitals;
 
         public static CustomHeaderOption Medic;
         public static CustomStringOption ShowShielded;
@@ -360,6 +381,13 @@ namespace TownOfUs.CustomOption
         public static CustomNumberOption VestKCReset;
         public static CustomNumberOption MaxVests;
 
+        public static CustomHeaderOption Lawyer;
+        public static CustomToggleOption LawyerDies;
+        public static CustomNumberOption DefendantImpPercent;
+        public static CustomToggleOption NeutralDefendant;
+        public static CustomToggleOption LawyerCanTalkDefendant;
+        public static CustomStringOption OnDefendantDead;
+
         public static CustomHeaderOption GuardianAngel;
         public static CustomNumberOption ProtectCd;
         public static CustomNumberOption ProtectDuration;
@@ -378,6 +406,16 @@ namespace TownOfUs.CustomOption
         public static CustomNumberOption BlackmailCooldown;
         public static CustomToggleOption BlackmailInvisible;
 
+        public static CustomHeaderOption Disorienter;
+        public static CustomNumberOption DisorientCooldown;
+        public static CustomNumberOption DisorientTime;
+
+        public static CustomHeaderOption Detonator;
+        public static CustomNumberOption DetonatorPlantCooldown;
+        public static CustomNumberOption DetonatorDetonateCooldown;
+        public static CustomNumberOption DetonatorMaxKillsInDetonation;
+        public static CustomNumberOption DetonatorRadius;
+
         public static CustomHeaderOption Plaguebearer;
         public static CustomNumberOption InfectCooldown;
         public static CustomNumberOption PestKillCooldown;
@@ -388,6 +426,11 @@ namespace TownOfUs.CustomOption
         public static CustomNumberOption RampageDuration;
         public static CustomNumberOption RampageKillCooldown;
         public static CustomToggleOption WerewolfVent;
+
+        public static CustomHeaderOption Stalker;
+        public static CustomNumberOption StalkerKillCooldown;
+        public static CustomNumberOption StalkerChangeCooldown;
+        public static CustomNumberOption StalkerStalkRadius;
 
         public static CustomHeaderOption Detective;
         public static CustomNumberOption ExamineCooldown;
@@ -473,12 +516,23 @@ namespace TownOfUs.CustomOption
         public static CustomHeaderOption Flash;
         public static CustomNumberOption FlashSpeed;
 
+        public static CustomHeaderOption Mini;
+        public static CustomNumberOption MiniSpeed;
+
         public static CustomHeaderOption Diseased;
         public static CustomNumberOption DiseasedKillMultiplier;
 
         public static CustomHeaderOption Bait;
         public static CustomNumberOption BaitMinDelay;
         public static CustomNumberOption BaitMaxDelay;
+
+        public static CustomHeaderOption Freeze;
+        public static CustomNumberOption FreezeTime;
+        public static CustomToggleOption FreezeReport;
+
+        public static CustomHeaderOption Radiative;
+        public static CustomNumberOption RadiativeCooldown;
+        public static CustomNumberOption RadiativeRadius;
 
         public static CustomHeaderOption Lovers;
         public static CustomToggleOption BothLoversDie;
@@ -561,6 +615,8 @@ namespace TownOfUs.CustomOption
                 PercentFormat);
             SwapperOn = new CustomNumberOption(num++, MultiMenu.crewmate, "<color=#66E666FF>Swapper</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
+            TimeLordOn = new CustomNumberOption(num++, MultiMenu.crewmate, "<color=#0000FFFF>Time Lord</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             TransporterOn = new CustomNumberOption(num++, MultiMenu.crewmate, "<color=#00EEFFFF>Transporter</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
 
@@ -571,6 +627,8 @@ namespace TownOfUs.CustomOption
             GuardianAngelOn = new CustomNumberOption(num++, MultiMenu.neutral, "<color=#B3FFFFFF>Guardian Angel</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
             SurvivorOn = new CustomNumberOption(num++, MultiMenu.neutral, "<color=#FFE64DFF>Survivor</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
+            LawyerOn = new CustomNumberOption(num++, MultiMenu.neutral, "<color=#D2B48CFF>Lawyer</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
 
             NeutralEvilRoles = new CustomHeaderOption(num++, MultiMenu.neutral, "Neutral Evil Roles");
@@ -596,6 +654,8 @@ namespace TownOfUs.CustomOption
                 PercentFormat);
             WerewolfOn = new CustomNumberOption(num++, MultiMenu.neutral, "<color=#A86629FF>Werewolf</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
+            StalkerOn = new CustomNumberOption(num++, MultiMenu.neutral, "<color=#404040>Stalker</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
 
             ImpostorConcealingRoles = new CustomHeaderOption(num++, MultiMenu.imposter, "Impostor Concealing Roles");
             EscapistOn = new CustomNumberOption(num++, MultiMenu.imposter, "<color=#FF0000FF>Escapist</color>", 0f, 0f, 100f, 10f,
@@ -612,6 +672,8 @@ namespace TownOfUs.CustomOption
             ImpostorKillingRoles = new CustomHeaderOption(num++, MultiMenu.imposter, "Impostor Killing Roles");
             BomberOn = new CustomNumberOption(num++, MultiMenu.imposter, "<color=#FF0000FF>Bomber</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
+            DetonatorOn = new CustomNumberOption(num++, MultiMenu.imposter, "<color=#FF0000FF>Detonator</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             TraitorOn = new CustomNumberOption(num++, MultiMenu.imposter, "<color=#FF0000FF>Traitor</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
             WarlockOn = new CustomNumberOption(num++, MultiMenu.imposter, "<color=#FF0000FF>Warlock</color>", 0f, 0f, 100f, 10f,
@@ -621,6 +683,8 @@ namespace TownOfUs.CustomOption
             BlackmailerOn = new CustomNumberOption(num++, MultiMenu.imposter, "<color=#FF0000FF>Blackmailer</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
             HypnotistOn = new CustomNumberOption(num++, MultiMenu.imposter, "<color=#FF0000FF>Hypnotist</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
+            DisorienterOn = new CustomNumberOption(num++, MultiMenu.imposter, "<color=#FF0000FF>Disorienter</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
             JanitorOn = new CustomNumberOption(num++, MultiMenu.imposter, "<color=#FF0000FF>Janitor</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
@@ -633,6 +697,10 @@ namespace TownOfUs.CustomOption
             AftermathOn = new CustomNumberOption(num++, MultiMenu.modifiers, "<color=#A6FFA6FF>Aftermath</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
             BaitOn = new CustomNumberOption(num++, MultiMenu.modifiers, "<color=#00B3B3FF>Bait</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
+            FreezeOn = new CustomNumberOption(num++, MultiMenu.modifiers, "<color=#00EDEB>Freeze</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
+            RadiativeOn = new CustomNumberOption(num++, MultiMenu.modifiers, "<color=#39FF14>Radiative</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
             DiseasedOn = new CustomNumberOption(num++, MultiMenu.modifiers, "<color=#808080FF>Diseased</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
@@ -651,6 +719,10 @@ namespace TownOfUs.CustomOption
             GiantOn = new CustomNumberOption(num++, MultiMenu.modifiers, "<color=#FFB34DFF>Giant</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
             LoversOn = new CustomNumberOption(num++, MultiMenu.modifiers, "<color=#FF66CCFF>Lovers</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
+            MiniOn = new CustomNumberOption(num++, MultiMenu.modifiers, "<color=#b0a1ff>Mini</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
+            UpsideDownOn = new CustomNumberOption(num++, MultiMenu.modifiers, "<color=#19247c>Upside-down</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
             RadarOn = new CustomNumberOption(num++, MultiMenu.modifiers, "<color=#FF0080FF>Radar</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
@@ -671,9 +743,16 @@ namespace TownOfUs.CustomOption
             UnderdogOn = new CustomNumberOption(num++, MultiMenu.modifiers, "<color=#FF0000FF>Underdog</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
 
+            GlobalSettings =
+                new CustomHeaderOption(num++, MultiMenu.main, "Global Settings");
+            HideHost = new CustomToggleOption(num++, MultiMenu.main, "Hide Host From UI", false);
+            PolishTranslations = new CustomToggleOption(num++, MultiMenu.main, "Translate ToU Messages To Polish", false);
+
             GameModeSettings =
                 new CustomHeaderOption(num++, MultiMenu.main, "Game Mode Settings");
+
             GameMode = new CustomStringOption(num++, MultiMenu.main, "Game Mode", new[] {"Classic", "All Any", "Killing Only" });
+            HideNames = new CustomToggleOption(num++, MultiMenu.main, "Hide Player Names", false);
 
             ClassicSettings =
                 new CustomHeaderOption(num++, MultiMenu.main, "Classic Game Mode Settings");
@@ -992,6 +1071,16 @@ namespace TownOfUs.CustomOption
             SwapperButton =
                 new CustomToggleOption(num++, MultiMenu.crewmate, "Swapper Can Button", true);
 
+            TimeLord =
+                new CustomHeaderOption(num++, MultiMenu.crewmate, "<color=#0000FFFF>Time Lord</color>");
+            RewindRevive = new CustomToggleOption(num++, MultiMenu.crewmate, "Revive During Rewind", true);
+            RewindDuration = new CustomNumberOption(num++, MultiMenu.crewmate, "Rewind Duration", 2f, 2f, 5f, 0.5f, CooldownFormat);
+            RewindCooldown = new CustomNumberOption(num++, MultiMenu.crewmate, "Rewind Cooldown", 25f, 10f, 60f, 2.5f, CooldownFormat);
+            RewindMaxUses =
+                 new CustomNumberOption(num++, MultiMenu.crewmate, "Maximum Number Of Rewinds", 5, 1, 15, 1);
+            TimeLordVitals =
+                new CustomToggleOption(num++, MultiMenu.crewmate, "Time Lord Can Use Vitals", false);
+
             Transporter =
                 new CustomHeaderOption(num++, MultiMenu.crewmate, "<color=#00EEFFFF>Transporter</color>");
             TransportCooldown =
@@ -1039,6 +1128,16 @@ namespace TownOfUs.CustomOption
                 new CustomNumberOption(num++, MultiMenu.neutral, "Kill Cooldown Reset On Attack", 2.5f, 0f, 15f, 0.5f, CooldownFormat);
             MaxVests =
                 new CustomNumberOption(num++, MultiMenu.neutral, "Maximum Number Of Vests", 5, 1, 15, 1);
+
+            Lawyer =
+                new CustomHeaderOption(num++, MultiMenu.neutral, "<color=#D2B48CFF>Lawyer</color>");
+            LawyerDies = new CustomToggleOption(num++, MultiMenu.neutral, "Lawyer Dies With Defendant");
+            DefendantImpPercent = new CustomNumberOption(num++, MultiMenu.neutral, "Killer Defendant Probability", 20f, 0f, 100f, 10f,
+                PercentFormat);
+            NeutralDefendant = new CustomToggleOption(num++, MultiMenu.neutral, "Neutral Evil Roles Can Be Defendants", false);
+            LawyerCanTalkDefendant = new CustomToggleOption(num++, MultiMenu.neutral, "Lawyer And Defendant Can Talk", true);
+            OnDefendantDead = new CustomStringOption(num++, MultiMenu.neutral, "Lawyer Becomes On Defendant Dead",
+                new[] { "Amnesiac", "Survivor", "Jester", "Crew" });
 
             Doomsayer = new CustomHeaderOption(num++, MultiMenu.neutral, "<color=#00FF80FF>Doomsayer</color>");
             ObserveCooldown =
@@ -1150,6 +1249,14 @@ namespace TownOfUs.CustomOption
             WerewolfVent =
                 new CustomToggleOption(num++, MultiMenu.neutral, "Werewolf Can Vent When Rampaged", false);
 
+            Stalker = new CustomHeaderOption(num++, MultiMenu.neutral, "<color=#404040>Stalker</color>");
+            StalkerKillCooldown =
+                new CustomNumberOption(num++, MultiMenu.neutral, "Stalker Kill Cooldown", 25f, 10f, 60f, 2.5f, CooldownFormat);
+            StalkerChangeCooldown =
+                new CustomNumberOption(num++, MultiMenu.neutral, "Stalker Change Target Cooldown", 25f, 10f, 60f, 2.5f, CooldownFormat);
+            StalkerStalkRadius =
+                new CustomNumberOption(num++, MultiMenu.neutral, "Stalk Radius", 2.5f, 0.25f, 4f, 0.05f, MultiplierFormat);
+
             Escapist =
                 new CustomHeaderOption(num++, MultiMenu.imposter, "<color=#FF0000FF>Escapist</color>");
             EscapeCooldown =
@@ -1208,6 +1315,16 @@ namespace TownOfUs.CustomOption
             AllImpsSeeBomb =
                 new CustomToggleOption(num++, MultiMenu.imposter, "All Impostors See Bomb", false);
 
+            Detonator = new CustomHeaderOption(num++, MultiMenu.imposter, "<color=#FF0000FF>Detonator</color>");
+            DetonatorPlantCooldown =
+                new CustomNumberOption(num++, MultiMenu.imposter, "Plant Cooldown", 30f, 1f, 120f, 1f, CooldownFormat);
+            DetonatorDetonateCooldown =
+                new CustomNumberOption(num++, MultiMenu.imposter, "Detonate Cooldown", 10f, 1f, 120f, 1f, CooldownFormat);
+            DetonatorMaxKillsInDetonation =
+                new CustomNumberOption(num++, MultiMenu.imposter, "Max Kills In Detonation", 5, 1, 15, 1);
+            DetonatorRadius =
+                new CustomNumberOption(num++, MultiMenu.imposter, "Detonate Radius", 0.25f, 0.05f, 1f, 0.05f, MultiplierFormat);
+
             Traitor = new CustomHeaderOption(num++, MultiMenu.imposter, "<color=#FF0000FF>Traitor</color>");
             LatestSpawn = new CustomNumberOption(num++, MultiMenu.imposter, "Minimum People Alive When Traitor Can Spawn", 5, 3, 15, 1);
             NeutralKillingStopsTraitor =
@@ -1229,6 +1346,12 @@ namespace TownOfUs.CustomOption
             HypnotiseCooldown =
                 new CustomNumberOption(num++, MultiMenu.imposter, "Hypnotize Cooldown", 25f, 10f, 60f, 2.5f, CooldownFormat);
 
+            Disorienter = new CustomHeaderOption(num++, MultiMenu.imposter, "<color=#FF0000FF>Disorienter</color>");
+            DisorientCooldown =
+                new CustomNumberOption(num++, MultiMenu.imposter, "Initial Disorient Cooldown", 10f, 1f, 15f, 1f, CooldownFormat);
+            DisorientTime =
+                new CustomNumberOption(num++, MultiMenu.imposter, "Time Of Disorient", 30f, 10f, 60f, 1f, CooldownFormat);
+
             Miner = new CustomHeaderOption(num++, MultiMenu.imposter, "<color=#FF0000FF>Miner</color>");
             MineCooldown =
                 new CustomNumberOption(num++, MultiMenu.imposter, "Mine Cooldown", 25f, 10f, 60f, 2.5f, CooldownFormat);
@@ -1245,6 +1368,15 @@ namespace TownOfUs.CustomOption
             Bait = new CustomHeaderOption(num++, MultiMenu.modifiers, "<color=#00B3B3FF>Bait</color>");
             BaitMinDelay = new CustomNumberOption(num++, MultiMenu.modifiers, "Minimum Delay for the Bait Report", 0f, 0f, 15f, 0.5f, CooldownFormat);
             BaitMaxDelay = new CustomNumberOption(num++, MultiMenu.modifiers, "Maximum Delay for the Bait Report", 1f, 0f, 15f, 0.5f, CooldownFormat);
+            
+            Freeze = new CustomHeaderOption(num++, MultiMenu.modifiers, "<color=#00EDEB>Freeze</color>");
+            FreezeTime = new CustomNumberOption(num++, MultiMenu.modifiers, "Time To Freeze Killer For", 10f, 1f, 30f, 1f, CooldownFormat);
+            FreezeReport =
+                new CustomToggleOption(num++, MultiMenu.modifiers, "Can Killer Report On Freeze", false);
+
+            Radiative = new CustomHeaderOption(num++, MultiMenu.modifiers, "<color=#39FF14>Radiative</color>");
+            RadiativeCooldown = new CustomNumberOption(num++, MultiMenu.modifiers, "Cooldown Between Radiation Kill", 10f, 1f, 30f, 1f, CooldownFormat);
+            RadiativeRadius = new CustomNumberOption(num++, MultiMenu.modifiers, "Radiation Radius", 0.2f, 0.05f, 1f, 0.05f, MultiplierFormat);
 
             Diseased = new CustomHeaderOption(num++, MultiMenu.modifiers, "<color=#808080FF>Diseased</color>");
             DiseasedKillMultiplier = new CustomNumberOption(num++, MultiMenu.modifiers, "Diseased Kill Multiplier", 3f, 1.5f, 5f, 0.5f, MultiplierFormat);
@@ -1271,6 +1403,9 @@ namespace TownOfUs.CustomOption
             InvisDelay = new CustomNumberOption(num++, MultiMenu.modifiers, "Transparency Delay", 5f, 1f, 15f, 1f, CooldownFormat);
             TransformInvisDuration = new CustomNumberOption(num++, MultiMenu.modifiers, "Turn Transparent Duration", 5f, 1f, 15f, 1f, CooldownFormat);
             FinalTransparency = new CustomNumberOption(num++, MultiMenu.modifiers, "Final Opacity", 20f, 0f, 80f, 10f, PercentFormat);
+
+            Mini = new CustomHeaderOption(num++, MultiMenu.modifiers, "<color=#b0a1ff>Mini</color>");
+            MiniSpeed = new CustomNumberOption(num++, MultiMenu.modifiers, "Mini Speed", 1.25f, 1.05f, 2.5f, 0.05f, MultiplierFormat);
 
             Underdog = new CustomHeaderOption(num++, MultiMenu.modifiers, "<color=#FF0000FF>Underdog</color>");
             UnderdogKillBonus = new CustomNumberOption(num++, MultiMenu.modifiers, "Kill Cooldown Bonus", 5f, 2.5f, 10f, 2.5f, CooldownFormat);
