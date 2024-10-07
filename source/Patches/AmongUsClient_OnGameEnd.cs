@@ -244,10 +244,10 @@ namespace TownOfUs
                     var stalker = (Stalker)role;
                     if (stalker.StalkerWins)
                     {
-                        TempData.winners = new List<WinningPlayerData>();
-                        var stalkerData = new WinningPlayerData(stalker.Player.Data);
+                        EndGameResult.CachedWinners = new List<CachedPlayerData>();
+                        var stalkerData = new CachedPlayerData(stalker.Player.Data);
                         if (PlayerControl.LocalPlayer != stalker.Player) stalkerData.IsYou = false;
-                        TempData.winners.Add(stalkerData);
+                        EndGameResult.CachedWinners.Add(stalkerData);
                     }
                 }
                 else if (type == RoleEnum.Juggernaut)
@@ -324,11 +324,11 @@ namespace TownOfUs
                 var lwyr = (Lawyer)role;
                 if (!lwyr.TargetVotedOut && !lwyr.Player.Data.IsDead)
                 {
-                    var isImp = TempData.winners[0].IsImpostor;
-                    var lwyrWinData = new WinningPlayerData(lwyr.Player.Data);
+                    var isImp = EndGameResult.CachedWinners.Count != 0 && EndGameResult.CachedWinners[0].IsImpostor;
+                    var lwyrWinData = new CachedPlayerData(lwyr.Player.Data);
                     if (isImp) lwyrWinData.IsImpostor = true;
                     if (PlayerControl.LocalPlayer != lwyr.Player) lwyrWinData.IsYou = false;
-                    TempData.winners.Add(lwyrWinData);
+                    EndGameResult.CachedWinners.Add(lwyrWinData);
                 }
             }
             foreach (var role in Role.GetRoles(RoleEnum.GuardianAngel))

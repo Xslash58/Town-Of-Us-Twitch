@@ -12,7 +12,7 @@ namespace TownOfUs.NeutralRoles.LawyerMod
     {
         private static void Postfix(ExileController __instance)
         {
-            var exiled = __instance.exiled;
+            var exiled = __instance.initData.networkedPlayer;
             if (exiled == null) return;
             var player = exiled.Object;
 

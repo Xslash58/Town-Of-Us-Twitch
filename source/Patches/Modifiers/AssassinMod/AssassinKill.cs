@@ -203,13 +203,13 @@ namespace TownOfUs.Modifiers.AssassinMod
             {
                 if (role.Blackmailed != null && voteArea.TargetPlayerId == role.Blackmailed.PlayerId)
                 {
-                    if (DisorientMeetingUpdate.PrevXMark != null && DisorientMeetingUpdate.PrevOverlay != null)
+                    if (BlackmailMeetingUpdate.PrevXMark != null && BlackmailMeetingUpdate.PrevOverlay != null)
                     {
-                        voteArea.XMark.sprite = DisorientMeetingUpdate.PrevXMark;
-                        voteArea.Overlay.sprite = DisorientMeetingUpdate.PrevOverlay;
+                        voteArea.XMark.sprite = BlackmailMeetingUpdate.PrevXMark;
+                        voteArea.Overlay.sprite = BlackmailMeetingUpdate.PrevOverlay;
                         voteArea.XMark.transform.localPosition = new Vector3(
-                            voteArea.XMark.transform.localPosition.x - DisorientMeetingUpdate.LetterXOffset,
-                            voteArea.XMark.transform.localPosition.y - DisorientMeetingUpdate.LetterYOffset,
+                            voteArea.XMark.transform.localPosition.x - BlackmailMeetingUpdate.LetterXOffset,
+                            voteArea.XMark.transform.localPosition.y - BlackmailMeetingUpdate.LetterYOffset,
                             voteArea.XMark.transform.localPosition.z);
                     }
                 }

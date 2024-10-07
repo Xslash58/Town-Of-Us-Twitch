@@ -33,7 +33,7 @@ namespace TownOfUs.Patches.CustomHats
 
         internal static IEnumerator LoadHats()
         {
-            
+
             try
             {
                 var hatJson = LoadJson();
@@ -118,9 +118,12 @@ namespace TownOfUs.Patches.CustomHats
 
             var hat = ScriptableObject.CreateInstance<HatData>();
 
+            SpriteRenderer rend = new SpriteRenderer();
+            //rend.sprite = sprite;
+
             hat.ChipOffset = new Vector2(-0.1f, 0.35f);
-            hat.SpritePreview = sprite;
             hat.InFront = true;
+            hat.SetPreview(rend, 0);
             hat.NoBounce = true;
 
             return hat;

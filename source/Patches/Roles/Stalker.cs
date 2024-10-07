@@ -38,7 +38,7 @@ namespace TownOfUs.Patches.Roles
             stalkTeam.Add(PlayerControl.LocalPlayer);
             __instance.teamToShow = stalkTeam;
         }
-        internal override bool NeutralWin(LogicGameFlowNormal __instance)
+        internal override bool GameEnd(LogicGameFlowNormal __instance)
         {
             if (Player.Data.IsDead || Player.Data.Disconnected) return true;
 
