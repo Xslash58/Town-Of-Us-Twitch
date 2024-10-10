@@ -13,6 +13,6 @@ namespace TownOfUs.Patches.CustomHats.Patches
                 HatLoader.LoadHats();
                 _executed = true;
             }
-        }        
+        }
     }
 }
