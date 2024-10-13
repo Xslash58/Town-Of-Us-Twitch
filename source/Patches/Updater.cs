@@ -305,13 +305,20 @@ namespace TownOfUs
                     System.UriBuilder uri = new System.UriBuilder(codeBase);
                     string fullname = System.Uri.UnescapeDataString(uri.Path);
 
-                    string catalogFile = File.ReadAllText(fullname.Replace("TownOfUs.dll", "touthats.catalog"));
+                    string catalogLocation = fullname.Replace("TownOfUs.dll", "touthats.catalog");
 
-                    var skincatalog = JsonSerializer.Deserialize<Catalog>(catalogFile);
-                    if (skincatalog != null && skincatalog.m_BuildResultHash != null)
+                    if (File.Exists(catalogLocation))
                     {
-                        if(tagname != skincatalog.m_BuildResultHash) HasTOUSkinsUpdate = true;
+                        string catalogFile = File.ReadAllText(fullname.Replace("TownOfUs.dll", "touthats.catalog"));
+
+                        var skincatalog = JsonSerializer.Deserialize<Catalog>(catalogFile);
+                        if (skincatalog != null && skincatalog.m_BuildResultHash != null)
+                        {
+                            if (tagname != skincatalog.m_BuildResultHash) HasTOUSkinsUpdate = true;
+                        }
                     }
+                    else
+                        HasTOUSkinsUpdate = true;
                 }
                 var assets = data.assets;
                 if (assets == null) return false;
@@ -386,7 +393,8 @@ namespace TownOfUs
                 if (File.Exists(fullname + ".old")) // Clear old file in case it wasnt;
                     File.Delete(fullname + ".old");
 
-                File.Move(fullname, fullname + ".old"); // rename current executable to old
+                if(File.Exists(fullname))
+                    File.Move(fullname, fullname + ".old"); // rename current executable to old
 
                 using (var responseStream = await response.Content.ReadAsStreamAsync())
                 {
