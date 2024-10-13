@@ -33,6 +33,5 @@
 
     <ItemGroup>
         <EmbeddedResource Include="Resources\*" />
-        <EmbeddedResource Include="Resources\Hats\**" />
     </ItemGroup>
 </Project>

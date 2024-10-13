@@ -18,6 +18,7 @@ namespace TownOfUs
     public class ModUpdaterButton
     {
         private static Sprite TOUUpdateSprite => TownOfUs.UpdateTOUButton;
+        private static Sprite TOUSkinsUpdateSprite => TownOfUs.UpdateTOUSkinsButton;
         private static Sprite SubmergedUpdateSprite => TownOfUs.UpdateSubmergedButton;
         private static void Prefix(MainMenuManager __instance)
         {
@@ -49,21 +50,28 @@ namespace TownOfUs
             if (ModUpdater.HasTOUUpdate)
             {
                 //If there's an update, create and show the update button
-                UpdateButton(__instance, () => ModUpdater.ExecuteUpdate("TOU"));
+                UpdateButton(__instance, () => ModUpdater.ExecuteUpdate("TOU"), TOUUpdateSprite);
             }
             if (ModUpdater.HasSubmergedUpdate)
             {
                 //If there's an update, create and show the update button
-                UpdateButton(__instance, () => ModUpdater.ExecuteUpdate("Submerged"), 1);
+                UpdateButton(__instance, () => ModUpdater.ExecuteUpdate("Submerged"), SubmergedUpdateSprite, 1);
+            }
+            else if (ModUpdater.HasTOUSkinsUpdate)
+            {
+                //If there's an update, create and show the update button
+                UpdateButton(__instance, () => ModUpdater.ExecuteUpdate("TOUSkins"), TOUSkinsUpdateSprite, 1);
             }
         }
 
-        private static void UpdateButton(MainMenuManager __instance, Action Onclick, int _pos=0)
+        private static void UpdateButton(MainMenuManager __instance, Action Onclick, Sprite buttonSprite, int _pos=0)
         {
+            PluginSingleton<TownOfUs>.Instance.Log.LogMessage("cREATING BUTTON");
             var template = GameObject.Find("ExitGameButton");
             if (template != null)
             {
 
+                PluginSingleton<TownOfUs>.Instance.Log.LogMessage("TEMPLATE OK BUTTON");
                 var Button = UnityEngine.Object.Instantiate(template, null);
                 Button.transform.localPosition = new Vector3(Button.transform.localPosition.x, Button.transform.localPosition.y + 0.6f, Button.transform.localPosition.z);
 
@@ -73,13 +81,13 @@ namespace TownOfUs
                 SpriteRenderer ButtonSprite = Button.transform.GetChild(1).GetComponent<SpriteRenderer>();
                 passiveButton.OnClick = new UnityEngine.UI.Button.ButtonClickedEvent();
 
-                ButtonSprite.sprite = TOUUpdateSprite;
-                Button.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = TOUUpdateSprite;
+                ButtonSprite.sprite = buttonSprite;
+                Button.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = buttonSprite;
 
                 Button.transform.SetParent(GameObject.Find("RightPanel").transform);
                 var pos = Button.GetComponent<AspectPosition>();
                 pos.Alignment = AspectPosition.EdgeAlignments.LeftBottom;
-                pos.DistanceFromEdge = new Vector3(1.5f, 1f + 0.5f*_pos, 0f);
+                pos.DistanceFromEdge = new Vector3(1.5f, 1f + 0.5f * _pos, 0f);
 
                 //Add onClick event to run the update on button click
                 passiveButton.OnClick.AddListener((Action)(() =>
@@ -117,9 +125,11 @@ namespace TownOfUs
     {
         public static bool Running = false;
         public static bool HasTOUUpdate = false;
+        public static bool HasTOUSkinsUpdate = false;
         public static bool HasSubmergedUpdate = false;
         public static bool InvalidAUVersion = false;
         public static string UpdateTOUURI = null;
+        public static string UpdateTOUSkinsURI = null;
         public static string UpdateSubmergedURI = null;
         private static Task UpdateTOUTask = null;
         private static Task UpdateSubmergedTask = null;
@@ -138,6 +148,7 @@ namespace TownOfUs
             Running = true;
 
             checkForUpdate("TOU").GetAwaiter().GetResult();
+            checkForUpdate("TOUSkins").GetAwaiter().GetResult();
 
             //Only check of Submerged update if Submerged is already installed
             string codeBase = Assembly.GetExecutingAssembly().Location;
@@ -194,6 +205,26 @@ namespace TownOfUs
                     info = "Update might already\nbe in progress";
                 }
             }
+            else if (updateType == "TOUSkins")
+            {
+                info = "Updating Town Of Us Skins\nPlease wait...";
+                InfoPopup.Show(info);
+                if (UpdateTOUTask == null)
+                {
+                    if (UpdateTOUSkinsURI != null)
+                    {
+                        UpdateTOUTask = downloadUpdate("TOUSkins");
+                    }
+                    else
+                    {
+                        info = "Unable to auto-update\nPlease update manually";
+                    }
+                }
+                else
+                {
+                    info = "Update might already\nbe in progress";
+                }
+            }
             InfoPopup.StartCoroutine(Effects.Lerp(0.01f, new System.Action<float>((p) => { ModUpdater.setPopupText(info); })));
         }
 
@@ -225,6 +256,10 @@ namespace TownOfUs
                 {
                     githubURI = "https://api.github.com/repos/SubmergedAmongUs/Submerged/releases/latest";
                 }
+                else if (updateType == "TOUSkins")
+                {
+                    githubURI = "https://api.github.com/repos/Xslash58/Town-Of-Us-Twitch-Skins/releases/latest";
+                }
                 var response = await  Httpclient.GetAsync(new Uri(githubURI), HttpCompletionOption.ResponseContentRead);
 
                 if (response.StatusCode != HttpStatusCode.OK || response.Content == null)
@@ -242,9 +277,9 @@ namespace TownOfUs
                 }
 
                 int diff = 0;
-                Version ver = Version.Parse(tagname.Replace("v", ""));
                 if (updateType == "TOU")
                 { //Check TOU version
+                    Version ver = Version.Parse(tagname.Replace("v", ""));
                     diff = TownOfUs.Version.CompareTo(ver);
                     if (diff < 0)
                     { // TOU update required
@@ -253,6 +288,7 @@ namespace TownOfUs
                 }
                 else if (updateType == "Submerged")
                 {
+                    Version ver = Version.Parse(tagname.Replace("v", ""));
                     //account for broken version
                     if (Patches.SubmergedCompatibility.Version == null) HasSubmergedUpdate = true;
                     else
@@ -263,6 +299,26 @@ namespace TownOfUs
                             HasSubmergedUpdate = true;
                         }
                     }
+                } else if (updateType == "TOUSkins")
+                {
+                    string codeBase = Assembly.GetExecutingAssembly().Location;
+                    System.UriBuilder uri = new System.UriBuilder(codeBase);
+                    string fullname = System.Uri.UnescapeDataString(uri.Path);
+
+                    string catalogLocation = fullname.Replace("TownOfUs.dll", "touthats.catalog");
+
+                    if (File.Exists(catalogLocation))
+                    {
+                        string catalogFile = File.ReadAllText(fullname.Replace("TownOfUs.dll", "touthats.catalog"));
+
+                        var skincatalog = JsonSerializer.Deserialize<Catalog>(catalogFile);
+                        if (skincatalog != null && skincatalog.m_BuildResultHash != null)
+                        {
+                            if (tagname != skincatalog.m_BuildResultHash) HasTOUSkinsUpdate = true;
+                        }
+                    }
+                    else
+                        HasTOUSkinsUpdate = true;
                 }
                 var assets = data.assets;
                 if (assets == null) return false;
@@ -270,7 +326,7 @@ namespace TownOfUs
                 foreach (var asset in assets)
                 {
                     if (asset.browser_download_url == null) continue;
-                    if (asset.browser_download_url.EndsWith(".dll"))
+                    if (asset.browser_download_url.EndsWith(".dll") && updateType != "TOUSkins")
                     {
                         if (updateType == "TOU")
                         {
@@ -281,6 +337,10 @@ namespace TownOfUs
                             UpdateSubmergedURI = asset.browser_download_url;
                         }
                         return true;
+                    }
+                    if (updateType == "TOUSkins" && asset.browser_download_url.EndsWith(".catalog"))
+                    {
+                        UpdateTOUSkinsURI = asset.browser_download_url;
                     }
                 }
             }
@@ -306,6 +366,11 @@ namespace TownOfUs
                 downloadDLL = UpdateSubmergedURI;
                 info = "Submerged\nupdated successfully.\nPlease RESTART the game.";
             }
+            else if (updateType == "TOUSkins")
+            {
+                downloadDLL = UpdateTOUSkinsURI;
+                info = "Town Of Us Skins Catalog\nupdated successfully.\nPlease RESTART the game.";
+            }
             try
             {
                 var response = await  Httpclient.GetAsync(new System.Uri(downloadDLL), HttpCompletionOption.ResponseContentRead);
@@ -321,10 +386,15 @@ namespace TownOfUs
                 {
                     fullname = fullname.Replace("TownOfUs", "Submerged"); //TODO A better solution than this to correctly name the dll files
                 }
+                else if (updateType == "TOUSkins")
+                {
+                    fullname = fullname.Replace("TownOfUs.dll", "touthats.catalog");
+                }
                 if (File.Exists(fullname + ".old")) // Clear old file in case it wasnt;
                     File.Delete(fullname + ".old");
 
-                File.Move(fullname, fullname + ".old"); // rename current executable to old
+                if(File.Exists(fullname))
+                    File.Move(fullname, fullname + ".old"); // rename current executable to old
 
                 using (var responseStream = await response.Content.ReadAsStreamAsync())
                 {
@@ -374,6 +444,11 @@ namespace TownOfUs
             public Dictionary<int, string> InternalVersions { get; set; }
 
             public string ModVersion { get; set; }
+        }
+
+        class Catalog
+        {
+            public string m_BuildResultHash { get; set; }
         }
     }
 

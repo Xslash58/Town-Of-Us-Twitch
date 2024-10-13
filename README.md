@@ -1623,7 +1623,7 @@ If you have any bugs or any need to contact me, join the [Discord Server](https:
 [Alexejhero](https://github.com/SubmergedAmongUs/Submerged) - For the Submerged map.\
 [Jsushi07](https://github.com/Jsushi07) - For mini modifier.\
 [fariparedes](https://github.com/fariparedes) - For lawyer role code.\
-[ZIELONY_03](https://twitch.tv/ZIELONY_03), [xseba___](https://twitch.tv/xseba___) ,[WYSPA328](https://twitch.tv/WYSPA328) ,[ojmoty2](https://twitch.tv/ojmoty2), [Jerzuk_](https://twitch.tv/jerzuk_) - For skins you all made in this mod.\
+[ZIELONY_03](https://twitch.tv/ZIELONY_03), [xseba___](https://twitch.tv/xseba___) ,[WYSPA328](https://twitch.tv/WYSPA328) ,[ojmoty2](https://twitch.tv/ojmoty2) - For skins you all made in this mod.
 
 [Essentials](https://github.com/DorCoMaNdO/Reactor-Essentials) - For created custom game options.\
 v1.0.3 uses [Essentials](https://github.com/DorCoMaNdO/Reactor-Essentials) directly.\
